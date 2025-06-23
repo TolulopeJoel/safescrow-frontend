@@ -7,7 +7,7 @@ const steps = [
 ];
 
 const GetStartedSteps: React.FC = () => (
-  <div className="bg-primary-100 rounded-xl p-6 shadow w-full max-w-md">
+  <div className="bg-primary-50 rounded-xl p-6 shadow w-full max-w-md">
     <div className="mb-4">
       <div className="text-sm font-medium mb-2">Get started in 3 Steps</div>
       <div className="w-full bg-gray-300 rounded-full h-2 mb-2">

@@ -21,7 +21,7 @@ const Card: React.FC<CardProps> = ({
   title, value,
   showToggleIcon: showIcon = false,
 }) => (
-  <div className="bg-primary-100 rounded-lg p-7 flex flex-col justify-between">
+  <div className="bg-primary-50 rounded-lg p-7 flex flex-col justify-between">
     <div className="text-sm flex items-center mb-2 font-normal text-gray-500">
       {title} {showIcon && <ToggleIcon />}
     </div>
@@ -31,9 +31,9 @@ const Card: React.FC<CardProps> = ({
 
 const DashboardCards: React.FC = () => {
   return (
-    <div className="grid grid-cols-3 gap-5 mb-8 max-w-4xl h-1/3">
+    <div className="grid grid-cols-3 gap-5 mb-8 h-1/3">
       {/* Main Card (Wallet Balance) */}
-      <div className="bg-blue-600 rounded-lg p-7 flex flex-col justify-between text-white shadow-sm">
+      <div className="bg-primary-600 rounded-lg p-7 flex flex-col justify-between text-white shadow-sm">
         <div className="text-sm flex items-center mb-2 text-blue-100 font-normal">
           Wallet balance <ToggleIcon />
         </div>
