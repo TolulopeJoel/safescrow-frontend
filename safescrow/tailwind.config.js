@@ -13,22 +13,40 @@ module.exports = {
           300: '#93c5fd',
           400: '#60a5fa',
           500: '#3b82f6',
-          600: '#2563eb',
+          600: '#2563eb', // Main blue color from the dashboard
           700: '#1d4ed8',
           800: '#1e40af',
           900: '#1e3a8a',
+          950: '#172554',
         },
-        secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280', // Text color for labels
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+          950: '#030712',
+        },
+        background: {
+          primary: '#ffffff',
+          secondary: '#f8fafc',
+          tertiary: '#f1f5f9',
+        },
+        border: {
+          light: '#e2e8f0',
+          DEFAULT: '#cbd5e1',
+          dark: '#94a3b8',
+        },
+        text: {
+          primary: '#0f172a',
+          secondary: '#475569',
+          muted: '#64748b',
+          light: '#94a3b8',
         }
       },
       fontFamily: {
