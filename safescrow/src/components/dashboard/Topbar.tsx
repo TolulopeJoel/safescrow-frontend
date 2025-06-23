@@ -10,7 +10,7 @@ const Topbar: React.FC = () => (
       </button>
       <div className="flex items-center">
         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="w-10 h-10 rounded-full mr-2" />
-        <span className="font-medium">Arthur James</span>
+        <span className="font-medium">Akinkanju Ebere</span>
       </div>
     </div>
   </header>
