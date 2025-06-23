@@ -27,13 +27,6 @@ const RegisterPage = () => (
   </div>
 );
 
-const DashboardPage = () => (
-  <div className="text-center py-20">
-    <h1 className="text-4xl font-bold text-gray-900 mb-4">Dashboard</h1>
-    <p className="text-xl text-gray-600">Dashboard coming soon...</p>
-  </div>
-);
-
 const CreateEscrowPage = () => (
   <div className="text-center py-20">
     <h1 className="text-4xl font-bold text-gray-900 mb-4">Create Escrow</h1>

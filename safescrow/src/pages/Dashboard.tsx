@@ -7,13 +7,15 @@ import GetStartedSteps from '../components/dashboard/GetStartedSteps';
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <SidebarNav />
-      <div className="flex-1 flex flex-col">
-        <Topbar />
-        <main className="flex-1 p-8 bg-gray-50">
-          <h1 className="text-2xl font-semibold mb-6">Welcome, Arthur</h1>
-          <ActionButtons />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+      <Topbar />
+      <div className="flex">
+        <SidebarNav />
+        <main className="flex-1 p-8">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-semibold">Welcome, Akinkanju</h1>
+            <ActionButtons />
+          </div>
           <DashboardCards />
           <GetStartedSteps />
         </main>
@@ -22,4 +24,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
