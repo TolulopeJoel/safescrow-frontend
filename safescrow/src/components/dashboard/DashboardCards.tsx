@@ -9,39 +9,26 @@ const ToggleIcon = () => (
 type CardProps = {
   title: string;
   value: string | number;
-  showToggleIcon?: boolean;
+  active?: boolean;
+  showToggle?: boolean;
 };
 
 const cards: CardProps[] = [
-  { title: 'Balance in escrow', value: '₦60,000', showToggleIcon: true, },
+  { title: 'Wallet balance', value: '₦40,000', showToggle: true, active: true },
+  { title: 'Balance in escrow', value: '₦60,000', showToggle: true, },
   { title: 'Pending transactions', value: 3, },
 ];
-
-const Card: React.FC<CardProps> = ({
-  title, value,
-  showToggleIcon: showIcon = false,
-}) => (
-  <div className="bg-primary-50 rounded-lg p-7 flex flex-col justify-between">
-    <div className="text-sm flex items-center mb-2 font-normal text-gray-500">
-      {title} {showIcon && <ToggleIcon />}
-    </div>
-    <div className="text-3xl font-medium text-gray-900">{value}</div>
-  </div>
-);
 
 const DashboardCards: React.FC = () => {
   return (
     <div className="grid grid-cols-3 gap-5 mb-8 h-1/3">
-      {/* Main Card (Wallet Balance) */}
-      <div className="bg-primary-600 rounded-lg p-7 flex flex-col justify-between text-white shadow-sm">
-        <div className="text-sm flex items-center mb-2 text-blue-100 font-normal">
-          Wallet balance <ToggleIcon />
-        </div>
-        <div className="text-3xl font-semibold">₦40,000</div>
-      </div>
-      {/* Other Cards */}
       {cards.map((card, index) => (
-        <Card key={index} {...card} />
+        <div key={index} className={`${card.active ? 'bg-primary-600 shadow-sm' : 'bg-primary-50'} rounded-lg p-7 flex flex-col justify-between`}>
+          <div className={`text-sm flex items-center mb-2 font-normal ${card.active ? 'text-white' : 'text-gray-500'}`}>
+            {card.title} {card.showToggle && <ToggleIcon />}
+          </div>
+          <div className={`text-3xl ${card.active ? 'font-semibold text-white' : 'font-medium text-gray-900'}`}>{card.value}</div>
+        </div>
       ))}
     </div>
   );
