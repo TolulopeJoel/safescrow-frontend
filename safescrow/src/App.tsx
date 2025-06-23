@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import { Dashboard } from './pages';
 
 // Placeholder components - these will be implemented when you provide the designs
 const LandingPage = () => (
@@ -56,13 +57,9 @@ function App() {
           <Route path="/" element={<Layout><LandingPage /></Layout>} />
           <Route path="/login" element={<Layout><LoginPage /></Layout>} />
           <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
-          
+
           {/* Protected routes */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Layout><DashboardPage /></Layout>
-            </ProtectedRoute>
-          } />
+          <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/escrow/new" element={
             <ProtectedRoute>
               <Layout><CreateEscrowPage /></Layout>
@@ -73,7 +70,7 @@ function App() {
               <Layout><EscrowDetailPage /></Layout>
             </ProtectedRoute>
           } />
-          
+
           {/* Catch all route */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
