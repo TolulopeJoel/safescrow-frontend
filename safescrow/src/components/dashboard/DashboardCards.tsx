@@ -21,9 +21,9 @@ const cards: CardProps[] = [
 
 const DashboardCards: React.FC = () => {
   return (
-    <div className="grid grid-cols-3 gap-5 mb-8 h-1/3">
+    <div className="grid grid-cols-3 gap-5 mb-8">
       {cards.map((card, index) => (
-        <div key={index} className={`${card.active ? 'bg-primary-600 shadow-sm' : 'bg-primary-50'} rounded-lg p-7 flex flex-col justify-between`}>
+        <div key={index} className={`${card.active ? 'bg-primary-600 shadow-sm' : 'bg-primary-50'} rounded-lg p-7 flex flex-col justify-between space-y-8`}>
           <div className={`text-sm flex items-center mb-2 font-normal ${card.active ? 'text-white' : 'text-gray-500'}`}>
             {card.title} {card.showToggle && <ToggleIcon />}
           </div>

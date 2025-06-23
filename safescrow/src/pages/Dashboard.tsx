@@ -14,7 +14,9 @@ const Dashboard: React.FC = () => {
         <main className="flex-1 p-8">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold">Welcome, Akinkanju</h1>
-            <ActionButtons />
+            <div className="flex items-center">
+              <ActionButtons />
+            </div>
           </div>
           <DashboardCards />
           <GetStartedSteps />
