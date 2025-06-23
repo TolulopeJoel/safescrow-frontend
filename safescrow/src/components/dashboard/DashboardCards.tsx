@@ -31,7 +31,7 @@ const Card: React.FC<CardProps> = ({
 
 const DashboardCards: React.FC = () => {
   return (
-    <div className="grid grid-cols-3 gap-4 mb-8 max-w-4xl h-1/3">
+    <div className="grid grid-cols-3 gap-5 mb-8 max-w-4xl h-1/3">
       {/* Main Card (Wallet Balance) */}
       <div className="bg-blue-600 rounded-lg p-7 flex flex-col justify-between text-white shadow-sm">
         <div className="text-sm flex items-center mb-2 text-blue-100 font-normal">
