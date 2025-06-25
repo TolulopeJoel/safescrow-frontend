@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DocumentTextIcon, ArrowsRightLeftIcon, UserIcon, Squares2X2Icon, ExclamationCircleIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 const navItems = [
@@ -11,7 +11,7 @@ const navItems = [
 ];
 
 const SidebarNav: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <aside className={`${isCollapsed ? 'w-16 px-1' : 'w-64 px-3'} bg-white h-screen flex flex-col ${isCollapsed ? 'py-18' : 'py-18'} transition-all duration-300 border-r border-gray-100 overflow-hidden`}>
