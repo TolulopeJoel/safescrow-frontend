@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { DocumentTextIcon, ArrowsRightLeftIcon, UserIcon, Squares2X2Icon, ExclamationCircleIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { DocumentTextIcon, ArrowsRightLeftIcon, Squares2X2Icon, ExclamationCircleIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { CollapsedSideBarIcon, ExpandedSideBarIcon, ProfileIcon } from '../icons/ExternalIcons';
 
 const navItems = [
   { name: 'Overview', icon: Squares2X2Icon, active: true },
@@ -7,7 +8,7 @@ const navItems = [
   { name: 'Orders', icon: DocumentTextIcon },
   { name: 'Dispute resolution', icon: ExclamationCircleIcon },
   { name: 'Referrals', icon: UserGroupIcon },
-  { name: 'Profile', icon: UserIcon },
+  { name: 'Profile', icon: ProfileIcon },
 ];
 
 const SidebarNav: React.FC = () => {
@@ -24,9 +25,9 @@ const SidebarNav: React.FC = () => {
           >
             {/* siddebar toggle icon */}
             {isCollapsed ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="currentColor" className="mt-3 text-gray-700"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 3a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h12zm-3 2h-9a1 1 0 0 0 -.993 .883l-.007 .117v12a1 1 0 0 0 .883 .993l.117 .007h9v-14zm-5.387 4.21l.094 .083l2 2a1 1 0 0 1 .083 1.32l-.083 .094l-2 2a1 1 0 0 1 -1.497 -1.32l.083 -.094l1.292 -1.293l-1.292 -1.293a1 1 0 0 1 -.083 -1.32l.083 -.094a1 1 0 0 1 1.32 -.083z" /></svg>
+              <CollapsedSideBarIcon className="mt-3 text-gray-700" />
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="currentColor" className="mt-3 text-gray-700"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 3a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h12zm0 2h-9v14h9a1 1 0 0 0 .993 -.883l.007 -.117v-12a1 1 0 0 0 -.883 -.993l-.117 -.007zm-2.293 4.293a1 1 0 0 1 .083 1.32l-.083 .094l-1.292 1.293l1.292 1.293a1 1 0 0 1 .083 1.32l-.083 .094a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 -.083 -1.32l.083 -.094l2 -2a1 1 0 0 1 1.414 0z" /></svg>
+              <ExpandedSideBarIcon className="mt-3 text-gray-700" />
             )}
           </button>
         </div>
