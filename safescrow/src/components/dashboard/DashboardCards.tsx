@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { IconEye, IconEyeOff } from '@tabler/icons-react';
 
 type CardProps = {
   title: string;
@@ -8,9 +8,10 @@ type CardProps = {
   showToggle?: boolean;
 };
 
+const balance = 66450;
 const cards: CardProps[] = [
-  { title: 'Wallet balance', value: '₦40,000', showToggle: true, active: true },
-  { title: 'Balance in escrow', value: '₦60,000', showToggle: true, },
+  { title: 'Wallet balance', value: `₦${balance.toLocaleString()}`, showToggle: true, active: true, },
+  { title: 'Balance in escrow', value: `₦${(balance + 13910).toLocaleString()}`, showToggle: true, },
   { title: 'Pending transactions', value: 3, },
 ];
 
@@ -46,9 +47,9 @@ const DashboardCards: React.FC = () => {
               {showToggle && (
                 <span onClick={() => handleToggle(index)}>
                   {toggles[index] ? (
-                    <EyeIcon className="w-4 h-4 ml-1 cursor-pointer" />
+                    <IconEye className="w-4 h-4 ml-1 cursor-pointer" />
                   ) : (
-                    <EyeSlashIcon className="w-4 h-4 ml-1 cursor-pointer" />
+                    <IconEyeOff className="w-4 h-4 ml-1 cursor-pointer" />
                   )}
                 </span>
               )}

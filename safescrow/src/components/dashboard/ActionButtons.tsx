@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PlusIcon, ArrowUpTrayIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { BagIcon, StoreICon } from '../icons/ExternalIcons';
+import { IconSquareRoundedArrowDownFilled, IconSquareRoundedArrowUpFilled, IconSquareRoundedPlusFilled, IconBuildingStore, IconPaperBag } from '@tabler/icons-react';
 
 const buttons = [
-  { name: 'Create order', icon: PlusIcon },
-  { name: 'Fund wallet', icon: ArrowDownTrayIcon },
-  { name: 'Withdraw', icon: ArrowUpTrayIcon }
+  { name: 'Create order', icon: IconSquareRoundedPlusFilled },
+  { name: 'Fund wallet', icon: IconSquareRoundedArrowUpFilled },
+  { name: 'Withdraw', icon: IconSquareRoundedArrowDownFilled }
 ];
 
 const ActionButtons: React.FC = () => {
@@ -47,12 +46,12 @@ const ActionButtons: React.FC = () => {
               ref={menuRef}
               className="absolute left-0 z-10 mt-2 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-4 flex flex-col space-y-4"
             >
-              <button className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-50 w-full text-left">
-                <StoreICon className="w-6 h-6 text-gray-600" />
+              <button className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-100 w-full text-left">
+                <IconBuildingStore className="w-6 h-6 text-gray-600" />
                 <span className="text-gray-800">As a seller</span>
               </button>
-              <button className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-50 w-full text-left">
-                <BagIcon className="w-6 h-6 text-gray-600" />
+              <button className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-100 w-full text-left">
+                <IconPaperBag className="w-6 h-6 text-gray-600" />
                 <span className="text-gray-800">As a buyer</span>
               </button>
             </div>

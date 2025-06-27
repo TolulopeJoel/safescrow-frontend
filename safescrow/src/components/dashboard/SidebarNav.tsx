@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { DocumentTextIcon, ArrowsRightLeftIcon, Squares2X2Icon, ExclamationCircleIcon, UserGroupIcon } from '@heroicons/react/24/outline';
-import { CollapsedSideBarIcon, ExpandedSideBarIcon, ProfileIcon } from '../icons/ExternalIcons';
+import { DocumentTextIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
+import { ProfileIcon } from '../icons/ExternalIcons';
+import { IconGavel, IconGift, IconLayoutSidebarLeftCollapseFilled, IconLayoutSidebarLeftExpandFilled, IconTransfer } from '@tabler/icons-react';
 
 const navItems = [
   { name: 'Overview', icon: Squares2X2Icon, active: true },
-  { name: 'Transactions', icon: ArrowsRightLeftIcon },
+  { name: 'Transactions', icon: IconTransfer },
   { name: 'Orders', icon: DocumentTextIcon },
-  { name: 'Dispute resolution', icon: ExclamationCircleIcon },
-  { name: 'Referrals', icon: UserGroupIcon },
+  { name: 'Dispute resolution', icon: IconGavel },
+  { name: 'Referrals', icon: IconGift },
   { name: 'Profile', icon: ProfileIcon },
 ];
 
@@ -25,9 +26,9 @@ const SidebarNav: React.FC = () => {
           >
             {/* siddebar toggle icon */}
             {isCollapsed ? (
-              <CollapsedSideBarIcon className="mt-3 text-gray-700" />
+              <IconLayoutSidebarLeftExpandFilled className="mt-3 text-gray-700" />
             ) : (
-              <ExpandedSideBarIcon className="mt-3 text-gray-700" />
+              <IconLayoutSidebarLeftCollapseFilled className="mt-3 text-gray-700" />
             )}
           </button>
         </div>
