@@ -1,6 +1,7 @@
 import React from 'react';
 import TransactionStatusBadge from './TransactionStatusBadge';
-import { ArrowDownCircleIcon, ArrowUpCircleIcon, BanknotesIcon } from '@heroicons/react/24/outline';
+import { IconArrowDownLeft, IconArrowUpRight, IconCurrencyNaira } from '@tabler/icons-react';
+import { BanknotesIcon } from '@heroicons/react/24/outline';
 
 interface WalletTransaction {
   id: string;
@@ -15,48 +16,48 @@ interface WalletTransaction {
 interface WalletTransactionCardProps {
   transaction: WalletTransaction;
   onViewDetails: (txn: WalletTransaction) => void;
+  isLast?: boolean;
 }
 
 const typeIcon = {
-  Funding: ArrowDownCircleIcon,
-  Withdrawal: ArrowUpCircleIcon,
+  Funding: IconArrowDownLeft,
+  Withdrawal: IconArrowUpRight,
   'Escrow Release': BanknotesIcon,
-  Fee: ArrowUpCircleIcon,
-  Bonus: ArrowDownCircleIcon,
-  Refund: ArrowDownCircleIcon,
+  Fee: IconArrowUpRight,
+  Bonus: IconArrowDownLeft,
+  Refund: IconArrowDownLeft,
 };
 
-const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transaction, onViewDetails }) => {
-  const Icon = typeIcon[transaction.type] || BanknotesIcon;
-  const amountColor = transaction.direction === 'credit' ? 'text-green-600' : 'text-red-600';
-  const sign = transaction.direction === 'credit' ? '+' : '-';
+const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transaction, onViewDetails, isLast }) => {
+  const Icon = typeIcon[transaction.type] || IconCurrencyNaira;
+  const isCredit = transaction.direction === 'credit';
+  const amountColor = isCredit ? 'text-green-600' : 'text-red-600';
+  const sign = isCredit ? '+' : '-';
 
   return (
-    <div className="flex items-center bg-white rounded-xl shadow p-5 mb-4 gap-4">
-      <div className="flex-shrink-0">
-        <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50`}>
-          <Icon className="w-7 h-7 text-blue-500" />
+    <div className={`grid grid-cols-[auto_1fr_auto] items-center px-6 py-6 ${!isLast && 'border-b border-gray-300'} gap-6`}> 
+      {/* Icon */}
+      <div className="flex-shrink-0 flex items-center justify-center">
+        <span className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${isCredit ? 'bg-green-50' : 'bg-red-50'}`}> 
+          <Icon className={`w-7 h-7 ${isCredit ? 'text-green-600' : 'text-red-600'}`} />
         </span>
       </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between">
-          <span className="font-semibold text-lg capitalize">{transaction.type}</span>
-          <span className={`font-bold text-xl ${amountColor}`}>{sign}₦{transaction.amount.toLocaleString()}</span>
+      {/* Main content */}
+      <div className="min-w-0">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+          <span className="font-semibold text-lg capitalize text-gray-900 block">{transaction.type}</span>
+          <span className={`font-bold text-2xl ${amountColor} block sm:hidden`}>{sign}₦{transaction.amount.toLocaleString()}</span>
         </div>
-        <div className="text-gray-500 text-sm mt-1">{transaction.description}</div>
-        <div className="flex items-center mt-2 space-x-3">
-          <span className="text-xs text-gray-400">{transaction.date}</span>
-          <TransactionStatusBadge status={transaction.status} />
-          <span className="text-xs text-gray-300 ml-auto font-mono">{transaction.id}</span>
+        <div className="text-gray-700 text-base mb-2">{transaction.description}</div>
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-gray-500">{transaction.date}</span>
+          <span className="text-gray-400 font-mono">{transaction.id}</span>
         </div>
       </div>
-      <div className="ml-4">
-        <button
-          onClick={() => onViewDetails(transaction)}
-          className="text-blue-600 hover:underline text-sm font-medium"
-        >
-          View Details
-        </button>
+      {/* Amount and Status Badge */}
+      <div className="flex flex-col items-center justify-center gap-1 min-w-[120px]">
+        <span className={`font-bold text-lg ${amountColor}`}>{sign}₦{transaction.amount.toLocaleString()}</span>
+        <TransactionStatusBadge status={transaction.status} className="px-6 py-2 rounded-full text-base font-semibold capitalize shadow-sm mt-[-0.5rem]" />
       </div>
     </div>
   );

@@ -149,7 +149,7 @@ const Transactions: React.FC = () => {
                   {idx === 0 && (
                     <span className="absolute -top-3 left-4 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Recent</span>
                   )}
-                  <WalletTransactionCard transaction={txn} onViewDetails={setSelectedTransaction} />
+                  <WalletTransactionCard transaction={txn} onViewDetails={setSelectedTransaction} isLast={idx === filteredTransactions.length - 1} />
                 </div>
               ))
             )}
