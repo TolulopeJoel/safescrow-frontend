@@ -12,7 +12,7 @@ const balance = 66450;
 const cards: CardProps[] = [
   { title: 'Wallet balance', value: `₦${balance.toLocaleString()}`, showToggle: true, active: true, },
   { title: 'Balance in escrow', value: `₦${(balance + 13910).toLocaleString()}`, showToggle: true, },
-  { title: 'Pending transactions', value: 3, },
+  { title: 'Pending orders', value: 3, },
 ];
 
 const DashboardCards: React.FC = () => {
