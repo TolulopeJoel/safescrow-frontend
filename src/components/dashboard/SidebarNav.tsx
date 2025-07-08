@@ -39,7 +39,7 @@ const SidebarNav: React.FC = () => {
       <aside
         className={`
           bg-white h-screen flex flex-col border-r border-gray-100 overflow-hidden py-18
-          fixed md:static top-0 left-0 z-40
+          fixed md:fixed top-0 left-0 z-40
           transition-all duration-300 ease-in-out
           ${isCollapsed ? 'w-0 md:w-16 px-0 md:px-1' : 'w-64 px-3'}
           ${isCollapsed ? 'hidden md:flex' : 'flex'}
