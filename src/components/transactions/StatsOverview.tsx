@@ -1,6 +1,6 @@
 import React from 'react';
 import { WalletTransaction } from '../../pages/Transactions';
-import { ArrowDownCircleIcon, ArrowUpCircleIcon } from '@heroicons/react/24/outline';
+import { IconArrowDownLeft, IconArrowUpRight } from '@tabler/icons-react';
 
 interface StatsOverviewProps {
   transactions: WalletTransaction[];
@@ -17,26 +17,28 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ transactions }) => {
   const count = thisMonth.length;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <div className="bg-white rounded-xl shadow p-4 flex items-center">
-        <ArrowDownCircleIcon className="w-7 h-7 text-green-500 mr-3" />
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+      <div className="bg-primary-50 rounded-xl border border-primary-100 shadow-sm p-7 flex items-center min-h-[140px]">
+        <IconArrowDownLeft className="w-7 h-7 text-primary-400 mr-3" />
         <div>
           <div className="text-xs text-gray-400">Credited this month</div>
-          <div className="font-bold text-lg text-green-600">₦{totalCredited.toLocaleString()}</div>
+          <div className="font-bold text-lg text-primary-600">₦{totalCredited.toLocaleString()}</div>
         </div>
       </div>
-      <div className="bg-white rounded-xl shadow p-4 flex items-center">
-        <ArrowUpCircleIcon className="w-7 h-7 text-red-500 mr-3" />
+
+      <div className="bg-blue-50 rounded-xl border border-blue-100 shadow-sm p-7 flex items-center min-h-[140px]">
+        <IconArrowUpRight className="w-7 h-7 text-blue-400 mr-3" />
         <div>
           <div className="text-xs text-gray-400">Debited this month</div>
-          <div className="font-bold text-lg text-red-600">₦{totalDebited.toLocaleString()}</div>
+          <div className="font-bold text-lg text-blue-600">₦{totalDebited.toLocaleString()}</div>
         </div>
       </div>
-      <div className="bg-white rounded-xl shadow p-4 flex items-center">
-        <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center mr-3 font-bold text-blue-600">{count}</div>
+
+      <div className="bg-primary-50 rounded-xl border border-primary-100 shadow-sm p-7 flex items-center min-h-[140px]">
+        <div className="w-7 h-7 p-4 rounded-md flex items-center justify-center mr-3 font-bold text-2xl text-gray-600">{count}</div>
         <div>
           <div className="text-xs text-gray-400">Transactions</div>
-          <div className="font-bold text-lg text-blue-600">This month</div>
+          <div className="font-bold text-lg text-gray-600">This month</div>
         </div>
       </div>
     </div>
