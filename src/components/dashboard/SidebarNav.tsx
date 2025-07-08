@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DocumentTextIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
 import { ProfileIcon } from '../icons/ExternalIcons';
 import { IconGavel, IconGift, IconLayoutSidebarLeftCollapseFilled, IconLayoutSidebarLeftExpandFilled, IconTransfer } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSidebar } from '../../contexts/SidebarContext';
 
 const navItems = [
   { name: 'Overview', icon: Squares2X2Icon, path: '/dashboard' },
@@ -14,7 +15,7 @@ const navItems = [
 ];
 
 const SidebarNav: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, setIsCollapsed } = useSidebar();
   const location = useLocation();
 
   return (

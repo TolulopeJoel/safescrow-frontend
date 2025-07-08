@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { SidebarProvider } from './contexts/SidebarContext';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import { Dashboard, Transactions } from './pages';
@@ -44,31 +45,33 @@ const EscrowDetailPage = () => (
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Layout><LandingPage /></Layout>} />
-          <Route path="/login" element={<Layout><LoginPage /></Layout>} />
-          <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
+      <SidebarProvider>
+        <Router>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Layout><LandingPage /></Layout>} />
+            <Route path="/login" element={<Layout><LoginPage /></Layout>} />
+            <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
 
-          {/* Protected routes */}
-          <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-          <Route path="/transactions" element={<Layout><Transactions /></Layout>} />
-          <Route path="/escrow/new" element={
-            <ProtectedRoute>
-              <Layout><CreateEscrowPage /></Layout>
-            </ProtectedRoute>
-          } />
-          <Route path="/escrow/:id" element={
-            <ProtectedRoute>
-              <Layout><EscrowDetailPage /></Layout>
-            </ProtectedRoute>
-          } />
+            {/* Protected routes */}
+            <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+            <Route path="/transactions" element={<Layout><Transactions /></Layout>} />
+            <Route path="/escrow/new" element={
+              <ProtectedRoute>
+                <Layout><CreateEscrowPage /></Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/escrow/:id" element={
+              <ProtectedRoute>
+                <Layout><EscrowDetailPage /></Layout>
+              </ProtectedRoute>
+            } />
 
-          {/* Catch all route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
+            {/* Catch all route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </SidebarProvider>
     </AuthProvider>
   );
 }
