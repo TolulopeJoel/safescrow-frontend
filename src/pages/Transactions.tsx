@@ -108,7 +108,7 @@ const Transactions: React.FC = () => {
       <Topbar />
       <div className="flex">
         <SidebarNav />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 sm:p-8">
           <h1 className="text-2xl font-semibold mb-4 text-gray-900">Wallet Transactions</h1>
           <StatsOverview transactions={walletTransactions} />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">

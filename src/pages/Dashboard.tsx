@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
       <Topbar />
       <div className="flex">
         <SidebarNav />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 sm:p-8">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold">Welcome, Akinkanju</h1>
             <div className="flex items-center">

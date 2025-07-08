@@ -18,7 +18,7 @@ const Orders: React.FC = () => {
       <Topbar />
       <div className="flex">
         <SidebarNav />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 sm:p-8">
           <h1 className="text-2xl font-semibold mb-6">Orders</h1>
           <OrderSummaryCards />
           {/* Chart placeholder */}
