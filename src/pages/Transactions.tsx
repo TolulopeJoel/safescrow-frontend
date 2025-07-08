@@ -24,7 +24,7 @@ const walletTransactions: WalletTransaction[] = [
     amount: 50000,
     direction: 'credit',
     description: 'Funded wallet via Paystack',
-    date: '2024-06-01 09:30',
+    date: '2025-07-01 03:17',
     status: 'Completed',
   },
   {
@@ -33,7 +33,7 @@ const walletTransactions: WalletTransaction[] = [
     amount: 20000,
     direction: 'debit',
     description: 'Withdrawal to GTBank (****1234)',
-    date: '2024-06-02 14:10',
+    date: '2025-07-02 22:41',
     status: 'Pending',
   },
   {
@@ -42,7 +42,7 @@ const walletTransactions: WalletTransaction[] = [
     amount: 15000,
     direction: 'credit',
     description: 'Escrow released from Order #123',
-    date: '2024-06-03 11:45',
+    date: '2025-07-03 05:09',
     status: 'Completed',
   },
   {
@@ -51,7 +51,7 @@ const walletTransactions: WalletTransaction[] = [
     amount: 500,
     direction: 'debit',
     description: 'Transaction fee for Order #123',
-    date: '2024-06-03 11:45',
+    date: '2025-07-03 13:56',
     status: 'Completed',
   },
   {
@@ -60,7 +60,7 @@ const walletTransactions: WalletTransaction[] = [
     amount: 1000,
     direction: 'credit',
     description: 'Referral bonus',
-    date: '2024-06-04 08:00',
+    date: '2025-07-04 00:48',
     status: 'Completed',
   },
   {
@@ -69,10 +69,20 @@ const walletTransactions: WalletTransaction[] = [
     amount: 3000,
     direction: 'credit',
     description: 'Refund for cancelled order',
-    date: '2024-06-05 16:20',
+    date: '2025-07-05 19:22',
+    status: 'Completed',
+  },
+  {
+    id: 'WALLET007',
+    type: 'Refund',
+    amount: 3000,
+    direction: 'credit',
+    description: 'Refund for cancelled order',
+    date: '2025-07-05 07:33',
     status: 'Completed',
   },
 ];
+
 
 const Transactions: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('All');
@@ -102,29 +112,34 @@ const Transactions: React.FC = () => {
           <h1 className="text-2xl font-semibold mb-4 text-gray-900">Wallet Transactions</h1>
           <StatsOverview transactions={walletTransactions} />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
-            <div className="flex space-x-2 mb-2 sm:mb-0">
+            <div className="flex space-x-8 border-b border-gray-200 flex-1">
               {FILTERS.map((filter) => (
                 <button
                   key={filter}
-                  className={`px-5 py-2 rounded-full text-sm font-medium border transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200 ${
-                    selectedFilter === filter
-                      ? 'bg-blue-600 text-white border-blue-600 shadow'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50'
-                  }`}
+                  className={`pb-2 text-base font-medium focus:outline-none transition-colors duration-200
+                    ${selectedFilter === filter
+                      ? 'text-primary-600 border-b-2 border-primary-600'
+                      : 'text-gray-500 border-b-2 border-transparent hover:text-primary-600'}
+                  `}
                   onClick={() => setSelectedFilter(filter)}
+                  style={{ background: 'none', boxShadow: 'none' }}
                 >
                   {filter}
                 </button>
               ))}
             </div>
-            <input
-              type="text"
-              placeholder="Search by description, ID, or date"
-              className="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:outline-none text-sm w-full sm:w-64"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+
+            <div className="mt-4 sm:mt-0">
+              <input
+                type="text"
+                placeholder="Search by description, ID, or date"
+                className="p-4 rounded-md border border-gray-200 focus:ring-2 focus:ring-primary-100 focus:outline-none text-sm w-full sm:w-96 placeholder-gray-400 transition-all duration-200 bg-white"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
+
           <div>
             {filteredTransactions.length === 0 ? (
               <div className="text-center text-gray-400 py-12">No transactions found.</div>
