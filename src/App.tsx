@@ -4,7 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SidebarProvider } from './contexts/SidebarContext';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
-import { Dashboard, Transactions } from './pages';
+import { Dashboard, Orders, Transactions } from './pages';
 
 // Placeholder components - these will be implemented when you provide the designs
 const LandingPage = () => (
@@ -56,6 +56,7 @@ function App() {
             {/* Protected routes */}
             <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
             <Route path="/transactions" element={<Layout><Transactions /></Layout>} />
+            <Route path="/orders" element={<Layout><Orders /></Layout>} />
             <Route path="/escrow/new" element={
               <ProtectedRoute>
                 <Layout><CreateEscrowPage /></Layout>
