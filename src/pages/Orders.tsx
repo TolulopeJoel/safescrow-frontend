@@ -22,14 +22,11 @@ const Orders: React.FC = () => {
           <h1 className="text-2xl font-semibold mb-6">Orders</h1>
           <OrderSummaryCards />
           {/* Chart placeholder */}
-          <div className="bg-white rounded-xl shadow p-6 mb-8">
+          <div className="bg-white rounded-xl p-1 shadow mb-8">
             <div className="flex items-center justify-between mb-4">
-              <span className="font-medium text-lg">Order overview</span>
-              <select className="border rounded px-2 py-1 text-sm">
-                <option>Month</option>
-              </select>
+              <span className="font-medium text-lg p-4">Order overview</span>
             </div>
-            <div className="h-40 flex items-center justify-center">
+            <div className="flex items-center justify-center">
               <OrderOverviewChart />
             </div>
           </div>
