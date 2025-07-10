@@ -38,8 +38,8 @@ const DashboardCards: React.FC = () => {
         return (
           <div
             key={index}
-            className={`${active ? 'bg-primary-600 shadow-sm' : 'bg-primary-50'
-              } rounded-lg p-7 flex flex-col justify-between space-y-8`}
+            className={`${active ? 'bg-primary-600' : 'bg-primary-50'
+              } shadow-sm rounded-lg p-7 flex flex-col justify-between space-y-8`}
           >
             <div
               className={`text-sm flex items-center mb-2 font-normal ${active ? 'text-white' : 'text-gray-500'}`}>
