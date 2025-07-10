@@ -15,7 +15,7 @@ interface OrdersTableProps {
 }
 
 const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => (
-  <div className="overflow-x-auto rounded-lg shadow bg-white">
+  <div className="overflow-x-auto rounded-lg shadow-sm bg-white">
     <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50">
         <tr>
