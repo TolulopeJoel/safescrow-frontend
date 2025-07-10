@@ -32,7 +32,7 @@ const ActionButtons: React.FC = () => {
 
   const handleCreateOrder = (role: 'seller' | 'buyer') => {
     setMenuOpen(false);
-    navigate('/escrow/new');
+    navigate(`/escrow/new?role=${role}`);
   };
 
   return (
