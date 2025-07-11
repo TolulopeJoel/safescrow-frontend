@@ -256,7 +256,8 @@ const CreateOrderWizard: React.FC = () => {
                                 </div>
                                 {errors.buyerWillPay && <span className="text-xs text-red-500">{errors.buyerWillPay}</span>}
                             </div>
-                            <div className="mt-2">
+
+                            {/* <div className="mt-2">
                                 <label className="block text-sm font-semibold mb-3">Who will pay the fee?</label>
                                 <div className="flex flex-col space-y-3 mt-1">
                                     <label className="flex items-center space-x-2">
@@ -283,7 +284,8 @@ const CreateOrderWizard: React.FC = () => {
                                     </label>
                                 </div>
                                 {errors.feePayer && <span className="text-xs text-red-500">{errors.feePayer}</span>}
-                            </div>
+                            </div> */}
+
                             <div className='flex justify-end'>
                                 <button
                                     type="button"
