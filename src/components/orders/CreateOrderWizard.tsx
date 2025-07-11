@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import FormInput from '../ui/FormInput';
+import FormTextarea from '../ui/FormTextarea';
 
 const quickAmounts = [1000, 5000, 10000, 15000, 20000];
 const currencies = ['NGN'];
@@ -8,7 +9,7 @@ const currencies = ['NGN'];
 const roleLabels = {
     seller: {
         orderDetails: 'What are you selling?',
-        orderDetailsPlaceholder: 'e.g. iPhone 16, Custom furniture',
+        orderDetailsPlaceholder: 'e.g. iPhone 16, custom furniture',
         description: 'Delivery note',
         descriptionPlaceholder: 'Clearly describe what the buyer will receive',
         amount: 'How much are you charging?',
@@ -17,7 +18,7 @@ const roleLabels = {
     },
     buyer: {
         orderDetails: 'What are you buying?',
-        orderDetailsPlaceholder: 'e.g. Laptop, Building materials',
+        orderDetailsPlaceholder: 'e.g. Laptop, building materials',
         description: 'Order description',
         descriptionPlaceholder: 'Clearly describe what you expect to receive',
         amount: 'How much are you paying?',
@@ -182,15 +183,15 @@ const CreateOrderWizard: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold mb-1">{labels.description}</label>
-                                <textarea
+                                <FormTextarea
+                                    label={labels.description}
                                     name="description"
                                     placeholder={labels.descriptionPlaceholder}
                                     value={form.description}
                                     onChange={handleChange}
-                                    className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary-200"
+                                    error={errors.description}
+                                    rows={4}
                                 />
-                                {errors.description && <span className="text-xs text-red-500">{errors.description}</span>}
                             </div>
                             <button
                                 type="button"
