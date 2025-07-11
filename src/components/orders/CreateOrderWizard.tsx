@@ -73,7 +73,7 @@ const CreateOrderWizard: React.FC = () => {
         const newErrors: { [key: string]: string } = {};
         if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) newErrors.amount = 'Enter a valid amount';
         // if (!form.buyerWillPay || isNaN(Number(form.buyerWillPay))) newErrors.buyerWillPay = 'Enter amount';
-        if (!form.feePayer) newErrors.feePayer = 'Select who pays the Escrowly fee';
+        if (!form.feePayer) newErrors.feePayer = 'Select who pays the Safescrow fee';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -191,13 +191,15 @@ const CreateOrderWizard: React.FC = () => {
                                     rows={4}
                                 />
                             </div>
-                            <button
-                                type="button"
-                                onClick={handleNext}
-                                className="mt-4 w-full bg-blue-700 text-white rounded-lg py-2 font-medium hover:bg-blue-800 transition"
-                            >
-                                Next
-                            </button>
+                            <div className='flex justify-end'>
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
+                                >
+                                    Next
+                                </button>
+                            </div>
                         </form>
                     )}
 
@@ -267,7 +269,7 @@ const CreateOrderWizard: React.FC = () => {
                                 {errors.buyerWillPay && <span className="text-xs text-red-500">{errors.buyerWillPay}</span>}
                             </div> */}
                             <div className="mt-2">
-                                <label className="block text-sm font-semibold mb-1">Who will pay the Escrowly fee?</label>
+                                <label className="block text-sm font-semibold mb-1">Who will pay the Safescrow fee?</label>
                                 <div className="flex flex-col space-y-2 mt-1">
                                     <label className="flex items-center space-x-2">
                                         <input
@@ -278,7 +280,7 @@ const CreateOrderWizard: React.FC = () => {
                                             onChange={handleChange}
                                             className="accent-primary-400"
                                         />
-                                        <span className="text-sm">I will pay the Escrowly fee</span>
+                                        <span className="text-sm">I will pay the fee</span>
                                     </label>
                                     <label className="flex items-center space-x-2">
                                         <input
@@ -289,29 +291,20 @@ const CreateOrderWizard: React.FC = () => {
                                             onChange={handleChange}
                                             className="accent-primary-400"
                                         />
-                                        <span className="text-sm">The buyer will pay the Escrowly fee</span>
-                                    </label>
-                                    <label className="flex items-center space-x-2">
-                                        <input
-                                            type="radio"
-                                            name="feePayer"
-                                            value="split"
-                                            checked={form.feePayer === 'split'}
-                                            onChange={handleChange}
-                                            className="accent-primary-400"
-                                        />
-                                        <span className="text-sm">The buyer will pay the Escrowly fee</span>
+                                        <span className="text-sm">The {labels.counterpart.toLowerCase()} will pay the fee</span>
                                     </label>
                                 </div>
                                 {errors.feePayer && <span className="text-xs text-red-500">{errors.feePayer}</span>}
                             </div>
-                            <button
-                                type="button"
-                                onClick={handleNext}
-                                className="mt-4 w-full bg-blue-700 text-white rounded-lg py-2 font-medium hover:bg-blue-800 transition"
-                            >
-                                Next
-                            </button>
+                            <div className='flex justify-end'>
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
+                                >
+                                    Next
+                                </button>
+                            </div>
                         </form>
                     )}
 
@@ -347,7 +340,8 @@ const CreateOrderWizard: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleFinish}
-                                className="mt-4 w-full bg-blue-700 text-white rounded-lg py-2 font-medium hover:bg-blue-800 transition"
+                                    className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
+
                             >
                                 Finish
                             </button>
