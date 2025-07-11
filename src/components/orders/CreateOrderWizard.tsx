@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import FormInput from '../ui/FormInput';
 
 const quickAmounts = [1000, 5000, 10000, 15000, 20000];
 const currencies = ['NGN'];
@@ -7,7 +8,7 @@ const currencies = ['NGN'];
 const roleLabels = {
     seller: {
         orderDetails: 'What are you selling?',
-        orderDetailsPlaceholder: 'e.g. iPhone 16, custom furniture',
+        orderDetailsPlaceholder: 'e.g. iPhone 16, Custom furniture',
         description: 'Delivery note',
         descriptionPlaceholder: 'Clearly describe what the buyer will receive',
         amount: 'How much are you charging?',
@@ -16,7 +17,7 @@ const roleLabels = {
     },
     buyer: {
         orderDetails: 'What are you buying?',
-        orderDetailsPlaceholder: 'e.g. Laptop, building materials',
+        orderDetailsPlaceholder: 'e.g. Laptop, Building materials',
         description: 'Order description',
         descriptionPlaceholder: 'Clearly describe what you expect to receive',
         amount: 'How much are you paying?',
@@ -119,8 +120,7 @@ const CreateOrderWizard: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#FAFAFF]">
-            {/* Topbar placeholder */}
+        <div className="min-h-screen bg-gray-50 flex flex-col">
             <div className="flex items-center justify-between px-8 py-6">
                 <div className="flex items-center space-x-2">
                     <button className="text-gray-500 text-sm" onClick={handleBack}>&larr; Back</button>
@@ -130,7 +130,7 @@ const CreateOrderWizard: React.FC = () => {
                 </button>
             </div>
             <div className="flex flex-1 items-center justify-center">
-                <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-10">
+                <div className="bg-white rounded-2xl shadow-sm w-full max-w-xl p-16">
                     {step < 3 ? (
                         <>
                             <h2 className="text-center text-2xl font-semibold mb-1">Create order</h2>
@@ -141,48 +141,45 @@ const CreateOrderWizard: React.FC = () => {
                     )}
                     {/* Progress bar */}
                     <div className="mb-6">
-                        <div className="h-1 w-full bg-orange-100 rounded">
-                            <div className="h-1 bg-orange-400 rounded transition-all duration-300" style={{ width: progress }} />
+                        <div className="h-1 w-full bg-primary-100 rounded">
+                            <div className="h-1 bg-primary-400 rounded transition-all duration-300" style={{ width: progress }} />
                         </div>
                     </div>
                     {/* Step 1: Order Details */}
                     {step === 1 && (
-                        <form className="flex flex-col space-y-4">
+                        <form className="flex flex-col space-y-6">
                             <div>
-                                <label className="block text-sm font-semibold mb-1">{labels.orderDetails}</label>
-                                <input
-                                    type="text"
+                                <FormInput
+                                    label={labels.orderDetails}
                                     name="title"
                                     placeholder={labels.orderDetailsPlaceholder}
                                     value={form.title}
                                     onChange={handleChange}
-                                    className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                    error={errors.title}
+                                    type="text"
                                 />
-                                {errors.title && <span className="text-xs text-red-500">{errors.title}</span>}
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold mb-1">{labels.counterpart}'s email</label>
-                                <input
-                                    type="email"
+                                <FormInput
+                                    label={`${labels.counterpart}'s email`}
                                     name="email"
                                     placeholder="Enter email address"
                                     value={form.email}
                                     onChange={handleChange}
-                                    className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                    error={errors.email}
+                                    type="email"
                                 />
-                                {errors.email && <span className="text-xs text-red-500">{errors.email}</span>}
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold mb-1">{labels.counterpart}'s phone number</label>
-                                <input
-                                    type="tel"
+                                <FormInput
+                                    label={`${labels.counterpart}'s phone number`}
                                     name="phone"
                                     placeholder="Enter phone number"
                                     value={form.phone}
                                     onChange={handleChange}
-                                    className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                    error={errors.phone}
+                                    type="tel"
                                 />
-                                {errors.phone && <span className="text-xs text-red-500">{errors.phone}</span>}
                             </div>
                             <div>
                                 <label className="block text-sm font-semibold mb-1">{labels.description}</label>
@@ -191,7 +188,7 @@ const CreateOrderWizard: React.FC = () => {
                                     placeholder={labels.descriptionPlaceholder}
                                     value={form.description}
                                     onChange={handleChange}
-                                    className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[80px] focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                    className="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary-200"
                                 />
                                 {errors.description && <span className="text-xs text-red-500">{errors.description}</span>}
                             </div>
@@ -217,7 +214,7 @@ const CreateOrderWizard: React.FC = () => {
                                         placeholder="0.00"
                                         value={form.amount}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-primary-200"
                                     />
                                     <select
                                         name="currency"
@@ -237,7 +234,7 @@ const CreateOrderWizard: React.FC = () => {
                                     <button
                                         type="button"
                                         key={amt}
-                                        className="bg-gray-100 rounded-lg px-3 py-1 text-sm font-medium hover:bg-orange-100 border border-gray-200"
+                                        className="bg-gray-100 rounded-lg px-3 py-1 text-sm font-medium hover:bg-primary-100 border border-gray-200"
                                         onClick={() => handleQuickAmount(amt)}
                                     >
                                         ₦{amt.toLocaleString()}
@@ -254,7 +251,7 @@ const CreateOrderWizard: React.FC = () => {
                                         placeholder="0"
                                         value={form.buyerWillPay}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-200"
                                     />
                                     <select
                                         name="buyerWillPayCurrency"
@@ -279,7 +276,7 @@ const CreateOrderWizard: React.FC = () => {
                                             value="me"
                                             checked={form.feePayer === 'me'}
                                             onChange={handleChange}
-                                            className="accent-orange-400"
+                                            className="accent-primary-400"
                                         />
                                         <span className="text-sm">I will pay the Escrowly fee</span>
                                     </label>
@@ -290,7 +287,7 @@ const CreateOrderWizard: React.FC = () => {
                                             value="buyer"
                                             checked={form.feePayer === 'buyer'}
                                             onChange={handleChange}
-                                            className="accent-orange-400"
+                                            className="accent-primary-400"
                                         />
                                         <span className="text-sm">The buyer will pay the Escrowly fee</span>
                                     </label>
@@ -301,7 +298,7 @@ const CreateOrderWizard: React.FC = () => {
                                             value="split"
                                             checked={form.feePayer === 'split'}
                                             onChange={handleChange}
-                                            className="accent-orange-400"
+                                            className="accent-primary-400"
                                         />
                                         <span className="text-sm">The buyer will pay the Escrowly fee</span>
                                     </label>
