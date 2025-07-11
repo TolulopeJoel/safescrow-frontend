@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import FormInput from '../ui/FormInput';
 import FormTextarea from '../ui/FormTextarea';
+import ProgressBar from '../ui/ProgressBar';
 
 const quickAmounts = [1000, 5000, 10000, 15000, 20000];
 const currencies = ['NGN'];
@@ -99,9 +100,9 @@ const CreateOrderWizard: React.FC = () => {
     };
 
     // Progress bar width
-    const progress = step === 1 ? '33%' : step === 2 ? '66%' : '100%';
+    const progress = step === 1 ? '33%' : (step === 2 ? '66%' : '100%');
 
-    // Success/confirmation page
+    // confirmation page
     if (orderCreated) {
         return (
             <div className="min-h-screen flex flex-col bg-[#FAFAFF] items-center justify-center">
@@ -122,6 +123,7 @@ const CreateOrderWizard: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
+
             <div className="flex items-center justify-between px-8 py-6">
                 <div className="flex items-center space-x-2">
                     <button className="text-gray-500 text-sm" onClick={handleBack}>&larr; Back</button>
@@ -130,6 +132,7 @@ const CreateOrderWizard: React.FC = () => {
                     Cancel <span className="text-xl font-light ml-1">&times;</span>
                 </button>
             </div>
+
             <div className="flex flex-1 items-center justify-center">
                 <div className="bg-white rounded-2xl shadow-sm w-full max-w-xl p-16">
                     {step < 3 ? (
@@ -140,12 +143,9 @@ const CreateOrderWizard: React.FC = () => {
                     ) : (
                         <h2 className="text-center text-2xl font-semibold mb-6">Review your order details</h2>
                     )}
-                    {/* Progress bar */}
-                    <div className="mb-6">
-                        <div className="h-1 w-full bg-primary-100 rounded">
-                            <div className="h-1 bg-primary-400 rounded transition-all duration-300" style={{ width: progress }} />
-                        </div>
-                    </div>
+
+                    <ProgressBar progress={progress} />
+
                     {/* Step 1: Order Details */}
                     {step === 1 && (
                         <form className="flex flex-col space-y-6">
@@ -202,6 +202,7 @@ const CreateOrderWizard: React.FC = () => {
                             </button>
                         </form>
                     )}
+
                     {/* Step 2: Amount/Payment */}
                     {step === 2 && (
                         <form className="flex flex-col space-y-4">
@@ -315,6 +316,7 @@ const CreateOrderWizard: React.FC = () => {
                             </button>
                         </form>
                     )}
+
                     {/* Step 3: Review/Confirm */}
                     {step === 3 && (
                         <div className="flex flex-col items-center">
