@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TransactionDetailsModal = ({ transaction, onClose }: { transaction: any, onClose: () => void }) => {
   if (!transaction) return null;
   return (

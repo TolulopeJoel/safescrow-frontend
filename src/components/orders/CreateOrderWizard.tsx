@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import FormInput from '../ui/FormInput';
-import FormTextarea from '../ui/FormTextarea';
-import ProgressBar from '../ui/ProgressBar';
+import { FormInput, FormTextarea, ProgressBar } from 'components/ui';
 
 const quickAmounts = [1000, 5000, 10000, 15000, 20000];
 const currencies = ['NGN'];

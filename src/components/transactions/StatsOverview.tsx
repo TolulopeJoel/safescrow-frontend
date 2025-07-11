@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletTransaction } from '../../pages/Transactions';
+import { WalletTransaction } from 'pages/Transactions';
 import { IconArrowDownLeft, IconArrowUpRight } from '@tabler/icons-react';
 
 interface StatsOverviewProps {

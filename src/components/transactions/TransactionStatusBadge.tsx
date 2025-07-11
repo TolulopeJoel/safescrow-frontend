@@ -1,5 +1,3 @@
-import React from 'react';
-
 const statusStyles: Record<string, string> = {
   Pending: 'bg-yellow-100 text-yellow-800',
   Completed: 'bg-green-100 text-green-800',

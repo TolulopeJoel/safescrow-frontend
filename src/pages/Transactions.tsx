@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import WalletTransactionCard from '../components/transactions/WalletTransactionCard';
-import TransactionDetailsModal from '../components/transactions/TransactionDetailsModal';
-import StatsOverview from '../components/transactions/StatsOverview';
-import SidebarNav from '../components/dashboard/SidebarNav';
-import Topbar from '../components/dashboard/Topbar';
+import { Topbar, SidebarNav } from 'components/layout';
+import { WalletTransactionCard, TransactionDetailsModal, StatsOverview } from 'components/transactions';
+
 
 export type WalletTransaction = {
   id: string;

@@ -1,9 +1,6 @@
 import React from 'react';
-import SidebarNav from '../components/dashboard/SidebarNav';
-import Topbar from '../components/dashboard/Topbar';
-import DashboardCards from '../components/dashboard/DashboardCards';
-import ActionButtons from '../components/dashboard/ActionButtons';
-import GetStartedSteps from '../components/dashboard/GetStartedSteps';
+import { Topbar, SidebarNav } from 'components/layout';
+import { DashboardCards, ActionButtons, GetStartedSteps } from 'components/dashboard';
 
 const Dashboard: React.FC = () => {
   return (

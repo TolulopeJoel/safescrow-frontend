@@ -3,7 +3,7 @@ import { DocumentTextIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
 import { ProfileIcon } from '../icons/ExternalIcons';
 import { IconGavel, IconGift, IconLayoutSidebarLeftCollapseFilled, IconLayoutSidebarLeftExpandFilled, IconTransfer } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSidebar } from '../../contexts/SidebarContext';
+import { useSidebar } from 'contexts/SidebarContext';
 
 const navItems = [
   { name: 'Overview', icon: Squares2X2Icon, path: '/dashboard' },

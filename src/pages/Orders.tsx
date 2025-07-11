@@ -1,10 +1,7 @@
 import React from 'react';
-import SidebarNav from '../components/dashboard/SidebarNav';
-import Topbar from '../components/dashboard/Topbar';
-import OrderSummaryCards from '../components/orders/OrderSummaryCards';
-import OrdersTable from '../components/orders/OrdersTable';
-import OrderOverviewChart from '../components/orders/OrderOverviewChart';
-// import OrderStatusBadge from '../components/orders/OrderStatusBadge';
+import { Topbar, SidebarNav } from 'components/layout';
+import { OrderSummaryCards, OrdersTable, OrderOverviewChart } from 'components/orders';
+
 
 const dummyOrders = [
   { id: '1', user: 'Aubrey', orderId: '453796', refCode: '453796', total: 40300, status: 'Pending' },

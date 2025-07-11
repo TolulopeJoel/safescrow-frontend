@@ -1,2 +1,3 @@
-// UI Components will be exported here
-export {}; 
+export { default as FormInput } from './FormInput';
+export { default as FormTextarea } from './FormTextarea';
+export { default as ProgressBar } from './ProgressBar'; 

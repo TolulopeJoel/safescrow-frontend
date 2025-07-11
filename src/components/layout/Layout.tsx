@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { LayoutProps } from '../../types';
-import { useSidebar } from '../../contexts/SidebarContext';
+import { LayoutProps } from 'types';
+import { useSidebar } from 'contexts/SidebarContext';
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isCollapsed } = useSidebar();
