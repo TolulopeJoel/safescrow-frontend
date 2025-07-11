@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FormInput, FormTextarea, ProgressBar } from 'components/ui';
 
-const quickAmounts = [5060, 10000, 15213, 20000, 49700];
-const currencies = ['NGN'];
+const quickAmounts = [5060, 10000, 15213, 20000, 49780];
 
 const roleLabels = {
     seller: {
@@ -12,7 +11,6 @@ const roleLabels = {
         description: 'Delivery note',
         descriptionPlaceholder: 'Clearly describe what the buyer will receive',
         amount: 'How much are you charging?',
-        // buyerWillPay: 'Buyer will pay',
         counterpart: 'Buyer',
     },
     buyer: {
@@ -21,7 +19,6 @@ const roleLabels = {
         description: 'Order description',
         descriptionPlaceholder: 'Clearly describe what you expect to receive',
         amount: 'How much are you paying?',
-        // buyerWillPay: 'You will pay',
         counterpart: 'Seller',
     },
 };
@@ -39,8 +36,6 @@ const CreateOrderWizard: React.FC = () => {
         phone: '',
         description: '',
         amount: '',
-        currency: 'NGN',
-        // buyerWillPay: '',
         feePayer: '',
     });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -221,20 +216,18 @@ const CreateOrderWizard: React.FC = () => {
                                     />
                                     <select
                                         name="currency"
-                                        value={form.currency}
+                                        value="NGN"
                                         onChange={handleChange}
                                         className="absolute right-0 top-1/2 -translate-y-1/2 bg-transparent border-0 text-gray-500 text-base font-medium pr-2 focus:outline-none cursor-pointer"
                                         style={{ minWidth: '60px' }}
                                     >
-                                        {currencies.map((cur) => (
-                                            <option key={cur} value={cur}>{cur}</option>
-                                        ))}
+                                        <option key="NGN" value={"NGN"}>NGN</option>
                                     </select>
                                 </div>
                                 {errors.amount && <span className="text-xs text-red-500">{errors.amount}</span>}
-                            <div className="mt-2 text-xs text-gray-400 font-medium">
-                                Bal: ₦{balance.toLocaleString()}
-                            </div>
+                                <div className="mt-2 text-xs text-gray-400 font-medium">
+                                    Bal: ₦{balance.toLocaleString()}
+                                </div>
                             </div>
                             <div className="flex flex-wrap gap-2 items-center mt-2">
                                 {quickAmounts.map((amt) => (
@@ -248,33 +241,24 @@ const CreateOrderWizard: React.FC = () => {
                                     </button>
                                 ))}
                             </div>
-                            {/* <div>
-                                <label className="block text-sm font-semibold mb-1 mt-2">{labels.buyerWillPay}</label>
-                                <div className="flex items-center space-x-2">
+                            <div>
+                                <label className="block text-sm font-semibold mb-1 mt-2">Safescrow fee</label>
+                                <div className="relative flex items-center mt-2">
                                     <input
-                                        type="number"
+                                        type="text"
                                         name="buyerWillPay"
                                         placeholder="0"
-                                        value={form.buyerWillPay}
-                                        onChange={handleChange}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                                        value={`₦ ${form.amount && !isNaN(parseFloat(form.amount)) ? (0.002 * parseFloat(form.amount)).toFixed(2) : ''}`}
+                                        readOnly
+                                        className="w-full p-4 bg-transparent border border-gray-300 rounded-xl text-md text-gray-500 focus:outline-none focus:border-primary-400 transition placeholder-gray-300 cursor-default"
+                                        style={{ letterSpacing: '1px' }}
                                     />
-                                    <select
-                                        name="buyerWillPayCurrency"
-                                        value={form.buyerWillPayCurrency}
-                                        onChange={handleChange}
-                                        className="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none"
-                                    >
-                                        {currencies.map((cur) => (
-                                            <option key={cur} value={cur}>{cur}</option>
-                                        ))}
-                                    </select>
                                 </div>
                                 {errors.buyerWillPay && <span className="text-xs text-red-500">{errors.buyerWillPay}</span>}
-                            </div> */}
+                            </div>
                             <div className="mt-2">
-                                <label className="block text-sm font-semibold mb-1">Who will pay the Safescrow fee?</label>
-                                <div className="flex flex-col space-y-2 mt-1">
+                                <label className="block text-sm font-semibold mb-3">Who will pay the fee?</label>
+                                <div className="flex flex-col space-y-3 mt-1">
                                     <label className="flex items-center space-x-2">
                                         <input
                                             type="radio"
