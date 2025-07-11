@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FormInput, FormTextarea, ProgressBar } from 'components/ui';
 
-const quickAmounts = [1000, 5000, 10000, 15000, 20000];
+const quickAmounts = [5060, 10000, 15213, 20000, 49700];
 const currencies = ['NGN'];
 
 const roleLabels = {
@@ -205,24 +205,26 @@ const CreateOrderWizard: React.FC = () => {
 
                     {/* Step 2: Amount/Payment */}
                     {step === 2 && (
-                        <form className="flex flex-col space-y-4">
+                        <form className="flex flex-col space-y-6">
                             <div>
                                 <label className="block text-sm font-semibold mb-1">{labels.amount}</label>
-                                <div className="flex items-center space-x-2 mt-2">
-                                    <span className="text-2xl font-bold">₦</span>
+                                <div className="flex items-center mt-2 relative">
+                                    <span className="absolute left-0 top-1/2 -translate-y-1/2 text-3xl font-medium pl-1">₦</span>
                                     <input
                                         type="number"
                                         name="amount"
                                         placeholder="0.00"
                                         value={form.amount}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-primary-200"
+                                        className="w-full pl-8 pr-20 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-2 text-3xl font-medium focus:outline-none transition placeholder-gray-300 "
+                                        style={{ letterSpacing: '1px' }}
                                     />
                                     <select
                                         name="currency"
                                         value={form.currency}
                                         onChange={handleChange}
-                                        className="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none"
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 bg-transparent border-0 text-gray-500 text-base font-medium pr-2 focus:outline-none cursor-pointer"
+                                        style={{ minWidth: '60px' }}
                                     >
                                         {currencies.map((cur) => (
                                             <option key={cur} value={cur}>{cur}</option>
@@ -230,19 +232,21 @@ const CreateOrderWizard: React.FC = () => {
                                     </select>
                                 </div>
                                 {errors.amount && <span className="text-xs text-red-500">{errors.amount}</span>}
+                            <div className="mt-2 text-xs text-gray-400 font-medium">
+                                Bal: ₦{balance.toLocaleString()}
                             </div>
-                            <div className="flex space-x-2 mt-2">
+                            </div>
+                            <div className="flex flex-wrap gap-2 items-center mt-2">
                                 {quickAmounts.map((amt) => (
                                     <button
                                         type="button"
                                         key={amt}
-                                        className="bg-gray-100 rounded-lg px-3 py-1 text-sm font-medium hover:bg-primary-100 border border-gray-200"
+                                        className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition focus:outline-none shadow-sm"
                                         onClick={() => handleQuickAmount(amt)}
                                     >
                                         ₦{amt.toLocaleString()}
                                     </button>
                                 ))}
-                                <span className="ml-auto text-xs text-gray-500">Bal: ₦{balance.toLocaleString()}</span>
                             </div>
                             {/* <div>
                                 <label className="block text-sm font-semibold mb-1 mt-2">{labels.buyerWillPay}</label>
@@ -340,7 +344,7 @@ const CreateOrderWizard: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleFinish}
-                                    className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
+                                className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
 
                             >
                                 Finish
