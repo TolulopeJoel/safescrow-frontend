@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FormInput, FormTextarea, ImageDropzone, ProgressBar } from 'components/ui';
+import { CalendarIcon, TruckIcon } from 'components/icons/ExternalIcons';
 
 const quickAmounts = [5060, 10000, 15213, 20000, 49780];
 
@@ -25,7 +26,6 @@ const roleLabels = {
     },
 };
 
-
 const CreateOrderWizard: React.FC = () => {
     const [searchParams] = useSearchParams();
     const role = (searchParams.get('role') as 'seller' | 'buyer') || 'seller';
@@ -40,6 +40,8 @@ const CreateOrderWizard: React.FC = () => {
         amount: '',
         feePayer: '',
         images: [] as File[],
+        logisticsService: '',
+        deliveryDate: '',
     });
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -48,6 +50,7 @@ const CreateOrderWizard: React.FC = () => {
     // Simulated balance
     const balance = 30000;
 
+    // Update handleChange to support customLogistics
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
         setErrors({ ...errors, [e.target.name]: '' });
@@ -76,11 +79,21 @@ const CreateOrderWizard: React.FC = () => {
         return Object.keys(newErrors).length === 0;
     };
 
+    // Update validateDeliveryStep for custom logistics
+    const validateStep3 = () => {
+        const newErrors: { [key: string]: string } = {};
+        if (!form.deliveryDate) newErrors.deliveryDate = 'Delivery date required';
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleNext = () => {
         if (step === 1 && validateStep1()) {
             setStep(2);
         } else if (step === 2 && validateStep2()) {
             setStep(3);
+        } else if (step === 3 && validateStep3()) {
+            setStep(4);
         }
     };
 
@@ -96,7 +109,7 @@ const CreateOrderWizard: React.FC = () => {
     };
 
     // Progress bar width
-    const progress = step === 1 ? '33%' : (step === 2 ? '66%' : '100%');
+    const progress = step === 1 ? '25%' : step === 2 ? '50%' : step === 3 ? '75%' : '100%';
 
     // confirmation page
     if (orderCreated) {
@@ -131,13 +144,16 @@ const CreateOrderWizard: React.FC = () => {
 
             <div className="flex flex-1 items-center justify-center">
                 <div className="bg-white rounded-2xl shadow-sm w-full max-w-xl p-16">
-                    {step < 3 ? (
+                    {step < 4 ? (
                         <>
                             <h2 className="text-center text-2xl font-semibold mb-1">Create order</h2>
                             <p className="text-center text-gray-500 text-sm mb-6">Fill in the details to initiate a transaction</p>
                         </>
                     ) : (
-                        <h2 className="text-center text-2xl font-semibold mb-6">Review your order details</h2>
+                        <>
+                        <h2 className="text-center text-2xl font-semibold mb-1">Review order</h2>
+                        <p className="text-center text-gray-500 text-sm mb-6">Take another look, confirm all details are correct</p>
+                        </>
                     )}
 
                     <ProgressBar progress={progress} />
@@ -285,8 +301,65 @@ const CreateOrderWizard: React.FC = () => {
                         </form>
                     )}
 
-                    {/* Step 3: Review/Confirm */}
+                    {/* Step 3: Delivery Details */}
                     {step === 3 && (
+                        <form className="flex flex-col space-y-8">
+                            <div className="py-6 md:py-8 flex flex-col gap-6">
+                                <div className="flex-1 flex flex-col justify-center">
+                                    <label className="block text-sm font-semibold mb-1">Delivery Date</label>
+                                    <div className="relative flex items-center mt-2">
+                                        <span className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                            <CalendarIcon />
+                                        </span>
+                                        <input
+                                            type="date"
+                                            name="deliveryDate"
+                                            value={form.deliveryDate}
+                                            onChange={handleChange}
+                                            className="w-full pl-9 pr-4 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-3 text-lg font-medium focus:outline-none transition placeholder-gray-300"
+                                        />
+                                    </div>
+                                    <span className="text-xs text-gray-400 mt-1">Expected delivery date</span>
+                                    {errors.deliveryDate && <span className="block text-xs text-red-500 mt-1">{errors.deliveryDate}</span>}
+                                </div>
+                                {role === 'seller' && (
+                                    <div className="flex flex-col justify-center">
+                                        <label className="block text-sm font-semibold mb-1">Logistics Service <span className="text-xs text-gray-400">(optional)</span></label>
+                                        <div className="relative flex items-center mt-2">
+                                            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                                <TruckIcon />
+                                            </span>
+                                            <select
+                                                name="logisticsService"
+                                                value={form.logisticsService}
+                                                onChange={handleChange}
+                                                className="w-full pl-9 pr-4 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-3 text-lg font-medium focus:outline-none transition placeholder-gray-300"
+                                            >
+                                                <option value="">Select a service</option>
+                                                <option value="GIG">GIG Logistics</option>
+                                                <option value="DHL">DHL</option>
+                                                <option value="FedEx">FedEx</option>
+                                                <option value="UPS">UPS</option>
+                                            </select>
+                                        </div>
+                                        <span className="text-xs text-gray-400 mt-1">Choose a delivery service</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className='flex justify-end'>
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </form>
+                    )}
+
+                    {/* Step 4: Review/Confirm */}
+                    {step === 4 && (
                         <div className="flex flex-col items-center">
                             <div className="w-full flex flex-col space-y-3 mb-6">
                                 <div className="flex justify-between text-sm">
@@ -309,14 +382,23 @@ const CreateOrderWizard: React.FC = () => {
                                     <span className="font-medium text-gray-600">Transaction amount</span>
                                     <span className="text-gray-800">₦{Number(form.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
+                                {role === 'seller' && (
+                                    <div className="flex justify-between text-sm">
+                                        <span className="font-medium text-gray-600">Logistics Service</span>
+                                        <span className="text-gray-800">{form.logisticsService || '-'}</span>
+                                    </div>
+                                )}
+                                <div className="flex justify-between text-sm">
+                                    <span className="font-medium text-gray-600">Delivery Date</span>
+                                    <span className="text-gray-800">{form.deliveryDate || '-'}</span>
+                                </div>
                             </div>
                             <button
                                 type="button"
                                 onClick={handleFinish}
                                 className="w-[40%] bg-primary-700 text-white rounded-lg py-2 hover:bg-primary-800 transition"
-
                             >
-                                Finish
+                                Confirm
                             </button>
                         </div>
                     )}
