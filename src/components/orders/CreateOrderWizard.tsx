@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FormInput, FormTextarea, ProgressBar } from 'components/ui';
+import { FormInput, FormTextarea, ImageDropzone, ProgressBar } from 'components/ui';
 
 const quickAmounts = [5060, 10000, 15213, 20000, 49780];
 
@@ -11,6 +11,7 @@ const roleLabels = {
         description: 'Delivery note',
         descriptionPlaceholder: 'Clearly describe what the buyer will receive',
         amount: 'How much are you charging?',
+        imageDesc: "Add clear images of the item you're selling",
         counterpart: 'Buyer',
     },
     buyer: {
@@ -19,6 +20,7 @@ const roleLabels = {
         description: 'Order description',
         descriptionPlaceholder: 'Clearly describe what you expect to receive',
         amount: 'How much are you paying?',
+        imageDesc: "Add a picture of the item you are buying (optional, but helpful)",
         counterpart: 'Seller',
     },
 };
@@ -37,7 +39,9 @@ const CreateOrderWizard: React.FC = () => {
         description: '',
         amount: '',
         feePayer: '',
+        images: [] as File[],
     });
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [orderCreated, setOrderCreated] = useState(false);
 
@@ -60,6 +64,7 @@ const CreateOrderWizard: React.FC = () => {
         if (!form.email) newErrors.email = 'Required';
         if (!form.phone) newErrors.phone = 'Required';
         if (!form.description) newErrors.description = 'Required';
+        if (!form.images.length && role == 'seller') newErrors.images = 'Image required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -184,6 +189,21 @@ const CreateOrderWizard: React.FC = () => {
                                     rows={4}
                                 />
                             </div>
+                            <div>
+                                <ImageDropzone
+                                    label={labels.imageDesc}
+                                    images={form.images}
+                                    imagePreviews={imagePreviews}
+                                    onChange={(files, previews) => {
+                                        setForm({ ...form, images: files });
+                                        setImagePreviews(previews);
+                                        setErrors({ ...errors, images: '' });
+                                    }}
+                                    error={errors.images}
+                                    maxImages={10}
+                                    isRequired={role === 'seller'}
+                                />
+                            </div>
                             <div className='flex justify-end'>
                                 <button
                                     type="button"
@@ -244,7 +264,7 @@ const CreateOrderWizard: React.FC = () => {
                                 <div className="relative flex items-center mt-2">
                                     <input
                                         type="text"
-                                        name="buyerWillPay"
+                                        name="escrowFee"
                                         placeholder="0"
                                         value={`₦ ${form.amount && !isNaN(parseFloat(form.amount)) ? (0.002 * parseFloat(form.amount)).toFixed(2) : ''}`}
                                         readOnly
@@ -252,7 +272,6 @@ const CreateOrderWizard: React.FC = () => {
                                         style={{ letterSpacing: '1px' }}
                                     />
                                 </div>
-                                {errors.buyerWillPay && <span className="text-xs text-red-500">{errors.buyerWillPay}</span>}
                             </div>
                             <div className='flex justify-end'>
                                 <button
@@ -290,10 +309,6 @@ const CreateOrderWizard: React.FC = () => {
                                     <span className="font-medium text-gray-600">Transaction amount</span>
                                     <span className="text-gray-800">₦{Number(form.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
-                                {/* <div className="flex justify-between text-sm">
-                                    <span className="font-medium text-gray-600">Amount to receive</span>
-                                    <span className="text-gray-800">₦{Number(form.buyerWillPay).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-                                </div> */}
                             </div>
                             <button
                                 type="button"
