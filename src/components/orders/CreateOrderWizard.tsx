@@ -67,8 +67,6 @@ const CreateOrderWizard: React.FC = () => {
     const validateStep2 = () => {
         const newErrors: { [key: string]: string } = {};
         if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) newErrors.amount = 'Enter a valid amount';
-        // if (!form.buyerWillPay || isNaN(Number(form.buyerWillPay))) newErrors.buyerWillPay = 'Enter amount';
-        if (!form.feePayer) newErrors.feePayer = 'Select who pays the Safescrow fee';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -104,7 +102,7 @@ const CreateOrderWizard: React.FC = () => {
                     <h2 className="text-center text-xl font-semibold mb-2">Congratulations on creating your first order!</h2>
                     <p className="text-center text-gray-600 mb-6">An invite link has been sent to<br /><span className="font-medium">{form.email}</span>.</p>
                     <button
-                        className="bg-blue-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-blue-800 transition"
+                        className="bg-primary-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-primary-800 transition"
                     // onClick={...} // Add navigation to order details if needed
                     >
                         View order details
@@ -256,36 +254,6 @@ const CreateOrderWizard: React.FC = () => {
                                 </div>
                                 {errors.buyerWillPay && <span className="text-xs text-red-500">{errors.buyerWillPay}</span>}
                             </div>
-
-                            {/* <div className="mt-2">
-                                <label className="block text-sm font-semibold mb-3">Who will pay the fee?</label>
-                                <div className="flex flex-col space-y-3 mt-1">
-                                    <label className="flex items-center space-x-2">
-                                        <input
-                                            type="radio"
-                                            name="feePayer"
-                                            value="me"
-                                            checked={form.feePayer === 'me'}
-                                            onChange={handleChange}
-                                            className="accent-primary-400"
-                                        />
-                                        <span className="text-sm">I will pay the fee</span>
-                                    </label>
-                                    <label className="flex items-center space-x-2">
-                                        <input
-                                            type="radio"
-                                            name="feePayer"
-                                            value="buyer"
-                                            checked={form.feePayer === 'buyer'}
-                                            onChange={handleChange}
-                                            className="accent-primary-400"
-                                        />
-                                        <span className="text-sm">The {labels.counterpart.toLowerCase()} will pay the fee</span>
-                                    </label>
-                                </div>
-                                {errors.feePayer && <span className="text-xs text-red-500">{errors.feePayer}</span>}
-                            </div> */}
-
                             <div className='flex justify-end'>
                                 <button
                                     type="button"
@@ -307,11 +275,11 @@ const CreateOrderWizard: React.FC = () => {
                                     <span className="text-gray-800">{form.title}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="font-medium text-gray-600">Buyer's email</span>
+                                    <span className="font-medium text-gray-600">{labels.counterpart}'s email</span>
                                     <span className="text-gray-800">{form.email}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="font-medium text-gray-600">Buyer's phone number</span>
+                                    <span className="font-medium text-gray-600">{labels.counterpart}'s phone number</span>
                                     <span className="text-gray-800">{form.phone}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
