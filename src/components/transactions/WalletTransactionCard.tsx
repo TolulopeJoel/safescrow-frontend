@@ -39,7 +39,7 @@ const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transacti
       {/* Icon */}
       <div className="flex-shrink-0 flex items-center justify-center">
         <span className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${isCredit ? 'bg-green-50' : 'bg-red-50'}`}>
-          <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${isCredit ? 'text-green-600' : 'text-red-600'}`} />
+          <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${isCredit ? 'text-primary-600' : 'text-blue-600'}`} />
         </span>
       </div>
       {/* Main content */}
