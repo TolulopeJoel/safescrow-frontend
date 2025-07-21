@@ -1,10 +1,10 @@
 import React from 'react';
 
 const cards = [
-  { title: 'Total orders', value: 40 },
-  { title: 'Active orders', value: 40 },
-  { title: 'Pending orders', value: 40 },
-  { title: 'Completed orders', value: 40 },
+  { title: 'Total orders', value: 21 },
+  { title: 'Active orders', value: 2 },
+  { title: 'Pending orders', value: 3 },
+  { title: 'Completed orders', value: 16 },
 ];
 
 const OrderSummaryCards: React.FC = () => (
