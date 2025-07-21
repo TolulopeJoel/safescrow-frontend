@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { WalletTransactionCard, TransactionDetailsModal, StatsOverview } from 'components/transactions';
 import { FilterTabs } from 'components/ui';
+import { IconTransfer } from '@tabler/icons-react';
 
 
 export type WalletTransaction = {
@@ -91,10 +92,10 @@ const Transactions: React.FC = () => {
   const filteredTransactions = (selectedFilter === 'All'
     ? walletTransactions
     : walletTransactions.filter((txn) =>
-        selectedFilter === 'Credit'
-          ? txn.direction === 'credit'
-          : txn.direction === 'debit'
-      )
+      selectedFilter === 'Credit'
+        ? txn.direction === 'credit'
+        : txn.direction === 'debit'
+    )
   ).filter(
     (txn) =>
       txn.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -108,7 +109,11 @@ const Transactions: React.FC = () => {
       <div className="flex">
         <SidebarNav />
         <main className="flex-1 p-4 sm:p-8">
-          <h1 className="text-2xl font-semibold mb-4 text-gray-900">Wallet Transactions</h1>
+          {/* <h1 className="text-2xl font-semibold mb-4 text-gray-900">Wallet Transactions</h1> */}
+          <div className="flex items-center space-x-3 mb-6">
+            <IconTransfer className="w-7 h-7 text-primary-600" />
+            <h1 className="text-2xl font-semibold">Wallet Transactions</h1>
+          </div>
           <StatsOverview transactions={walletTransactions} />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
             <FilterTabs

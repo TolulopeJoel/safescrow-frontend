@@ -2,6 +2,7 @@ import React from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { OrderSummaryCards, OrdersTable, OrderOverviewChart } from 'components/orders';
 import { FilterTabs } from 'components/ui';
+import { DocumentTextIcon } from '@heroicons/react/24/solid';
 
 
 const dummyOrders = [
@@ -20,7 +21,10 @@ const Orders: React.FC = () => {
       <div className="flex">
         <SidebarNav />
         <main className="flex-1 p-4 sm:p-8">
-          <h1 className="text-2xl font-semibold mb-6">Orders</h1>
+          <div className="flex items-center space-x-3 mb-6">
+            <DocumentTextIcon className="w-7 h-7 text-primary-600" />
+            <h1 className="text-2xl font-semibold">Orders</h1>
+          </div>
           <OrderSummaryCards />
           {/* Chart placeholder */}
           <div className="bg-white rounded-lg p-1 shadow-sm mb-8">
