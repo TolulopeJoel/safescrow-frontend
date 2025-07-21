@@ -98,35 +98,38 @@ const Disputes: React.FC = () => {
               Raise Dispute
             </button>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dispute ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
-                  <th className="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {disputes.map((dispute) => (
-                  <tr key={dispute.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{dispute.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{dispute.orderId}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">{dispute.reason}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">{dispute.status}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">{dispute.createdAt}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">{dispute.updatedAt}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button className="text-blue-600 hover:underline text-sm font-medium">View</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Modern card-based dispute list */}
+          <div className="grid gap-4 sm:gap-6">
+            {disputes.length === 0 ? (
+              <div className="text-center text-gray-400 py-12">No disputes found.</div>
+            ) : (
+              disputes.map((dispute) => (
+                <div
+                  key={dispute.id}
+                  className="bg-white rounded-xl shadow-sm p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-gray-100 hover:shadow-md transition"
+                >
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    <span className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${dispute.status === 'Open' ? 'bg-yellow-50' : 'bg-green-50'}`}>
+                      <IconGavel className={`w-7 h-7 ${dispute.status === 'Open' ? 'text-yellow-600' : 'text-green-600'}`} />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <span className="font-semibold text-base text-gray-900">Order #{dispute.orderId}</span>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${dispute.status === 'Open' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>{dispute.status}</span>
+                      </div>
+                      <div className="text-gray-700 text-sm mb-1 truncate max-w-xs">{dispute.reason}</div>
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                        <span>Dispute ID: <span className="font-mono">{dispute.id}</span></span>
+                        <span>Created: {dispute.createdAt}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2 sm:mt-0">
+                    <button className="text-blue-600 hover:underline text-sm font-medium">View</button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
           {/* Modal for raising dispute */}
