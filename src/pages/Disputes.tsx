@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { IconGavel } from '@tabler/icons-react';
-import { ImageDropzone } from 'components/ui';
+import { ImageDropzone, FilterTabs } from 'components/ui';
 
 // Dummy initial disputes data
 const initialDisputes: Array<{
@@ -48,6 +48,8 @@ const Disputes: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const DISPUTE_FILTERS = ['All', 'Open', 'Resolved'];
+  const [selectedFilter, setSelectedFilter] = useState('All');
 
   const openModal = () => {
     setForm({ orderId: '', reason: '' });
@@ -100,6 +102,11 @@ const Disputes: React.FC = () => {
     }, 700);
   };
 
+  // Filter disputes by status
+  const filteredDisputes = selectedFilter === 'All'
+    ? disputes
+    : disputes.filter(d => d.status.toLowerCase() === selectedFilter.toLowerCase());
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Topbar />
@@ -118,12 +125,20 @@ const Disputes: React.FC = () => {
               Raise Dispute
             </button>
           </div>
+          {/* Filter bar */}
+          <div className="mb-6">
+            <FilterTabs
+              filters={DISPUTE_FILTERS}
+              selected={selectedFilter}
+              onSelect={setSelectedFilter}
+            />
+          </div>
           {/* Modern card-based dispute list */}
           <div className="grid gap-4 sm:gap-6">
-            {disputes.length === 0 ? (
+            {filteredDisputes.length === 0 ? (
               <div className="text-center text-gray-400 py-12">No disputes found.</div>
             ) : (
-              disputes.map((dispute) => (
+              filteredDisputes.map((dispute) => (
                 <div
                   key={dispute.id}
                   className="bg-white rounded-xl shadow-sm p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-gray-100 hover:shadow-md transition"

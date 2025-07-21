@@ -1,6 +1,7 @@
 import React from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { OrderSummaryCards, OrdersTable, OrderOverviewChart } from 'components/orders';
+import { FilterTabs } from 'components/ui';
 
 
 const dummyOrders = [
@@ -10,6 +11,9 @@ const dummyOrders = [
 ];
 
 const Orders: React.FC = () => {
+  const ORDER_FILTERS = ['All', `Active (${10})`, `Pending (${5})`, `Completed (${30})`];
+  const [selectedFilter, setSelectedFilter] = React.useState('All');
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Topbar />
@@ -29,12 +33,12 @@ const Orders: React.FC = () => {
           </div>
           {/* Tabs and search */}
           <div className="flex items-center justify-between mb-4">
-            <div className="flex space-x-6 border-b w-full max-w-xl">
-              <button className="border-b-2 border-primary-600 text-primary-600 px-2 pb-2 font-medium">All (40)</button>
-              <button className="text-gray-500 px-2 pb-2">Active (10)</button>
-              <button className="text-gray-500 px-2 pb-2">Pending (5)</button>
-              <button className="text-gray-500 px-2 pb-2">Completed (30)</button>
-            </div>
+            <FilterTabs
+              filters={ORDER_FILTERS}
+              selected={selectedFilter}
+              onSelect={setSelectedFilter}
+              className="max-w-xl w-full"
+            />
             <div className="flex items-center space-x-2">
               <input type="text" placeholder="Search" className="border rounded px-3 py-1 text-sm" />
               <button className="border px-3 py-1 rounded text-sm">=</button>

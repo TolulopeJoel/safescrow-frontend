@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { WalletTransactionCard, TransactionDetailsModal, StatsOverview } from 'components/transactions';
+import { FilterTabs } from 'components/ui';
 
 
 export type WalletTransaction = {
@@ -110,22 +111,12 @@ const Transactions: React.FC = () => {
           <h1 className="text-2xl font-semibold mb-4 text-gray-900">Wallet Transactions</h1>
           <StatsOverview transactions={walletTransactions} />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
-            <div className="flex space-x-8 border-b border-gray-200 flex-1">
-              {FILTERS.map((filter) => (
-                <button
-                  key={filter}
-                  className={`pb-2 text-base font-medium focus:outline-none transition-colors duration-200
-                    ${selectedFilter === filter
-                      ? 'text-primary-600 border-b-2 border-primary-600'
-                      : 'text-gray-500 border-b-2 border-transparent hover:text-primary-600'}
-                  `}
-                  onClick={() => setSelectedFilter(filter)}
-                  style={{ background: 'none', boxShadow: 'none' }}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
+            <FilterTabs
+              filters={FILTERS}
+              selected={selectedFilter}
+              onSelect={setSelectedFilter}
+              className="flex-1"
+            />
 
             <div className="mt-4 sm:mt-0">
               <input
