@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { FormInput, FormTextarea, ImageDropzone, ProgressBar } from 'components/ui';
 import { CalendarIcon, TruckIcon } from 'components/icons/ExternalIcons';
 
@@ -28,6 +28,7 @@ const roleLabels = {
 
 const CreateOrderWizard: React.FC = () => {
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
     const role = (searchParams.get('role') as 'seller' | 'buyer') || 'seller';
     const labels = roleLabels[role];
 
@@ -101,7 +102,7 @@ const CreateOrderWizard: React.FC = () => {
         if (step > 1) setStep(step - 1);
     };
     const handleCancel = () => {
-        // Implement navigation or reset logic
+        navigate('/');
     };
     const handleFinish = () => {
         // Simulate order creation
@@ -135,7 +136,13 @@ const CreateOrderWizard: React.FC = () => {
 
             <div className="flex items-center justify-between px-8 py-6">
                 <div className="flex items-center space-x-2">
-                    <button className="text-gray-500 text-sm" onClick={handleBack}>&larr; Back</button>
+                    <button
+                        className={`text-sm ${step === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500'}`}
+                        onClick={handleBack}
+                        disabled={step === 1}
+                    >
+                        &larr; Back
+                    </button>
                 </div>
                 <button className="text-red-500 text-sm font-medium" onClick={handleCancel}>
                     Cancel <span className="text-xl font-light ml-1">&times;</span>
@@ -143,7 +150,7 @@ const CreateOrderWizard: React.FC = () => {
             </div>
 
             <div className="flex flex-1 items-center justify-center">
-                <div className="bg-white rounded-2xl shadow-sm w-full max-w-xl p-16">
+                <div className="bg-white rounded-2xl shadow-sm w-full max-w-xl px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-16">
                     {step < 4 ? (
                         <>
                             <h2 className="text-center text-2xl font-semibold mb-1">Create order</h2>
