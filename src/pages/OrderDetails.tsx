@@ -3,7 +3,7 @@ import { Topbar, SidebarNav } from 'components/layout';
 import OrderStatusBadge from 'components/orders/OrderStatusBadge';
 import { useParams } from 'react-router-dom';
 import { IconDownload, IconUser, IconMail, IconCalendar, IconAlertCircle } from '@tabler/icons-react';
-import Timeline from 'components/ui/Timeline';
+import { Timeline } from 'components/ui';
 
 // Dummy order data
 const dummyOrder = {
@@ -48,7 +48,7 @@ const OrderDetails: React.FC = () => {
                 <SidebarNav />
                 <main className="flex-1 flex flex-col lg:flex-row gap-8 p-4 sm:p-8 items-start justify-center">
                     {/* Main receipt content */}
-                    <div className="w-full max-w-2xl bg-white border border-dashed border-gray-300 rounded-xl shadow-lg p-0 overflow-hidden print:shadow-none print:border print:rounded-none">
+                    <div className="w-full bg-white border border-dashed border-gray-300 rounded-xl shadow p-0 overflow-hidden print:shadow-none print:border print:rounded-none">
                         {/* Receipt Header */}
                         <div className="bg-primary-50 border-b border-dashed border-gray-200 px-8 py-6 flex flex-col items-center">
                             <h1 className="text-xl font-bold tracking-widest text-primary-700 mb-1">ORDER RECEIPT</h1>
@@ -126,7 +126,7 @@ const OrderDetails: React.FC = () => {
                     </div>
 
                     {/* Sidebar (desktop) or stacked (mobile) */}
-                    <aside className="w-full lg:w-80 flex flex-col gap-6 mt-8 lg:mt-0">
+                    <aside className="w-full lg:w-2/5 flex flex-col gap-6 mt-8 lg:mt-0">
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                             <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2"><IconUser className="w-4 h-4" /> Transaction Parties</h3>
                             <div className="mb-4">
@@ -149,12 +149,20 @@ const OrderDetails: React.FC = () => {
                                     <span className="font-mono">{order.createdAt}</span>
                                 </div>
                                 <div className="flex justify-between">
+                                    <span className="text-gray-500">Last Updated</span>
+                                    <span className="font-mono">{order.updatedAt}</span>
+                                </div>
+                                <div className="flex justify-between">
                                     <span className="text-gray-500">Due Date</span>
                                     <span className="font-mono">{order.deliveryDate}</span>
                                 </div>
                             </div>
                         </div>
-                        <Timeline events={timeline} />
+                        <div className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 `}>
+                            <h3 className="text-sm font-semibold text-gray-900 mb-4">Order Status</h3>
+                            <Timeline events={timeline} />
+                        </div>
+
                     </aside>
                 </main>
             </div>
