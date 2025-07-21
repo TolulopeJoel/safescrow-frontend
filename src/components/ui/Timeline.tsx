@@ -4,7 +4,6 @@ interface TimelineEvent {
   date?: string;
   label: string;
   desc: string;
-  color: string;
   current?: boolean;
 }
 
