@@ -4,7 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SidebarProvider } from './contexts/SidebarContext';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
-import { Dashboard, Orders, Transactions, CreateOrderPage } from './pages';
+import { Dashboard, Orders, Transactions, CreateOrderPage, Disputes } from './pages';
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
             <Route path="/transactions" element={<Layout><Transactions /></Layout>} />
             <Route path="/orders" element={<Layout><Orders /></Layout>} />
             <Route path="/escrow/new" element={<Layout><CreateOrderPage /></Layout>} />
+            <Route path="/disputes" element={<Layout><Disputes /></Layout>} />
 
             {/* Catch all route */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
