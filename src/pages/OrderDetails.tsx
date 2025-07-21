@@ -18,18 +18,20 @@ const dummyOrder = {
     description: 'Brand new iPhone 16, 256GB, Space Black',
     createdAt: '2024-06-01',
     updatedAt: '2024-06-02',
-    deliveryDate: '2024-06-10',
+    deliveryDate: '2025-08-10',
     note: '2 years manufacturer warranty',
 };
 
 // Timeline with icons
 const timeline = [
-    { date: '2024-06-01', label: 'Order Created', desc: 'Order placed by buyer', color: 'primary-600', current: false },
-    { date: '2024-06-01', label: 'Payment Received', desc: 'Payment secured in escrow', color: 'primary-600', current: false },
-    { date: '2024-06-02', label: 'Item Shipped', desc: 'Seller shipped the item', color: 'yellow-400', current: true },
-    { date: '2024-06-10', label: 'Item Delivered', desc: 'Buyer confirmed delivery', color: 'green-500', current: false },
-    { date: '2024-06-11', label: 'Order Completed', desc: 'Funds released to seller', color: 'gray-400', current: false },
+    { date: '2024-06-01', label: 'Order pending', desc: 'Order is waiting to be accepted by the buyer' },
+    { date: '2024-06-01', label: 'Order accepted', desc: 'Order has been accepted by the buyer' },
+    { date: '2024-06-01', label: 'Payment in escrow', desc: 'Buyer has transferred amount to escrow and is awaiting delivery' },
+    { date: '', label: 'Delivery confirmed', desc: 'Delivery has been confirmed by the buyer', current: true },
+    { date: '', label: 'Product accepted', desc: 'Delivery has been accepted by the buyer' },
+    { date: '', label: 'Release of funds', desc: 'Funds has been successfully transferred to your escrow wallet' }
 ];
+
 
 const OrderDetails: React.FC = () => {
     const { id } = useParams();
@@ -88,10 +90,10 @@ const OrderDetails: React.FC = () => {
                                     <span>Item/Service</span>
                                     <span className="font-mono">₦{order.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
-                                <div className="flex justify-between">
+                                {/* <div className="flex justify-between">
                                     <span>Delivery Fee</span>
                                     <span className="font-mono">₦3,000.00</span>
-                                </div>
+                                </div> */}
                                 <div className="flex justify-between">
                                     <span>Escrow Fee</span>
                                     <span className="font-mono">₦800.00</span>
@@ -99,7 +101,7 @@ const OrderDetails: React.FC = () => {
                                 <div className="border-t border-dashed my-2"></div>
                                 <div className="flex justify-between font-semibold">
                                     <span>Total Paid</span>
-                                    <span className="font-mono text-primary-700">₦{(order.total + 3000 + 800).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="font-mono text-primary-700">₦{(order.total + 0 + 800).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
                                 <div className="flex justify-between text-xs text-gray-500 mt-2">
                                     <span>Amount to Seller</span>
@@ -108,7 +110,6 @@ const OrderDetails: React.FC = () => {
                             </div>
                         </section>
 
-                        {/* Action buttons */}
                         <div className="flex gap-4 justify-end px-8 py-6 bg-gray-50 border-t border-gray-100">
                             <button className="bg-primary-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-primary-800 transition flex items-center gap-2"><IconAlertCircle className="w-5 h-5" /> Raise a dispute</button>
                         </div>
@@ -116,7 +117,6 @@ const OrderDetails: React.FC = () => {
 
                     {/* Sidebar (desktop) or stacked (mobile) */}
                     <aside className="w-full lg:w-80 flex flex-col gap-6 mt-8 lg:mt-0">
-                        {/* Transaction Parties */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                             <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2"><IconUser className="w-4 h-4" /> Transaction Parties</h3>
                             <div className="mb-4">
@@ -144,7 +144,6 @@ const OrderDetails: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* Timeline */}
                         <Timeline events={timeline} />
                     </aside>
                 </main>
