@@ -35,7 +35,7 @@ const OrderOverviewChart: React.FC = () => (
       <Line
         type="monotone"
         dataKey="value"
-        stroke="#6366f1"
+        stroke="#0d9488"
         strokeWidth={2}
         dot={false}
         activeDot={false}
