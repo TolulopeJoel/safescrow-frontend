@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { IconGavel } from '@tabler/icons-react';
+import { ImageDropzone } from 'components/ui';
 
 // Dummy initial disputes data
-const initialDisputes = [
+const initialDisputes: Array<{
+  id: string;
+  orderId: string;
+  reason: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  images?: string[];
+}> = [
   {
     id: 'D001',
     orderId: 'O123',
@@ -11,6 +20,7 @@ const initialDisputes = [
     status: 'Open',
     createdAt: '2024-06-01',
     updatedAt: '2024-06-02',
+    images: [],
   },
   {
     id: 'D002',
@@ -19,6 +29,7 @@ const initialDisputes = [
     status: 'Resolved',
     createdAt: '2024-05-20',
     updatedAt: '2024-05-22',
+    images: [],
   },
 ];
 
@@ -33,12 +44,16 @@ const Disputes: React.FC = () => {
   const [disputes, setDisputes] = useState(initialDisputes);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ orderId: '', reason: '' });
-  const [errors, setErrors] = useState<{ orderId?: string; reason?: string }>({});
+  const [errors, setErrors] = useState<{ orderId?: string; reason?: string; images?: string }>({});
   const [submitting, setSubmitting] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const openModal = () => {
     setForm({ orderId: '', reason: '' });
     setErrors({});
+    setImages([]);
+    setImagePreviews([]);
     setShowModal(true);
   };
   const closeModal = () => {
@@ -51,13 +66,17 @@ const Disputes: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
-    const newErrors: { orderId?: string; reason?: string } = {};
+    const newErrors: { orderId?: string; reason?: string; images?: string } = {};
     if (!form.orderId) {
-      newErrors.orderId = 'Order ID is required';
+      newErrors.orderId = 'Order is required';
       valid = false;
     }
     if (!form.reason) {
       newErrors.reason = 'Reason is required';
+      valid = false;
+    }
+    if (images.length === 0) {
+      newErrors.images = 'At least one image is required';
       valid = false;
     }
     setErrors(newErrors);
@@ -72,6 +91,7 @@ const Disputes: React.FC = () => {
           status: 'Open',
           createdAt: new Date().toISOString().slice(0, 10),
           updatedAt: new Date().toISOString().slice(0, 10),
+          images: imagePreviews, // store previews for now
         },
         ...disputes,
       ]);
@@ -137,7 +157,7 @@ const Disputes: React.FC = () => {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
               <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative">
                 <button
-                  className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl"
+                  className="absolute top-3 right-3 text-red-400 hover:text-red-600 text-2xl"
                   onClick={closeModal}
                   aria-label="Close"
                 >
@@ -175,6 +195,21 @@ const Disputes: React.FC = () => {
                       placeholder="Describe the issue"
                     />
                     {errors.reason && <span className="text-xs text-red-500">{errors.reason}</span>}
+                  </div>
+                  <div>
+                    <ImageDropzone
+                      label="Upload images to support your claim"
+                      images={images}
+                      imagePreviews={imagePreviews}
+                      onChange={(files, previews) => {
+                        setImages(files);
+                        setImagePreviews(previews);
+                        setErrors((prev) => ({ ...prev, images: '' }));
+                      }}
+                      error={errors.images}
+                      maxImages={5}
+                      isRequired
+                    />
                   </div>
                   <div className="flex justify-end space-x-3 mt-2">
                     <button
