@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { IconGavel } from '@tabler/icons-react';
-import { ImageDropzone, FilterTabs } from 'components/ui';
+import { ImageDropzone, FilterTabs, FormTextarea } from 'components/ui';
 
 // Dummy initial disputes data
 const initialDisputes: Array<{
@@ -200,18 +200,15 @@ const Disputes: React.FC = () => {
                     </select>
                     {errors.orderId && <span className="text-xs text-red-500">{errors.orderId}</span>}
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Reason</label>
-                    <textarea
+                    <FormTextarea
+                      label="Reason"
                       name="reason"
                       value={form.reason}
                       onChange={handleChange}
-                      className={`w-full border rounded-lg p-3 text-sm min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary-200 ${errors.reason ? 'border-red-400' : 'border-gray-300'}`}
+                      error={errors.reason}
+                      rows={2}
                       placeholder="Describe the issue"
                     />
-                    {errors.reason && <span className="text-xs text-red-500">{errors.reason}</span>}
-                  </div>
-                  <div>
                     <ImageDropzone
                       label="Upload images to support your claim"
                       images={images}
@@ -225,7 +222,6 @@ const Disputes: React.FC = () => {
                       maxImages={5}
                       isRequired
                     />
-                  </div>
                   <div className="flex justify-end space-x-3 mt-2">
                     <button
                       type="button"
