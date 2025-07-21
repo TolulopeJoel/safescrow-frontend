@@ -8,7 +8,7 @@ const CreateOrderPage: React.FC = () => {
       <Topbar />
       <div className="flex">
         <SidebarNav />
-        <main className="flex-1 p-4 sm:p-8 pt-0">
+        <main className="flex-1 p-4 sm:p-8 sm:pt-0 pt-0">
           <CreateOrderWizard />
         </main>
       </div>
