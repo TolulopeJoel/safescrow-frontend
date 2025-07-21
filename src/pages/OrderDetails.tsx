@@ -37,6 +37,10 @@ const OrderDetails: React.FC = () => {
     const { id } = useParams();
     const order = dummyOrder;
 
+    const today = new Date();
+    const deliveryDate = new Date(order.deliveryDate);
+    const canRaiseDispute = today >= deliveryDate;
+
     return (
         <div className="min-h-screen bg-gray-50">
             <Topbar />
@@ -111,7 +115,13 @@ const OrderDetails: React.FC = () => {
                         </section>
 
                         <div className="flex gap-4 justify-end px-8 py-6 bg-gray-50 border-t border-gray-100">
-                            <button className="bg-primary-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-primary-800 transition flex items-center gap-2"><IconAlertCircle className="w-5 h-5" /> Raise a dispute</button>
+                            <button
+                                className={`bg-primary-700 text-white rounded-lg px-6 py-2 font-medium flex items-center gap-2 transition ${!canRaiseDispute ? 'opacity-50 cursor-not-allowed hover:bg-primary-700' : 'hover:bg-primary-800'}`}
+                                disabled={!canRaiseDispute}
+                                title={!canRaiseDispute ? 'You can only raise a dispute after the delivery date.' : ''}
+                            >
+                                <IconAlertCircle className="w-5 h-5" /> Raise a dispute
+                            </button>
                         </div>
                     </div>
 
