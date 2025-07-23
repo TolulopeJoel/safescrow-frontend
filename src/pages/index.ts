@@ -9,3 +9,4 @@ export { default as Orders } from './Orders';
 export { default as CreateOrderPage } from './CreateOrderPage'; 
 export { default as Disputes } from './Disputes'; 
 export { default as OrderDetails } from './OrderDetails'; 
+export { default as Register } from './Register'; 

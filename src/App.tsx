@@ -4,7 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SidebarProvider } from './contexts/SidebarContext';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
-import { Dashboard, Orders, Transactions, CreateOrderPage, Disputes, OrderDetails } from './pages';
+import { Dashboard, Orders, Transactions, CreateOrderPage, Disputes, OrderDetails, Register } from './pages';
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
         <Router>
           <Routes>
             {/* Public routes: login and register routes */}
+            <Route path="/register" element={<Register />} />
 
             {/* Protected routes */}
             <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
