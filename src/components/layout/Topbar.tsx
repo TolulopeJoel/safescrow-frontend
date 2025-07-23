@@ -42,25 +42,42 @@ const Topbar: React.FC = () => {
   const bellRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const unreadCount = mockNotifications.filter(n => !n.read).length;
+  const [dropdownFocusIndex, setDropdownFocusIndex] = useState(-1);
 
-  // Close dropdown on outside click
+  // Keyboard accessibility for bell and dropdown
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node) &&
-        bellRef.current &&
-        !bellRef.current.contains(e.target as Node)
-      ) {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!open) return;
+      if (e.key === 'Escape') {
         setOpen(false);
+        bellRef.current?.focus();
+      }
+      // Trap focus in dropdown
+      if (e.key === 'Tab') {
+        const focusable = dropdownRef.current?.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+        if (focusable && focusable.length > 0) {
+          const first = focusable[0] as HTMLElement;
+          const last = focusable[focusable.length - 1] as HTMLElement;
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
       }
     }
     if (open) {
-      document.addEventListener('mousedown', handleClick);
+      document.addEventListener('keydown', handleKeyDown);
     } else {
-      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKeyDown);
     }
-    return () => document.removeEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [open]);
 
   return (
@@ -73,8 +90,18 @@ const Topbar: React.FC = () => {
         <div className="relative">
           <button
             ref={bellRef}
-            className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center relative focus:outline-none"
+            className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center relative focus:outline-primary-200"
+            aria-haspopup="true"
+            aria-expanded={open}
+            aria-controls="notif-dropdown"
+            tabIndex={0}
             onClick={() => setOpen((v) => !v)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setOpen((v) => !v);
+              }
+            }}
           >
             <span className="sr-only">Notifications</span>
             <IconBell className="w-6 h-6 text-gray-600" />
@@ -87,7 +114,10 @@ const Topbar: React.FC = () => {
           {open && (
             <div
               ref={dropdownRef}
+              id="notif-dropdown"
               className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+              role="menu"
+              aria-label="Notifications"
             >
               <ul className="max-h-80 overflow-y-auto divide-y divide-gray-100">
                 {mockNotifications.length === 0 ? (
@@ -96,7 +126,9 @@ const Topbar: React.FC = () => {
                   mockNotifications.slice(0, 3).map((notif) => (
                     <li
                       key={notif.id}
-                      className={`px-4 py-5 hover:bg-gray-50 cursor-pointer ${!notif.read ? 'bg-gray-50' : ''}`}
+                      className={`px-4 py-5 hover:bg-gray-50 cursor-pointer ${!notif.read && 'bg-gray-50'} focus:outline-primary-200`}
+                      tabIndex={-1}
+                      role="menuitem"
                     >
                       <div className="flex justify-between items-center">
                         <span className={`font-medium ${!notif.read ? 'text-primary-700' : 'text-gray-800'}`}>{notif.title}</span>
@@ -109,10 +141,17 @@ const Topbar: React.FC = () => {
               </ul>
               <div className="p-2 text-center border-t">
                 <button
-                  className="w-full text-primary-700 text-sm font-medium py-2 rounded hover:bg-gray-100 active:scale-95 transition focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer select-none"
+                  className="w-full text-primary-700 text-sm font-medium py-2 rounded hover:bg-gray-100 active:scale-95 transition focus:outline-primary-200 focus:ring-2 focus:ring-primary-400 focus:bg-primary-50 cursor-pointer select-none"
+                  tabIndex={0}
                   onClick={() => {
                     setSidebarOpen(true);
                     setOpen(false);
+                  }}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setSidebarOpen(true);
+                      setOpen(false);
+                    }
                   }}
                 >
                   View all
