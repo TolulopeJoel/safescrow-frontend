@@ -50,13 +50,9 @@ const OrderDetails: React.FC = () => {
                     {/* Main receipt content */}
                     <div className="w-full bg-white border border-dashed border-gray-300 rounded-xl shadow p-0 overflow-hidden print:shadow-none print:border print:rounded-none">
                         {/* Receipt Header */}
-                        <div className="bg-primary-50 border-b border-dashed border-gray-200 px-8 py-6 flex flex-col items-center">
-                            <h1 className="text-xl font-bold tracking-widest text-primary-700 mb-1">ORDER RECEIPT</h1>
-                            <div className="flex items-center gap-2 mb-1">
-                                <span className="font-mono text-base text-gray-700">#{order.orderId}</span>
-                                <OrderStatusBadge status={order.status} />
-                            </div>
-                            <span className="text-xs text-gray-400">Ref: <span className="font-mono">{order.refCode}</span></span>
+                        <div className="bg-primary-50 border-b border-dashed border-gray-200 px-8 py-6 flex flex justify-between">
+                            <h1 className="text-xl font-bold r-widest text-primary-700 mb-1">Order #{order.orderId} </h1>
+                            <div><OrderStatusBadge status={order.status} /></div>
                         </div>
 
                         {/* Actions */}
