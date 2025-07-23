@@ -68,7 +68,7 @@ const CreateOrderWizard: React.FC = () => {
         if (!form.email) newErrors.email = 'Required';
         if (!form.phone) newErrors.phone = 'Required';
         if (!form.description) newErrors.description = 'Required';
-        if (!form.images.length && role == 'seller') newErrors.images = 'Image required';
+        if (!form.images.length && role === 'seller') newErrors.images = 'Image required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import OrderStatusBadge from 'components/orders/OrderStatusBadge';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { IconDownload, IconUser, IconMail, IconCalendar, IconAlertCircle } from '@tabler/icons-react';
 import { Timeline } from 'components/ui';
 
@@ -34,7 +34,7 @@ const timeline = [
 
 
 const OrderDetails: React.FC = () => {
-    const { id } = useParams();
+    // const { id } = useParams();
     const order = dummyOrder;
 
     const today = new Date();
