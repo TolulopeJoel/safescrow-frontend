@@ -31,7 +31,7 @@ const NotificationSidebar: React.FC<NotificationSidebarProps> = ({ open, onClose
       >
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-lg font-semibold text-gray-800">All Notifications</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 p-2 rounded focus:outline-none" aria-label="Close sidebar">
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 p-2 rounded" aria-label="Close sidebar">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -42,7 +42,7 @@ const NotificationSidebar: React.FC<NotificationSidebarProps> = ({ open, onClose
             notifications.map((notif) => (
               <li
                 key={notif.id}
-                className={`px-4 py-3 hover:bg-gray-50 cursor-pointer ${!notif.read ? 'bg-gray-50' : ''}`}
+                className={`px-4 py-5 hover:bg-gray-50 cursor-pointer ${!notif.read && 'bg-gray-50'}`}
               >
                 <div className="flex justify-between items-center">
                   <span className={`font-medium ${!notif.read ? 'text-primary-700' : 'text-gray-800'}`}>{notif.title}</span>

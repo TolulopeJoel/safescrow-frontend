@@ -127,7 +127,7 @@ const Transactions: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search by description, ID, or date"
-                className="p-4 rounded-md border border-gray-200 focus:ring-2 focus:ring-primary-100 focus:outline-none text-sm w-full sm:w-96 placeholder-gray-400 transition-all duration-200 bg-white"
+                className="p-4 rounded-md border border-gray-200 focus:ring-2 focus:ring-primary-100 focus:outline-primary-200 text-sm w-full sm:w-96 placeholder-gray-400 transition-all duration-200 bg-white"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />

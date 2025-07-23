@@ -12,7 +12,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ filters, selected, onSelect, cl
     {filters.map((filter) => (
       <button
         key={filter}
-        className={`pb-2 text-base font-medium focus:outline-none transition-colors duration-200
+        className={`pb-2 text-base font-medium focus:outline-primary-200 transition-colors duration-200
           ${selected === filter
             ? 'text-primary-600 border-b-2 border-primary-600'
             : 'text-gray-500 border-b-2 border-transparent hover:text-primary-600'}

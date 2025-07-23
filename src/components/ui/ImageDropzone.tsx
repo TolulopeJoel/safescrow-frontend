@@ -85,20 +85,31 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
             <div
                 className={
                     imagePreviews.length === 0
-                        ? `relative flex flex-col items-center justify-center border-2  border-dashed
-                            ${isDragging ? 'border-primary-400 bg-primary-50' : (error ? 'border-red-400 bgred-50' : 'border-gray-300 bg-gray-50')}
-                            rounded-xl p-4 transition-colors duration-200 cursor-pointer`
+                        ? `relative flex flex-col items-center justify-center border-2 border-dashed
+                            ${isDragging ? 'border-primary-400 bg-primary-50' : (error ? 'border-red-400 bg-red-50' : 'border-gray-300 bg-gray-50')}
+                            rounded-xl p-4 transition-colors duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500`
                         : 'flex flex-wrap gap-3 items-center min-h-[120px]'
                 }
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                {...(imagePreviews.length === 0 && canAddMore ? { onClick: handleAddMoreClick } : {})}
+                {...(imagePreviews.length === 0 && canAddMore ? { 
+                    onClick: handleAddMoreClick,
+                    onKeyDown: (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleAddMoreClick();
+                        }
+                    },
+                    tabIndex: 0,
+                    role: 'button',
+                    'aria-label': `Upload images. Click or drag images here. JPG, PNG, max 5MB each. You can add up to ${maxImages} images.`
+                } : {})}
                 style={{ minHeight: '120px' }}
             >
                 {imagePreviews.length === 0 ? (
                     <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4a1 1 0 011-1h8a1 1 0 011 1v12m-4 4h-4a1 1 0 01-1-1v-4h6v4a1 1 0 01-1 1z" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4a1 1 0 011-1h8a1 1 0 011 1v12m-4 4h-4a1 1 0 01-1-1v-4h6v4a1 1 0 01-1 1z" /></svg>
                         <span className="text-gray-500 text-sm">Click or drag images here to upload</span>
                         <span className="text-xs text-gray-400 mt-1">JPG, PNG, max 5MB each. You can add up to {maxImages} images.</span>
                     </>
@@ -110,20 +121,37 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
                                 <button
                                     type="button"
                                     onClick={e => { e.stopPropagation(); handleRemoveImage(idx); }}
-                                    className="absolute top-1 right-1 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-red-100 transition opacity-0 group-hover:opacity-100"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleRemoveImage(idx);
+                                        }
+                                    }}
+                                    className="absolute top-1 right-1 bg-white bg-opacity-80 rounded-full p-1 shadow hover:bg-red-100 focus:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 transition opacity-0 group-hover:opacity-100 focus:opacity-100"
                                     title="Remove image"
+                                    aria-label={`Remove image ${idx + 1}`}
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                                 </button>
                             </div>
                         ))}
                         {/* Add more card */}
                         {canAddMore && (
                             <div
-                                className="flex flex-col items-center justify-center border-2 border-dashed border-primary-300 bg-primary-50 hover:bg-primary-100 rounded-lg p-4 cursor-pointer min-w-[96px] min-h-[96px] transition-colors duration-200 group"
+                                className="flex flex-col items-center justify-center border-2 border-dashed border-primary-300 bg-primary-50 hover:bg-primary-100 focus:bg-primary-100 rounded-lg p-4 cursor-pointer min-w-[96px] min-h-[96px] transition-colors duration-200 group focus:outline-none focus:ring-2 focus:ring-primary-500"
                                 onClick={handleAddMoreClick}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleAddMoreClick();
+                                    }
+                                }}
+                                tabIndex={0}
+                                role="button"
+                                aria-label="Add more images"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-400 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-400 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                                 <span className="text-primary-500 text-xs font-medium">Add more</span>
                             </div>
                         )}
@@ -139,9 +167,10 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
                     onChange={handleInputChange}
                     className="hidden"
                     disabled={!canAddMore}
+                    aria-describedby={error ? "upload-error" : undefined}
                 />
             </div>
-            {error && <span className="text-xs text-red-500">{error}</span>}
+            {error && <span id="upload-error" className="text-xs text-red-500" role="alert">{error}</span>}
         </div>
     );
 };

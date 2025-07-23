@@ -275,7 +275,7 @@ const CreateOrderWizard: React.FC = () => {
                                     <button
                                         type="button"
                                         key={amt}
-                                        className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition focus:outline-none shadow-sm"
+                                        className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition focus:outline-primary-200 shadow-sm"
                                         onClick={() => handleQuickAmount(amt)}
                                     >
                                         ₦{amt.toLocaleString()}

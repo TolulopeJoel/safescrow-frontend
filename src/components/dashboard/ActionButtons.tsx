@@ -40,7 +40,7 @@ const ActionButtons: React.FC = () => {
       {buttons.map((bt, idx) => (
         <div key={bt.name} className="relative">
           <button
-            className="border border-primary-600 text-primary-600 px-6 py-2 rounded-lg font-light focus:outline-none"
+            className="border border-primary-600 text-primary-600 px-6 py-2 rounded-lg font-light focus:outline-primary-500"
             onClick={bt.name === 'Create order' ? () => setMenuOpen((open) => !open) : undefined}
           >
             <div className="flex space-x-2">
