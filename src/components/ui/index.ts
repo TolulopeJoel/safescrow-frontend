@@ -4,3 +4,4 @@ export { default as ProgressBar } from './ProgressBar';
 export { default as ImageDropzone } from './ImageDropzone'; 
 export { default as FilterTabs } from './FilterTabs'; 
 export { default as Timeline } from './Timeline'; 
+export { default as NotificationSidebar } from './NotificationSidebar'; 

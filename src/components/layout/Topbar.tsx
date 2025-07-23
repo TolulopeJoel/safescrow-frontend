@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from '../../logo.svg';
 import { IconBell } from '@tabler/icons-react';
+import { NotificationSidebar } from '../ui';
 
 const mockNotifications = [
   { id: 1, title: 'Order #1234 confirmed', desc: 'Your order has been confirmed by the seller.', read: false, time: '2m ago' },
@@ -119,6 +120,11 @@ const Topbar: React.FC = () => {
             </div>
           </div>
         )}
+        <NotificationSidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          notifications={mockNotifications}
+        />
       </div>
     </header>
   );
