@@ -6,8 +6,8 @@ import { ProgressBar, FormInput } from '../components/ui';
 const steps = [
     { label: 'Your Name', description: 'Let’s get to know you!' },
     { label: 'Email Address', description: 'Where can we reach you?' },
-    { label: 'Verify your identity', description: 'NIN verification and mobile phone number is required to confirm your identity and complete your account setup.' },
-    { label: 'Create Password', description: 'Secure your account 🙈' },
+    { label: 'Verify your identity', description: 'NIN verification is required to confirm your identity and complete your account setup.' },
+    { label: 'Create Password', description: 'Set a strong password 🙈' },
 ];
 
 const Register: React.FC = () => {
@@ -81,11 +81,11 @@ const Register: React.FC = () => {
     const progress = `${((step + (success ? 2 : 1)) / (steps.length)) * 100}%`;
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F4FF] relative overflow-hidden px-4">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden px-4">
             {/* Soft Accent SVG Shapes */}
             <svg className="absolute left-0 top-1/4 w-40 h-40 opacity-10 text-primary-400" viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="50" /></svg>
             <svg className="absolute right-0 bottom-0 w-32 h-32 opacity-10 text-primary-400" viewBox="0 0 100 100" fill="currentColor"><polygon points="0,100 100,0 100,100" /></svg>
-            <div className="w-full max-w-2xl bg-white rounded-2xl shadow-sm p-10 md:p-12 mt-16 mb-16 relative z-10 flex flex-col items-center">
+            <div className="w-full max-w-2xl rounded-2xl shadow-sm py-10 md:p-12 mt-16 mb-16 relative z-10 flex flex-col items-center">
                 {/* Progress Bar */}
                 <div className="w-full mx-auto mb-6">
                     <ProgressBar progress={progress} />
@@ -95,8 +95,9 @@ const Register: React.FC = () => {
                     <>
                         <h2 className="text-2xl md:text-3xl mb-3 text-center">
                             {step === 0 && 'Welcome!'}
-                            {step === 1 && `Nice to meet you, ${form.name || 'friend'}!`}
-                            {step === 2 && 'Almost there!'}
+                            {step === 1 && `Nice to meet you, ${form.name.split(" ")[0] || 'friend'}!`}
+                            {step === 2 && 'Let’s confirm it’s really you'}
+                            {step === 3 && 'Your security matters to us'}
                         </h2>
                         <p className="text-base md:text-lg text-gray-500 text-center mb-8">
                             {steps[step].description}
