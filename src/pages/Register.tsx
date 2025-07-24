@@ -101,14 +101,13 @@ const Register: React.FC = () => {
                         <p className="text-base md:text-lg text-gray-500 text-center mb-8">
                             {steps[step].description}
                         </p>
-                        <form onSubmit={step < 2 ? handleNext : handleSubmit} className="space-y-7 w-full max-w-md mx-auto">
+                        <form onSubmit={step < (steps.length - 1) ? handleNext : handleSubmit} className="space-y-7 w-full max-w-lg mx-auto">
                             {step === 0 && (
                                 <FormInput
-                                    label="Name"
                                     name="name"
                                     type="text"
                                     required={true}
-                                    placeholder="Your full name"
+                                    placeholder="Full name"
                                     value={form.name}
                                     onChange={handleChange}
                                     error={errors.name}
@@ -117,14 +116,15 @@ const Register: React.FC = () => {
                                     className="text-base rounded-xl"
                                 />
                             )}
+
+                            {/* Email & Phone Step */}
                             {step === 1 && (
                                 <>
                                     <FormInput
-                                        label="Email"
                                         name="email"
                                         type="email"
                                         required={true}
-                                        placeholder="you@email.com"
+                                        placeholder="Email"
                                         value={form.email}
                                         onChange={handleChange}
                                         error={errors.email}
@@ -132,19 +132,13 @@ const Register: React.FC = () => {
                                         autoFocus
                                         className="text-base rounded-xl"
                                     />
-                                    <div className="flex gap-2">
-                                        <select
-                                            name="country"
-                                            className="border border-gray-300 rounded-lg p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200 bg-white"
-                                            disabled
-                                        >
-                                            <option value="NG">NG +234</option>
-                                        </select>
+                                    <div className="flex items-end gap-2">
+                                        <div className="rounded- py-4 px-0 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-200 bg-white h-14 ">NG</div>
                                         <FormInput
                                             name="phone"
                                             type="tel"
                                             required={true}
-                                            placeholder="Enter phone number"
+                                            placeholder="Phone number"
                                             value={form.phone}
                                             onChange={handleChange}
                                             error={errors.phone}
@@ -153,9 +147,10 @@ const Register: React.FC = () => {
                                     </div>
                                 </>
                             )}
+
+                            {/* NIN Step */}
                             {step === 2 && (
                                 <FormInput
-                                    label="NIN"
                                     name="nin"
                                     type="text"
                                     required={true}
@@ -167,14 +162,15 @@ const Register: React.FC = () => {
                                 />
 
                             )}
+
+                            {/* Password Step */}
                             {step === 3 && (
                                 <>
                                     <FormInput
-                                        label="Password"
                                         name="password"
                                         type="password"
                                         required={true}
-                                        placeholder="••••••••"
+                                        placeholder="Password"
                                         value={form.password}
                                         onChange={handleChange}
                                         error={errors.password}
@@ -183,11 +179,10 @@ const Register: React.FC = () => {
                                         className="text-base rounded-xl"
                                     />
                                     <FormInput
-                                        label="Confirm Password"
                                         name="password2"
                                         type="password"
                                         required={true}
-                                        placeholder="••••••••"
+                                        placeholder="Confirm Password"
                                         value={form.password2}
                                         onChange={handleChange}
                                         error={errors.password2}
@@ -196,27 +191,29 @@ const Register: React.FC = () => {
                                 </>
 
                             )}
-                            {apiError && <div className="text-red-500 text-sm text-center">{apiError}</div>}
-                            <div className="flex items-center justify-between gap-2 mt-2">
+                            {apiError && <div className="text-red-500 text-sm">{apiError}</div>}
+
+                            <div className={`flex items-center ${step == 0 ? "justify-end" : "justify-between"} gap-2 mt-2`}>
                                 {step > 0 && (
                                     <button
                                         type="button"
                                         onClick={handleBack}
-                                        className="px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition"
+                                        className="px-4 py-3 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition"
                                     >
                                         Back
                                     </button>
                                 )}
                                 <button
                                     type="submit"
-                                    className={`w-full py-4 rounded-full text-base font-semibold transition disabled:opacity-60 ${loading ? 'bg-primary-300 cursor-not-allowed' : 'bg-primary-600 hover:bg-primary-700 text-white'}`}
+                                    className={`${step == 0 ? "w-1/3" : "w-full"}  py-3 rounded-lg text-base font-semibold transition disabled:opacity-60 ${loading ? 'bg-primary-300 cursor-not-allowed' : 'bg-primary-600 hover:bg-primary-700 text-white'}`}
                                     disabled={loading}
                                 >
                                     {loading
                                         ? 'Processing...'
-                                        : step < 2
+                                        : step < (steps.length - 1)
                                             ? 'Next'
-                                            : 'Create Account'}
+                                            : 'Create Account'
+                                    }
                                 </button>
                             </div>
                         </form>
