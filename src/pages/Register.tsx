@@ -6,6 +6,7 @@ import { ProgressBar, FormInput } from '../components/ui';
 const steps = [
     { label: 'Your Name', description: 'Let’s get to know you!' },
     { label: 'Email Address', description: 'Where can we reach you?' },
+    { label: 'Verify your identity', description: 'NIN verification and mobile phone number is required to confirm your identity and complete your account setup.' },
     { label: 'Create Password', description: 'Secure your account 🙈' },
 ];
 
@@ -14,6 +15,8 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         name: '',
+        nin: '',
+        phone: '',
         email: '',
         password: '',
         password2: '',
@@ -26,9 +29,14 @@ const Register: React.FC = () => {
 
     const validateStep = () => {
         const newErrors: { [key: string]: string } = {};
-        if (step === 1) {
+        if (step === 2) {
+            if (!form.nin) newErrors.nin = 'NIN is required';
+            if (!/^[0-9]{11}$/.test(form.nin)) newErrors.nin = 'NIN must be 11 digits';
+        } else if (step === 1) {
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) newErrors.email = 'Invalid email';
-        } else if (step === 2) {
+            if (!form.phone) newErrors.phone = 'Phone number is required';
+            if (!/^\d{10,15}$/.test(form.phone)) newErrors.phone = 'Enter a valid phone number';
+        } else if (step === 3) {
             if (form.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
             if (form.password2 !== form.password) newErrors.password2 = 'Passwords do not match';
         }
@@ -110,21 +118,56 @@ const Register: React.FC = () => {
                                 />
                             )}
                             {step === 1 && (
-                                <FormInput
-                                    label="Email"
-                                    name="email"
-                                    type="email"
-                                    required={true}
-                                    placeholder="you@email.com"
-                                    value={form.email}
-                                    onChange={handleChange}
-                                    error={errors.email}
-                                    autoComplete="email"
-                                    autoFocus
-                                    className="text-base rounded-xl"
-                                />
+                                <>
+                                    <FormInput
+                                        label="Email"
+                                        name="email"
+                                        type="email"
+                                        required={true}
+                                        placeholder="you@email.com"
+                                        value={form.email}
+                                        onChange={handleChange}
+                                        error={errors.email}
+                                        autoComplete="email"
+                                        autoFocus
+                                        className="text-base rounded-xl"
+                                    />
+                                    <div className="flex gap-2">
+                                        <select
+                                            name="country"
+                                            className="border border-gray-300 rounded-lg p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200 bg-white"
+                                            disabled
+                                        >
+                                            <option value="NG">NG +234</option>
+                                        </select>
+                                        <FormInput
+                                            name="phone"
+                                            type="tel"
+                                            required={true}
+                                            placeholder="Enter phone number"
+                                            value={form.phone}
+                                            onChange={handleChange}
+                                            error={errors.phone}
+                                            className="flex-1 text-base rounded-xl"
+                                        />
+                                    </div>
+                                </>
                             )}
                             {step === 2 && (
+                                <FormInput
+                                    label="NIN"
+                                    name="nin"
+                                    type="text"
+                                    required={true}
+                                    placeholder="NIN"
+                                    value={form.nin}
+                                    onChange={handleChange}
+                                    error={errors.nin}
+                                    className="text-base rounded-xl"
+                                />
+
+                            )}
+                            {step === 3 && (
                                 <>
                                     <FormInput
                                         label="Password"
