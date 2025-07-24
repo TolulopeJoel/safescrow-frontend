@@ -48,6 +48,13 @@ const Login: React.FC = () => {
         } finally {
             setLoading(false);
         }
+
+        // setSuccess(true);
+        // setTimeout(() => {
+        //     const from = (location.state as any)?.from?.pathname || '/login';
+        //     navigate(from, { replace: true });
+        // }, 1200);
+        // setLoading(false);
     };
 
     return (
@@ -55,14 +62,39 @@ const Login: React.FC = () => {
             {/* Soft Accent SVG Shapes */}
             <svg className="absolute left-0 top-1/4 w-40 h-40 opacity-10 text-primary-400" viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="50" /></svg>
             <svg className="absolute right-0 bottom-0 w-32 h-32 opacity-10 text-primary-400" viewBox="0 0 100 100" fill="currentColor"><polygon points="0,100 100,0 100,100" /></svg>
+
+            {/* success checkmark animation */}
+            <style>{`@keyframes drawCheckmark{0%{stroke-dasharray:0,100}100%{stroke-dasharray:100,0}}@keyframes scaleIn{0%{transform:scale(0);opacity:0}50%{transform:scale(1.1);opacity:1}100%{transform:scale(1);opacity:1}}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.animate-checkmark{animation:drawCheckmark 0.6s ease-in-out forwards}.animate-scale-in{animation:scaleIn 0.5s ease-out forwards}.animate-fade-in-up{animation:fadeInUp 0.4s ease-out forwards}.animate-fade-in-up-delay{opacity:0;animation:fadeInUp 0.4s ease-out 0.3s forwards}`}</style>
+
+
             <div className="w-full max-w-2xl rounded-2xl shadow-sm py-10 md:p-12 mt-16 mb-16 relative z-10 flex flex-col items-center">
                 {success ? (
-                    <div className="flex flex-col items-center justify-center py-12 animate-fade-in">
-                        <svg className="w-16 h-16 text-primary-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <h2 className="text-2xl font-bold mb-2 text-center">Welcome back! 🎉</h2>
-                        <p className="text-gray-500 text-center mb-2">You're being signed in...</p>
+                    <div className="flex flex-col items-center justify-center py-12">
+                        <div className="relative mb-4 animate-scale-in">
+                            {/* Circular background */}
+                            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
+                                <svg
+                                    className="w-10 h-10 text-primary-500"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={3}
+                                        d="M5 13l4 4L19 7"
+                                        className="animate-checkmark"
+                                        style={{
+                                            strokeDasharray: '100',
+                                            strokeDashoffset: '100'
+                                        }}
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+                        <h2 className="text-2xl font-bold mb-2 text-center animate-fade-in-up-delay">Welcome back! 🎉</h2>
+                        <p className="text-gray-500 text-center mb-2 animate-fade-in-up-delay">You're signed in...</p>
                     </div>
                 ) : (
                     <>
@@ -115,4 +147,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login; 
+export default Login;
