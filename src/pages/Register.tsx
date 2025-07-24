@@ -29,13 +29,20 @@ const Register: React.FC = () => {
 
     const validateStep = () => {
         const newErrors: { [key: string]: string } = {};
-        if (step === 2) {
-            if (!form.nin) newErrors.nin = 'NIN is required';
-            if (!/^[0-9]{11}$/.test(form.nin)) newErrors.nin = 'NIN must be 11 digits';
+        if (step === 0) {
+            const nameParts = form.name.trim().split(/\s+/);
+            if (nameParts.length < 2 || nameParts.some(word => word.length < 2)) {
+                newErrors.name = 'Please enter your full name (first and last)';
+            }
         } else if (step === 1) {
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) newErrors.email = 'Invalid email';
             if (!form.phone) newErrors.phone = 'Phone number is required';
             if (!/^\d{10,15}$/.test(form.phone)) newErrors.phone = 'Enter a valid phone number';
+
+        } else if (step === 2) {
+            if (!form.nin) newErrors.nin = 'NIN is required';
+            if (!/^[0-9]{11}$/.test(form.nin)) newErrors.nin = 'NIN must be 11 digits';
+
         } else if (step === 3) {
             if (form.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
             if (form.password2 !== form.password) newErrors.password2 = 'Passwords do not match';
@@ -88,7 +95,7 @@ const Register: React.FC = () => {
             <div className="w-full max-w-2xl rounded-2xl shadow-sm py-10 md:p-12 mt-16 mb-16 relative z-10 flex flex-col items-center">
                 {/* Progress Bar */}
                 <div className="w-full mx-auto mb-6">
-                    <ProgressBar progress={progress} />
+                    <ProgressBar progress={progress} broken={true} segments={steps.length} />
                 </div>
                 {/* Stepper or Success */}
                 {!success ? (
