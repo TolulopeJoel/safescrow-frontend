@@ -6,16 +6,19 @@ import { PendingOrderCard } from 'components/orders';
 
 const pendingOrders = [
     {
+        orderId: 'ORD001',
         initiatorName: 'John Doe',
         description: 'This is a description',
         price: 100
     },
     {
+        orderId: 'ORD002',
         initiatorName: 'Jane Doe',
         description: 'This is a description',
         price: 200
     },
     {
+        orderId: 'ORD003',
         initiatorName: 'John Doe',
         description: 'This is a description',
         price: 300
@@ -47,7 +50,7 @@ const Dashboard: React.FC = () => {
 
                         <div className="flex gap-6">
                             {pendingOrders.map((order) => (
-                                <PendingOrderCard key={order.initiatorName} initiatorName={order.initiatorName} description={order.description} price={order.price} />
+                                <PendingOrderCard key={order.orderId} orderId={order.orderId} initiatorName={order.initiatorName} description={order.description} price={order.price} />
                             ))}
                         </div>
                     </div>

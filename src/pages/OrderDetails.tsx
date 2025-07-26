@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import OrderStatusBadge from 'components/orders/OrderStatusBadge';
-// import { useParams } from 'react-router-dom';
-import { IconDownload, IconUser, IconMail, IconCalendar, IconAlertCircle } from '@tabler/icons-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { IconDownload, IconUser, IconMail, IconCalendar, IconAlertCircle, IconCheck, IconX } from '@tabler/icons-react';
 import { Timeline } from 'components/ui';
 
 // Dummy order data
-const dummyOrder = {
+const getDummyOrder = (orderId?: string) => ({
     id: '1',
     orderId: '453796',
     refCode: '453796',
-    status: 'Pending',
+    status: 'pending',
     total: 40300,
     buyer: { name: 'Aubrey', email: 'aubrey@email.com' },
     seller: { name: 'Debra', email: 'debra@email.com' },
@@ -20,7 +20,7 @@ const dummyOrder = {
     updatedAt: '2024-06-02',
     deliveryDate: '2025-08-10',
     note: '2 years manufacturer warranty',
-};
+});
 
 // Timeline with icons
 const timeline = [
@@ -34,12 +34,43 @@ const timeline = [
 
 
 const OrderDetails: React.FC = () => {
-    // const { id } = useParams();
-    const order = dummyOrder;
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [order, setOrder] = useState(getDummyOrder(id));
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const today = new Date();
     const deliveryDate = new Date(order.deliveryDate);
     const canRaiseDispute = today >= deliveryDate;
+    const isPending = order.status === 'pending';
+
+    const handleAcceptOrder = async () => {
+        setIsProcessing(true);
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setOrder((prev: any) => ({ ...prev, status: 'Accepted' }));
+        } catch (error) {
+            console.error('Error accepting order:', error);
+            // toast notification
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const handleDeclineOrder = async () => {
+        setIsProcessing(true);
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setOrder((prev: any) => ({ ...prev, status: 'Declined' }));
+        } catch (error) {
+            console.error('Error declining order:', error);
+            // toast notification
+        } finally {
+            setIsProcessing(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -111,13 +142,34 @@ const OrderDetails: React.FC = () => {
                         </section>
 
                         <div className="flex gap-4 justify-end px-8 py-6 bg-gray-50 border-t border-gray-100">
-                            <button
-                                className={`bg-primary-700 text-white rounded-lg px-6 py-2 font-medium flex items-center gap-2 transition ${!canRaiseDispute ? 'opacity-50 cursor-not-allowed hover:bg-primary-700' : 'hover:bg-primary-800'}`}
-                                disabled={!canRaiseDispute}
-                                title={!canRaiseDispute ? 'You can only raise a dispute after the delivery date.' : ''}
-                            >
-                                <IconAlertCircle className="w-5 h-5" /> Raise a dispute
-                            </button>
+                            {isPending ? (
+                                <>
+                                    <button
+                                        className="bg-green-600 text-white rounded-lg px-6 py-2 font-medium flex items-center gap-2 transition hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        onClick={handleAcceptOrder}
+                                        disabled={isProcessing}
+                                    >
+                                        <IconCheck className="w-5 h-5" />
+                                        {isProcessing ? 'Accepting...' : 'Accept'}
+                                    </button>
+                                    <button
+                                        className="bg-red-600 text-white rounded-lg px-6 py-2 font-medium flex items-center gap-2 transition hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        onClick={handleDeclineOrder}
+                                        disabled={isProcessing}
+                                    >
+                                        <IconX className="w-5 h-5" />
+                                        {isProcessing ? 'Declining...' : 'Decline'}
+                                    </button>
+                                </>
+                            ) : (
+                                <button
+                                    className={`bg-primary-700 text-white rounded-lg px-6 py-2 font-medium flex items-center gap-2 transition ${!canRaiseDispute ? 'opacity-50 cursor-not-allowed hover:bg-primary-700' : 'hover:bg-primary-800'}`}
+                                    disabled={!canRaiseDispute}
+                                    title={!canRaiseDispute ? 'You can only raise a dispute after the delivery date.' : ''}
+                                >
+                                    <IconAlertCircle className="w-5 h-5" /> Raise a dispute
+                                </button>
+                            )}
                         </div>
                     </div>
 

@@ -4,12 +4,13 @@ interface OrderCardProps {
     initiatorName: string;
     description: string;
     price: number;
+    orderId: string;
 }
 
-const PendingOrderCard: React.FC<OrderCardProps> = ({ initiatorName, description, price }) => {
+const PendingOrderCard: React.FC<OrderCardProps> = ({ initiatorName, description, price, orderId }) => {
     const navigate = useNavigate();
     const handleCardClick = () => {
-        navigate(`/order-details/${initiatorName}`);
+        navigate(`/orders/${orderId}`);
     };
 
     return (
