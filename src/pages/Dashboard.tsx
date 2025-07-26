@@ -1,7 +1,7 @@
 import React from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { DashboardCards, ActionButtons, GetStartedSteps } from 'components/dashboard';
-import { OrderCard } from 'components/orders';
+import { PendingOrderCard } from 'components/orders';
 
 
 const pendingOrders = [
@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
 
                         <div className="flex gap-6">
                             {pendingOrders.map((order) => (
-                                <OrderCard key={order.initiatorName} initiatorName={order.initiatorName} description={order.description} price={order.price} />
+                                <PendingOrderCard key={order.initiatorName} initiatorName={order.initiatorName} description={order.description} price={order.price} />
                             ))}
                         </div>
                     </div>
