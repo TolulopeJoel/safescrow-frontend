@@ -2,28 +2,7 @@ import React from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { DashboardCards, ActionButtons, GetStartedSteps } from 'components/dashboard';
 import { PendingOrderCard } from 'components/orders';
-
-
-const pendingOrders = [
-    {
-        orderId: 'ORD001',
-        initiatorName: 'John Doe',
-        description: 'This is a description',
-        price: 100
-    },
-    {
-        orderId: 'ORD002',
-        initiatorName: 'Jane Doe',
-        description: 'This is a description',
-        price: 200
-    },
-    {
-        orderId: 'ORD003',
-        initiatorName: 'John Doe',
-        description: 'This is a description',
-        price: 300
-    },
-]
+import { pendingOrders } from 'data';
 
 const Dashboard: React.FC = () => {
     return (

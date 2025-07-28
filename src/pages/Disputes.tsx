@@ -2,46 +2,10 @@ import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { IconGavel } from '@tabler/icons-react';
 import { ImageDropzone, FilterTabs, FormTextarea } from 'components/ui';
-
-// Dummy initial disputes data
-const initialDisputes: Array<{
-  id: string;
-  orderId: string;
-  reason: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  images?: string[];
-}> = [
-  {
-    id: 'D001',
-    orderId: 'O123',
-    reason: 'Item not as described',
-    status: 'Open',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    images: [],
-  },
-  {
-    id: 'D002',
-    orderId: 'O124',
-    reason: 'Payment not received',
-    status: 'Resolved',
-    createdAt: '2024-05-20',
-    updatedAt: '2024-05-22',
-    images: [],
-  },
-];
-
-// Dummy orders for selection (should match Orders page for now)
-const dummyOrders = [
-  { id: '1', user: 'Aubrey', orderId: '453796', refCode: '453796', total: 40300, status: 'Pending' },
-  { id: '2', user: 'Debra', orderId: '453796', refCode: '453796', total: 40000, status: 'In progress' },
-  { id: '3', user: 'Ronald', orderId: '453796', refCode: '453796', total: 40000, status: 'Pending' },
-];
+import { mockDisputes, mockOrders } from 'data';
 
 const Disputes: React.FC = () => {
-  const [disputes, setDisputes] = useState(initialDisputes);
+  const [disputes, setDisputes] = useState(mockDisputes);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ orderId: '', reason: '' });
   const [errors, setErrors] = useState<{ orderId?: string; reason?: string; images?: string }>({});
@@ -58,13 +22,16 @@ const Disputes: React.FC = () => {
     setImagePreviews([]);
     setShowModal(true);
   };
+
   const closeModal = () => {
     setShowModal(false);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
@@ -90,7 +57,7 @@ const Disputes: React.FC = () => {
           id: `D${Math.floor(Math.random() * 10000)}`,
           orderId: form.orderId,
           reason: form.reason,
-          status: 'Open',
+          status: 'open',
           createdAt: new Date().toISOString().slice(0, 10),
           updatedAt: new Date().toISOString().slice(0, 10),
           images: imagePreviews, // store previews for now
@@ -144,13 +111,13 @@ const Disputes: React.FC = () => {
                   className="bg-white rounded-xl shadow-sm p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-gray-100 hover:shadow-md transition"
                 >
                   <div className="flex items-center gap-4 flex-1 min-w-0">
-                    <span className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${dispute.status === 'Open' ? 'bg-yellow-50' : 'bg-green-50'}`}>
-                      <IconGavel className={`w-7 h-7 ${dispute.status === 'Open' ? 'text-yellow-600' : 'text-green-600'}`} />
+                    <span className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${dispute.status === 'open' ? 'bg-yellow-50' : 'bg-green-50'}`}>
+                      <IconGavel className={`w-7 h-7 ${dispute.status === 'open' ? 'text-yellow-600' : 'text-green-600'}`} />
                     </span>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         <span className="font-semibold text-base text-gray-900">Order #{dispute.orderId}</span>
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${dispute.status === 'Open' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>{dispute.status}</span>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${dispute.status === 'open' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>{dispute.status}</span>
                       </div>
                       <div className="text-gray-700 text-sm mb-1 truncate max-w-xs">{dispute.reason}</div>
                       <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
@@ -192,9 +159,9 @@ const Disputes: React.FC = () => {
                       className={`w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200 ${errors.orderId ? 'border-red-400' : 'border-gray-300'}`}
                     >
                       <option value="">Select an order</option>
-                      {dummyOrders.map((order) => (
+                      {mockOrders.map((order) => (
                         <option key={order.id} value={order.orderId}>
-                          {order.orderId} - {order.user}
+                          {order.orderId} - {order.buyer.name}
                         </option>
                       ))}
                     </select>

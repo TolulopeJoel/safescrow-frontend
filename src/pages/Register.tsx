@@ -215,7 +215,7 @@ const Register: React.FC = () => {
                                 )}
                                 {apiError && <div className="text-red-500 text-sm">{apiError}</div>}
 
-                                <div className={`flex items-center ${step == 0 ? "justify-end" : "justify-between"} gap-2 mt-2`}>
+                                <div className={`flex items-center ${step === 0 ? "justify-end" : "justify-between"} gap-2 mt-2`}>
                                     {step > 0 && (
                                         <button
                                             type="button"
@@ -227,7 +227,7 @@ const Register: React.FC = () => {
                                     )}
                                     <button
                                         type="submit"
-                                        className={`${step == 0 ? "w-1/3" : "w-full"}  py-3 rounded-lg text-base font-semibold transition disabled:opacity-60 ${loading ? 'bg-primary-300 cursor-not-allowed' : 'bg-primary-600 hover:bg-primary-700 text-white'}`}
+                                        className={`${step === 0 ? "w-1/3" : "w-full"}  py-3 rounded-lg text-base font-semibold transition disabled:opacity-60 ${loading ? 'bg-primary-300 cursor-not-allowed' : 'bg-primary-600 hover:bg-primary-700 text-white'}`}
                                         disabled={loading}
                                     >
                                         {loading

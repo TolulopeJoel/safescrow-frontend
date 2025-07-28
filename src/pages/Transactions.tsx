@@ -1,97 +1,21 @@
 import React, { useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
-import { WalletTransactionCard, TransactionDetailsModal, StatsOverview } from 'components/transactions';
+import { WalletTransactionCard, StatsOverview } from 'components/transactions';
 import { FilterTabs } from 'components/ui';
 import { IconTransfer } from '@tabler/icons-react';
-
-
-export type WalletTransaction = {
-  id: string;
-  type: 'Funding' | 'Withdrawal' | 'Escrow Release' | 'Fee' | 'Bonus' | 'Refund';
-  amount: number;
-  direction: 'credit' | 'debit';
-  description: string;
-  date: string;
-  status: string;
-};
+import { Transaction } from 'types';
+import { mockTransactions } from 'data';
 
 const FILTERS = ['All', 'Credit', 'Debit'];
 
-const walletTransactions: WalletTransaction[] = [
-  {
-    id: 'WALLET001',
-    type: 'Funding',
-    amount: 50000,
-    direction: 'credit',
-    description: 'Funded wallet via Paystack',
-    date: '2025-07-01 03:17',
-    status: 'Completed',
-  },
-  {
-    id: 'WALLET002',
-    type: 'Withdrawal',
-    amount: 20000,
-    direction: 'debit',
-    description: 'Withdrawal to GTBank (****1234)',
-    date: '2025-07-02 22:41',
-    status: 'Pending',
-  },
-  {
-    id: 'WALLET003',
-    type: 'Escrow Release',
-    amount: 15000,
-    direction: 'credit',
-    description: 'Escrow released from Order #123',
-    date: '2025-07-03 05:09',
-    status: 'Completed',
-  },
-  {
-    id: 'WALLET004',
-    type: 'Fee',
-    amount: 500,
-    direction: 'debit',
-    description: 'Transaction fee for Order #123',
-    date: '2025-07-03 13:56',
-    status: 'Completed',
-  },
-  {
-    id: 'WALLET005',
-    type: 'Bonus',
-    amount: 1000,
-    direction: 'credit',
-    description: 'Referral bonus',
-    date: '2025-07-04 00:48',
-    status: 'Completed',
-  },
-  {
-    id: 'WALLET006',
-    type: 'Refund',
-    amount: 3000,
-    direction: 'credit',
-    description: 'Refund for cancelled order',
-    date: '2025-07-05 19:22',
-    status: 'Completed',
-  },
-  {
-    id: 'WALLET007',
-    type: 'Refund',
-    amount: 3000,
-    direction: 'credit',
-    description: 'Refund for cancelled order',
-    date: '2025-07-05 07:33',
-    status: 'Completed',
-  },
-];
-
-
 const Transactions: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('All');
-  const [selectedTransaction, setSelectedTransaction] = useState<WalletTransaction | null>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [search, setSearch] = useState('');
 
   const filteredTransactions = (selectedFilter === 'All'
-    ? walletTransactions
-    : walletTransactions.filter((txn) =>
+    ? mockTransactions
+    : mockTransactions.filter((txn) =>
       selectedFilter === 'Credit'
         ? txn.direction === 'credit'
         : txn.direction === 'debit'
@@ -109,12 +33,11 @@ const Transactions: React.FC = () => {
       <div className="flex">
         <SidebarNav />
         <main className="flex-1 p-4 sm:p-8">
-          {/* <h1 className="text-2xl font-semibold mb-4 text-gray-900">Wallet Transactions</h1> */}
           <div className="flex items-center space-x-3 mb-6">
             <IconTransfer className="w-7 h-7 text-primary-600" />
             <h1 className="text-2xl font-semibold">Wallet Transactions</h1>
           </div>
-          <StatsOverview transactions={walletTransactions} />
+          <StatsOverview transactions={mockTransactions} />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
             <FilterTabs
               filters={FILTERS}
@@ -148,7 +71,6 @@ const Transactions: React.FC = () => {
               ))
             )}
           </div>
-          <TransactionDetailsModal transaction={selectedTransaction} onClose={() => setSelectedTransaction(null)} />
         </main>
       </div>
     </div>

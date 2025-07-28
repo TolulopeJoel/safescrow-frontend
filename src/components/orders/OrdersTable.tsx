@@ -13,7 +13,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => (
         <tr>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ref. code</th>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order status</th>
           <th className="px-6 py-3"></th>
@@ -24,7 +23,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => (
           <tr key={order.id}>
             <td className="px-6 py-4 whitespace-nowrap text-sm">{order.buyer.name}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.orderId}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.refCode}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{order.total.toLocaleString()}</td>
             <td className="px-6 py-4 whitespace-nowrap"><OrderStatusBadge status={order.status} /></td>
             <td className="px-6 py-4 whitespace-nowrap">

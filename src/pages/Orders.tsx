@@ -3,13 +3,8 @@ import { Topbar, SidebarNav } from 'components/layout';
 import { OrderSummaryCards, OrdersTable, OrderOverviewChart } from 'components/orders';
 import { FilterTabs } from 'components/ui';
 import { DocumentTextIcon } from '@heroicons/react/24/solid';
+import { mockOrders } from 'data'
 
-
-const dummyOrders = [
-  { id: '1', user: 'Aubrey', orderId: '453796', refCode: '453796', total: 40300, status: 'Pending' },
-  { id: '2', user: 'Debra', orderId: '453796', refCode: '453796', total: 40000, status: 'In progress' },
-  { id: '3', user: 'Ronald', orderId: '453796', refCode: '453796', total: 40000, status: 'Pending' },
-];
 
 const Orders: React.FC = () => {
   const ORDER_FILTERS = ['All', `Active (${10})`, `Pending (${5})`, `Completed (${30})`];
@@ -48,7 +43,7 @@ const Orders: React.FC = () => {
               <button className="border px-3 py-1 rounded text-sm">=</button>
             </div>
           </div>
-          <OrdersTable orders={dummyOrders} />
+          <OrdersTable orders={mockOrders} />
         </main>
       </div>
     </div>

@@ -24,7 +24,6 @@ export type OrderStatus = 'pending' | 'accepted' | 'declined' | 'completed' | 'c
 export interface Order {
   id: string;
   orderId: string;
-  refCode: string;
   status: OrderStatus;
   total: number;
   buyer: OrderUser;

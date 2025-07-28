@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import { DashboardCard } from 'types';
+import { dashboardStats } from 'data';
 
-const balance = 66450;
 const cards: DashboardCard[] = [
-  { title: 'Wallet balance', value: `₦${balance.toLocaleString()}`, showToggle: true, active: true, },
-  { title: 'Balance in escrow', value: `₦${(balance + 13910).toLocaleString()}`, showToggle: true, },
-  { title: 'Pending orders', value: 3, },
+  { title: 'Wallet balance', value: `₦${dashboardStats.walletBalance.toLocaleString()}`, showToggle: true, active: true, },
+  { title: 'Balance in escrow', value: `₦${(dashboardStats.walletBalance + dashboardStats.escrowBalance).toLocaleString()}`, showToggle: true, },
+  { title: 'Pending orders', value: dashboardStats.pendingOrders, },
 ];
 
 const DashboardCards: React.FC = () => {
