@@ -39,7 +39,6 @@ const CreateOrderWizard: React.FC = () => {
         phone: '',
         description: '',
         amount: '',
-        feePayer: '',
         images: [] as File[],
         logisticsService: '',
         deliveryDate: '',
@@ -158,8 +157,8 @@ const CreateOrderWizard: React.FC = () => {
                         </>
                     ) : (
                         <>
-                        <h2 className="text-center text-2xl font-semibold mb-1">Review order</h2>
-                        <p className="text-center text-gray-500 text-sm mb-6">Take another look, confirm all details are correct</p>
+                            <h2 className="text-center text-2xl font-semibold mb-1">Review order</h2>
+                            <p className="text-center text-gray-500 text-sm mb-6">Take another look, confirm all details are correct</p>
                         </>
                     )}
 
@@ -295,6 +294,43 @@ const CreateOrderWizard: React.FC = () => {
                                         style={{ letterSpacing: '1px' }}
                                     />
                                 </div>
+                                {form.amount && !isNaN(parseFloat(form.amount)) && (
+                                    <>
+                                        <div className="mt-2 text-xs text-gray-500">
+                                            <div className="flex items-center justify-between bg-gray-50 rounded-lg p-2">
+                                                <div className="flex-1 text-center">
+                                                    <div className="font-medium text-gray-700">You pay</div>
+                                                    <div className="text-gray-600">₦{((0.002 * parseFloat(form.amount)) / 2).toFixed(2)}</div>
+                                                </div>
+                                                <div className="w-px h-8 bg-gray-300 mx-2"></div>
+                                                <div className="flex-1 text-center">
+                                                    <div className="font-medium text-gray-700">{labels.counterpart} pays</div>
+                                                    <div className="text-gray-600">₦{((0.002 * parseFloat(form.amount)) / 2).toFixed(2)}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div className="mt-4 p-3 bg-primary-50 border border-primary-100 rounded-lg">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm font-semibold text-primary-800">{role == 'seller' ? "You'll receive" : "Total payment"}</span>
+                                                <span className="text-lg font-bold text-primary-800">
+                                                    ₦{parseFloat(
+                                                        (
+                                                            parseFloat(form.amount) +
+                                                            (role === "seller" ? -1 : 1) * (0.002 * parseFloat(form.amount) / 2)
+                                                        ).toFixed(2)
+                                                    ).toLocaleString()}
+
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-primary-600 mt-1">
+                                                Transaction amount {role === "seller" ? "-" : "+"} Safescrow fee
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                             <div className='flex justify-end'>
                                 <button
