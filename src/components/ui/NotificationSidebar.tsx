@@ -1,12 +1,5 @@
 import React from 'react';
-
-interface Notification {
-  id: number;
-  title: string;
-  desc: string;
-  read: boolean;
-  time: string;
-}
+import { Notification } from 'types';
 
 interface NotificationSidebarProps {
   open: boolean;

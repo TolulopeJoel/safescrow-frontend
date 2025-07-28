@@ -1,14 +1,6 @@
 import React from 'react';
 import TransactionStatusBadge from './TransactionStatusBadge';
-
-interface Transaction {
-  id: string;
-  date: string;
-  counterpart: string;
-  type: string;
-  amount: number;
-  status: string;
-}
+import { Transaction } from 'types';
 
 interface TransactionsTableProps {
   transactions: Transaction[];
@@ -33,7 +25,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onV
           <tr key={txn.id}>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{txn.id}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm">{txn.date}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm">{txn.counterpart} <span className="text-xs text-gray-400">({txn.type})</span></td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm">{txn.counterpart || 'N/A'} <span className="text-xs text-gray-400">({txn.type})</span></td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{txn.amount.toLocaleString()}</td>
             <td className="px-6 py-4 whitespace-nowrap"><TransactionStatusBadge status={txn.status} /></td>
             <td className="px-6 py-4 whitespace-nowrap">

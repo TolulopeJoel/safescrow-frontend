@@ -1,14 +1,6 @@
 import React from 'react';
 import OrderStatusBadge from './OrderStatusBadge';
-
-interface Order {
-  id: string;
-  user: string;
-  orderId: string;
-  refCode: string;
-  total: number;
-  status: string;
-}
+import { Order } from 'types';
 
 interface OrdersTableProps {
   orders: Order[];
@@ -30,7 +22,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => (
       <tbody className="bg-white divide-y divide-gray-200">
         {orders.map((order) => (
           <tr key={order.id}>
-            <td className="px-6 py-4 whitespace-nowrap text-sm">{order.user}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm">{order.buyer.name}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.orderId}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.refCode}</td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{order.total.toLocaleString()}</td>

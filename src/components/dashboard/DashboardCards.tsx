@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
-
-type CardProps = {
-  title: string;
-  value: string | number;
-  active?: boolean;
-  showToggle?: boolean;
-};
+import { DashboardCard } from 'types';
 
 const balance = 66450;
-const cards: CardProps[] = [
+const cards: DashboardCard[] = [
   { title: 'Wallet balance', value: `₦${balance.toLocaleString()}`, showToggle: true, active: true, },
   { title: 'Balance in escrow', value: `₦${(balance + 13910).toLocaleString()}`, showToggle: true, },
   { title: 'Pending orders', value: 3, },

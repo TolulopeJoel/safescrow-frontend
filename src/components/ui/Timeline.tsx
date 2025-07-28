@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface TimelineEvent {
-  date?: string;
-  label: string;
-  desc: string;
-  current?: boolean;
-}
+import { TimelineEvent } from 'types';
 
 interface TimelineProps {
   events: TimelineEvent[];

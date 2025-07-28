@@ -1,9 +1,9 @@
 import React from 'react';
-import { WalletTransaction } from 'pages/Transactions';
 import { IconArrowDownLeft, IconArrowUpRight } from '@tabler/icons-react';
+import { Transaction } from 'types';
 
 interface StatsOverviewProps {
-  transactions: WalletTransaction[];
+  transactions: Transaction[];
 }
 
 const StatsOverview: React.FC<StatsOverviewProps> = ({ transactions }) => {

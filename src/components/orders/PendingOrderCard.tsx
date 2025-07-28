@@ -1,13 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import { PendingOrderCardProps } from 'types';
 
-interface OrderCardProps {
-    initiatorName: string;
-    description: string;
-    price: number;
-    orderId: string;
-}
-
-const PendingOrderCard: React.FC<OrderCardProps> = ({ initiatorName, description, price, orderId }) => {
+const PendingOrderCard: React.FC<PendingOrderCardProps> = ({ initiatorName, description, price, orderId }) => {
     const navigate = useNavigate();
     const handleCardClick = () => {
         navigate(`/orders/${orderId}`);

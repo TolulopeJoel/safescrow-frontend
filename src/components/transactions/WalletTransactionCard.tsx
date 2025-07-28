@@ -2,30 +2,22 @@ import React from 'react';
 import TransactionStatusBadge from './TransactionStatusBadge';
 import { IconArrowDownLeft, IconArrowUpRight, IconCurrencyNaira } from '@tabler/icons-react';
 import { BanknotesIcon } from '@heroicons/react/24/outline';
-
-interface WalletTransaction {
-  id: string;
-  type: 'Funding' | 'Withdrawal' | 'Escrow Release' | 'Fee' | 'Bonus' | 'Refund';
-  amount: number;
-  direction: 'credit' | 'debit';
-  description: string;
-  date: string;
-  status: string;
-}
+import { Transaction } from 'types';
 
 interface WalletTransactionCardProps {
-  transaction: WalletTransaction;
-  onViewDetails: (txn: WalletTransaction) => void;
+  transaction: Transaction;
+  onViewDetails: (txn: Transaction) => void;
   isLast?: boolean;
 }
 
 const typeIcon = {
-  Funding: IconArrowDownLeft,
-  Withdrawal: IconArrowUpRight,
-  'Escrow Release': BanknotesIcon,
-  Fee: IconArrowUpRight,
-  Bonus: IconArrowDownLeft,
-  Refund: IconArrowDownLeft,
+  funding: IconArrowDownLeft,
+  withdrawal: IconArrowUpRight,
+  'escrow release': BanknotesIcon,
+  fee: IconArrowUpRight,
+  bonus: IconArrowDownLeft,
+  refund: IconArrowDownLeft,
+  transfer: IconCurrencyNaira,
 };
 
 const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transaction, onViewDetails, isLast }) => {

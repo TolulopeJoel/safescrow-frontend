@@ -1,30 +1,77 @@
+// ============================================================================
+// CORE ENTITY TYPES
+// ============================================================================
+
 // User types
 export interface User {
   id: string;
   email: string;
   name: string;
+  phone?: string;
   createdAt: string;
   updatedAt: string;
 }
 
-// Escrow types
-export interface Escrow {
+// Order types
+export interface OrderUser {
   id: string;
-  amount: number;
-  currency: string;
-  status: 'pending' | 'active' | 'completed' | 'cancelled' | 'disputed';
-  senderId: string;
-  recipientId: string;
-  sender: User;
-  recipient: User;
-  description: string;
-  conditions: string;
-  createdAt: string;
-  updatedAt: string;
-  expiresAt?: string;
+  name: string;
+  email: string;
+  phone?: string;
 }
 
-// Auth types
+export type OrderStatus = 'pending' | 'accepted' | 'declined' | 'completed' | 'cancelled' | 'in progress';
+export interface Order {
+  id: string;
+  orderId: string;
+  refCode: string;
+  status: OrderStatus;
+  total: number;
+  buyer: OrderUser;
+  seller: OrderUser;
+  item: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  deliveryDate: string;
+  note?: string;
+  images?: string[];
+}
+
+// Transaction types
+export type TransactionType = 'funding' | 'withdrawal' | 'escrow release' | 'fee' | 'bonus' | 'refund' | 'transfer';
+export type TransactionDirection = 'credit' | 'debit';
+export type TransactionStatus = 'pending' | 'completed' | 'failed' | 'cancelled';
+
+export interface Transaction {
+  id: string;
+  type: TransactionType;
+  amount: number;
+  direction: TransactionDirection;
+  description: string;
+  date: string;
+  status: TransactionStatus;
+  counterpart?: string;
+  orderId?: string;
+}
+
+// Dispute types
+export type DisputeStatus = 'open' | 'resolved' | 'closed' | 'under review';
+export interface Dispute {
+  id: string;
+  orderId: string;
+  reason: string;
+  status: DisputeStatus;
+  createdAt: string;
+  updatedAt: string;
+  images?: string[];
+  description?: string;
+}
+
+// ============================================================================
+// AUTHENTICATION TYPES
+// ============================================================================
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -34,6 +81,7 @@ export interface RegisterData {
   email: string;
   password: string;
   name: string;
+  phone?: string;
 }
 
 export interface AuthResponse {
@@ -41,7 +89,10 @@ export interface AuthResponse {
   token: string;
 }
 
-// API Response types
+// ============================================================================
+// API RESPONSE TYPES
+// ============================================================================
+
 export interface ApiResponse<T> {
   data: T;
   message?: string;
@@ -56,20 +107,112 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// Form types
-export interface CreateEscrowForm {
-  amount: number;
-  recipientEmail: string;
+// ============================================================================
+// FORM TYPES
+// ============================================================================
+
+export interface CreateOrderForm {
+  title: string;
+  email: string;
+  phone: string;
   description: string;
-  conditions: string;
-  currency?: string;
+  amount: string;
+  feePayer: string;
+  images: File[];
+  logisticsService: string;
+  deliveryDate: string;
 }
 
-// Component props types
+export interface CreateDisputeForm {
+  orderId: string;
+  reason: string;
+  description?: string;
+  images: File[];
+}
+
+// ============================================================================
+// COMPONENT PROP TYPES
+// ============================================================================
+
 export interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export interface LayoutProps {
   children: React.ReactNode;
-} 
+}
+
+// UI Component Props
+export interface Notification {
+  id: number;
+  title: string;
+  desc: string;
+  read: boolean;
+  time: string;
+}
+
+export interface TimelineEvent {
+  date?: string;
+  label: string;
+  desc: string;
+  current?: boolean;
+}
+
+// ============================================================================
+// DASHBOARD TYPES
+// ============================================================================
+
+export interface DashboardCard {
+  title: string;
+  value: string | number;
+  active?: boolean;
+  showToggle?: boolean;
+}
+
+export interface PendingOrderCardProps {
+  orderId: string;
+  initiatorName: string;
+  description: string;
+  price: number;
+}
+
+// ============================================================================
+// SERVICE INTERFACES
+// ============================================================================
+
+export interface OrderService {
+  fetchOrder(orderId: string): Promise<Order>;
+  updateOrderStatus(orderId: string, status: OrderStatus): Promise<{ success: boolean; status: string }>;
+  createOrder(form: CreateOrderForm): Promise<Order>;
+  getOrders(): Promise<Order[]>;
+}
+
+export interface TransactionService {
+  getTransactions(): Promise<Transaction[]>;
+  getWalletTransactions(): Promise<Transaction[]>;
+}
+
+export interface DisputeService {
+  getDisputes(): Promise<Dispute[]>;
+  createDispute(form: CreateDisputeForm): Promise<Dispute>;
+  updateDisputeStatus(disputeId: string, status: DisputeStatus): Promise<Dispute>;
+}
+
+// ============================================================================
+// CONTEXT TYPES
+// ============================================================================
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  register: (userData: RegisterData) => Promise<void>;
+  logout: () => void;
+  isAuthenticated: boolean;
+}
+
+export interface SidebarContextType {
+  isOpen: boolean;
+  toggle: () => void;
+  close: () => void;
+}

@@ -1,4 +1,12 @@
-const TransactionDetailsModal = ({ transaction, onClose }: { transaction: any, onClose: () => void }) => {
+import React from 'react';
+import { Transaction } from 'types';
+
+interface TransactionDetailsModalProps {
+  transaction: Transaction | null;
+  onClose: () => void;
+}
+
+const TransactionDetailsModal: React.FC<TransactionDetailsModalProps> = ({ transaction, onClose }) => {
   if (!transaction) return null;
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
