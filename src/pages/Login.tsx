@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { FormInput } from '../components/ui';
 import { Topbar } from '../components/layout';
+import { useAuthRedirect } from 'hooks/useAuthRedirect';
 
 const Login: React.FC = () => {
     const { login } = useAuth();
@@ -16,6 +17,9 @@ const Login: React.FC = () => {
     const [apiError, setApiError] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    // Redirect if already authenticated
+    useAuthRedirect();
 
     const validate = () => {
         const newErrors: { [key: string]: string } = {};

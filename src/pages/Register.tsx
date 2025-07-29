@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { ProgressBar, FormInput } from '../components/ui';
 import { Topbar } from '../components/layout';
+import { useAuthRedirect } from 'hooks/useAuthRedirect';
 
 const steps = [
     { label: 'Your Name', description: "Let's get to know you!" },
@@ -27,6 +28,9 @@ const Register: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(0);
     const [success, setSuccess] = useState(false);
+
+    // Redirect if already authenticated
+    useAuthRedirect();
 
     const validateStep = () => {
         const newErrors: { [key: string]: string } = {};
