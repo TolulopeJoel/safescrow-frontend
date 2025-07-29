@@ -39,19 +39,14 @@ const App: React.FC = () => {
                             <Route path="/register" element={<Register />} />
 
                             {/* Protected routes */}
-                            <Route
-                                path="/dashboard"
-                                element={
-                                    <ProtectedRoute>
-                                        <Layout><Dashboard /></Layout>
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route path="/transactions" element={<Layout><Transactions /></Layout>} />
-                            <Route path="/orders" element={<Layout><Orders /></Layout>} />
-                            <Route path="/orders/:id" element={<Layout><OrderDetails /></Layout>} />
-                            <Route path="/escrow/new" element={<Layout><CreateOrderPage /></Layout>} />
-                            <Route path="/disputes" element={<Layout><Disputes /></Layout>} />
+                            <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+                                <Route path="/dashboard" element={<Dashboard />} />
+                                <Route path="/transactions" element={<Transactions />} />
+                                <Route path="/orders" element={<Orders />} />
+                                <Route path="/orders/:id" element={<OrderDetails />} />
+                                <Route path="/escrow/new" element={<CreateOrderPage />} />
+                                <Route path="/disputes" element={<Disputes />} />
+                            </Route>
 
                             {/* Catch all route */}
                             <Route path="*" element={<Navigate to="/dashboard" replace />} />
