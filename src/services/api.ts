@@ -11,7 +11,7 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('access_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,7 +27,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('authToken');
+      localStorage.removeItem('access_token');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -50,36 +50,36 @@ export const authAPI = {
     }) => api.post('/auth/register', userData),
 
   logout: () => api.post('/auth/logout'),
-  
+
   getProfile: () => api.get('/auth/profile'),
 };
 
 // Escrow API functions
 export const escrowAPI = {
   getAll: () => api.get('/escrow'),
-  
+
   getById: (id: string) => api.get(`/escrow/${id}`),
-  
+
   create: (escrowData: {
     amount: number;
     recipientEmail: string;
     description: string;
     conditions: string;
   }) => api.post('/escrow', escrowData),
-  
+
   update: (id: string, updates: any) => api.put(`/escrow/${id}`, updates),
-  
+
   release: (id: string) => api.post(`/escrow/${id}/release`),
-  
+
   cancel: (id: string) => api.post(`/escrow/${id}/cancel`),
 };
 
 // User API functions
 export const userAPI = {
   getEscrows: () => api.get('/user/escrows'),
-  
+
   updateProfile: (profileData: any) => api.put('/user/profile', profileData),
-  
+
   changePassword: (passwordData: { currentPassword: string; newPassword: string }) =>
     api.put('/user/password', passwordData),
 };

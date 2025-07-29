@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, LoginCredentials, RegisterData } from '../types';
-import { authAPI } from '../services/api';
+import { User, LoginCredentials, RegisterData } from 'types';
+import { authAPI } from 'services/api';
 
 interface AuthContextType {
   user: User | null;
@@ -31,13 +31,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem('access_token');
       if (token) {
         try {
           const response = await authAPI.getProfile();
-          setUser(response.data.data);
+          setUser(response.data);
         } catch (error) {
-          localStorage.removeItem('authToken');
+          localStorage.removeItem('access_token');
         }
       }
       setLoading(false);
@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await authAPI.login(credentials);
       const { user, token } = response.data.data;
       
-      localStorage.setItem('authToken', token);
+      localStorage.setItem('access_token', token);
       setUser(user);
     } catch (error) {
       throw error;
@@ -61,17 +61,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (userData: RegisterData) => {
     try {
       const response = await authAPI.register(userData);
-      const { user, token } = response.data.data;
+      const {  access_token } = response.data;
       
-      localStorage.setItem('authToken', token);
-      setUser(user);
+      localStorage.setItem('access_token', access_token);
+      // setUser(user);
     } catch (error) {
       throw error;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('access_token');
     setUser(null);
     authAPI.logout().catch(() => {}); // Ignore logout API errors
   };
