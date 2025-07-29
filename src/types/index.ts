@@ -78,9 +78,11 @@ export interface LoginCredentials {
 
 export interface RegisterData {
   email: string;
+  nin: string;
   password: string;
-  name: string;
-  phone?: string;
+  password2: string;
+  full_name: string;
+  phone_number: string;
 }
 
 export interface AuthResponse {
@@ -195,23 +197,4 @@ export interface DisputeService {
   getDisputes(): Promise<Dispute[]>;
   createDispute(form: CreateDisputeForm): Promise<Dispute>;
   updateDisputeStatus(disputeId: string, status: DisputeStatus): Promise<Dispute>;
-}
-
-// ============================================================================
-// CONTEXT TYPES
-// ============================================================================
-
-export interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  register: (userData: RegisterData) => Promise<void>;
-  logout: () => void;
-  isAuthenticated: boolean;
-}
-
-export interface SidebarContextType {
-  isOpen: boolean;
-  toggle: () => void;
-  close: () => void;
 }

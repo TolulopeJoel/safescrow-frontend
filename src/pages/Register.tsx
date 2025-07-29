@@ -5,7 +5,7 @@ import { ProgressBar, FormInput } from '../components/ui';
 import { Topbar } from '../components/layout';
 
 const steps = [
-    { label: 'Your Name', description: 'Let’s get to know you!' },
+    { label: 'Your Name', description: "Let's get to know you!" },
     { label: 'Email Address', description: 'Where can we reach you?' },
     { label: 'Verify your identity', description: 'NIN verification is required to confirm your identity and complete your account setup.' },
     { label: 'Create Password', description: 'Set a strong password 🙈' },
@@ -15,9 +15,9 @@ const Register: React.FC = () => {
     const { register } = useAuth();
     const navigate = useNavigate();
     const [form, setForm] = useState({
-        name: '',
+        full_name: '',
         nin: '',
-        phone: '',
+        phone_number: '',
         email: '',
         password: '',
         password2: '',
@@ -31,14 +31,14 @@ const Register: React.FC = () => {
     const validateStep = () => {
         const newErrors: { [key: string]: string } = {};
         if (step === 0) {
-            const nameParts = form.name.trim().split(/\s+/);
+            const nameParts = form.full_name.trim().split(/\s+/);
             if (nameParts.length < 2 || nameParts.some(word => word.length < 2)) {
-                newErrors.name = 'Please enter your full name (first and last)';
+                newErrors.full_name = 'Please enter your full name (first and last)';
             }
         } else if (step === 1) {
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) newErrors.email = 'Invalid email';
-            if (!form.phone) newErrors.phone = 'Phone number is required';
-            if (!/^\d{10,15}$/.test(form.phone)) newErrors.phone = 'Enter a valid phone number';
+            if (!form.phone_number) newErrors.phone_number = 'Phone number is required';
+            if (!/^\d{10,15}$/.test(form.phone_number)) newErrors.phone_number = 'Enter a valid phone number';
 
         } else if (step === 2) {
             if (!form.nin) newErrors.nin = 'NIN is required';
@@ -77,17 +77,12 @@ const Register: React.FC = () => {
         try {
             await register(form);
             setSuccess(true);
-            setTimeout(() => navigate('/dashboard'), 1800);
+            setTimeout(() => navigate('/dashboard'), 1500);
         } catch (err: any) {
-            setApiError(err?.response?.data?.message || 'Registration failed');
+            setApiError(err?.response?.data?.detail || 'Registration failed');
         } finally {
             setLoading(false);
         }
-
-        // setSuccess(true);
-        // setTimeout(() => navigate('/register'), 1800);
-        // setLoading(false);
-
     };
 
     // Progress bar width
@@ -116,8 +111,8 @@ const Register: React.FC = () => {
 
                             <h2 className="text-2xl md:text-3xl mb-3 text-center">
                                 {step === 0 && 'Welcome!'}
-                                {step === 1 && `Nice to meet you, ${form.name.split(" ")[0] || 'friend'}!`}
-                                {step === 2 && 'Let’s confirm it’s really you'}
+                                {step === 1 && `Nice to meet you, ${form.full_name.split(" ")[0] || 'friend'}!`}
+                                {step === 2 && "Let's confirm it's really you"}
                                 {step === 3 && 'Your security matters to us'}
                             </h2>
                             <p className="text-base md:text-lg text-gray-500 text-center mb-8">
@@ -126,13 +121,13 @@ const Register: React.FC = () => {
                             <form onSubmit={step < (steps.length - 1) ? handleNext : handleSubmit} className="space-y-7 w-full max-w-lg mx-auto">
                                 {step === 0 && (
                                     <FormInput
-                                        name="name"
+                                        name="full_name"
                                         type="text"
                                         required={true}
                                         placeholder="Full name"
-                                        value={form.name}
+                                        value={form.full_name}
                                         onChange={handleChange}
-                                        error={errors.name}
+                                        error={errors.full_name}
                                         autoComplete="name"
                                         autoFocus
                                         className="text-base rounded-xl"
@@ -157,13 +152,13 @@ const Register: React.FC = () => {
                                         <div className="flex items-end gap-2">
                                             <div className="rounded- py-4 px-0 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-200 bg-white h-14 ">NG</div>
                                             <FormInput
-                                                name="phone"
+                                                name="phone_number"
                                                 type="tel"
                                                 required={true}
                                                 placeholder="Phone number"
-                                                value={form.phone}
+                                                value={form.phone_number}
                                                 onChange={handleChange}
-                                                error={errors.phone}
+                                                error={errors.phone_number}
                                                 className="flex-1 text-base rounded-xl"
                                             />
                                         </div>
@@ -269,7 +264,7 @@ const Register: React.FC = () => {
                                     </svg>
                                 </div>
                             </div>
-                            <h2 className="text-2xl font-bold mb-2 text-center animate-fade-in-up-delay">You're all set, {form.name.trim().split(/\s+/)[0]}!</h2>
+                            <h2 className="text-2xl font-bold mb-2 text-center animate-fade-in-up-delay">You're all set, {form.full_name.trim().split(/\s+/)[0]}!</h2>
                             <p className="text-gray-500 text-center mb-2 animate-fade-in-up-delay">Welcome to Safescrow 🎉</p>
                             <p className="text-gray-400 text-center mb-2 animate-fade-in-up-delay">Redirecting to your dashboard...</p>
                         </div>
@@ -280,4 +275,4 @@ const Register: React.FC = () => {
     );
 };
 
-export default Register; 
+export default Register;
