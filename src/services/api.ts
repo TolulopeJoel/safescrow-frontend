@@ -71,8 +71,17 @@ api.interceptors.response.use(
 
 // Auth API functions
 export const authAPI = {
-    login: (credentials: { email: string; password: string }) =>
-        api.post('/auth/login', credentials),
+    login: (credentials: { email: string; password: string }) => {
+        const formData = new URLSearchParams();
+        formData.append("username", credentials.email);
+        formData.append("password", credentials.password);
+
+        return api.post('/auth/login', formData, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+    },
 
     register: (userData: {
         email: string;
@@ -85,7 +94,7 @@ export const authAPI = {
 
     logout: () => api.post('/auth/logout'),
 
-    getProfile: () => api.get('/auth/profile'),
+    getProfile: () => api.get('/auth/me'),
 
     // Token refresh endpoint
     refreshToken: () => {
