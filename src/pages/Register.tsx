@@ -77,7 +77,7 @@ const Register: React.FC = () => {
         try {
             await register(form);
             setSuccess(true);
-            setTimeout(() => navigate('/dashboard'), 1500);
+            setTimeout(() => navigate('/dashboard'), 1600);
         } catch (err: any) {
             setApiError(err?.response?.data?.detail || 'Registration failed');
         } finally {

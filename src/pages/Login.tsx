@@ -43,9 +43,9 @@ const Login: React.FC = () => {
             setTimeout(() => {
                 const from = (location.state as any)?.from?.pathname || '/dashboard';
                 navigate(from, { replace: true });
-            }, 1200);
+            }, 1600);
         } catch (err: any) {
-            setApiError(err?.response?.data?.message || 'We couldn\'t sign you in. Please check your details and try again.');
+            setApiError(err?.response?.data?.detail || 'We couldn\'t sign you in. Please check your details and try again.');
         } finally {
             setLoading(false);
         }
