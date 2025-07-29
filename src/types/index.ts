@@ -6,10 +6,10 @@
 export interface User {
   id: string;
   email: string;
-  name: string;
-  phone?: string;
-  createdAt: string;
-  updatedAt: string;
+  full_name: string;
+  phone_number: string;
+  created_at: string;
+  updated_at: string;
 }
 
 // Order types

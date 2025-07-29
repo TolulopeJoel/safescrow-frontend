@@ -2,60 +2,48 @@
 // MOCK DATA - Centralized data source for the entire application
 // ============================================================================
 
-import { Order, Transaction, Dispute, User, Notification, TimelineEvent } from '../types';
+import { Order, Transaction, Dispute, User, Notification, TimelineEvent, OrderUser } from '../types';
 
 // ============================================================================
 // USERS
 // ============================================================================
 
-export const mockUsers: User[] = [
+export const mockUsers: OrderUser[] = [
   {
     id: '1',
     name: 'Aubrey',
     email: 'aubrey@email.com',
     phone: '+2348012345678',
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
   },
   {
     id: '2',
     name: 'Debra',
     email: 'debra@email.com',
     phone: '+2348023456789',
-    createdAt: '2024-01-02',
-    updatedAt: '2024-01-02',
   },
   {
     id: '3',
     name: 'John Doe',
     email: 'john@email.com',
     phone: '+2348034567890',
-    createdAt: '2024-01-03',
-    updatedAt: '2024-01-03',
   },
   {
     id: '4',
     name: 'Jane Doe',
     email: 'jane@email.com',
     phone: '+2348045678901',
-    createdAt: '2024-01-04',
-    updatedAt: '2024-01-04',
   },
   {
     id: '5',
     name: 'Ronald',
     email: 'ronald@email.com',
     phone: '+2348056789012',
-    createdAt: '2024-01-05',
-    updatedAt: '2024-01-05',
   },
   {
     id: '6',
     name: 'Jane',
     email: 'jane@email.com',
     phone: '+2348067890123',
-    createdAt: '2024-01-06',
-    updatedAt: '2024-01-06',
   },
 ];
 
