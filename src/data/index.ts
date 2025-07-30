@@ -284,18 +284,6 @@ export const mockTimelineEvents: TimelineEvent[] = [
 ];
 
 // ============================================================================
-// DASHBOARD DATA
-// ============================================================================
-
-export const dashboardStats = {
-  walletBalance: 66450,
-  escrowBalance: 13910,
-  pendingOrders: 3,
-  totalTransactions: 7,
-  activeDisputes: 1,
-};
-
-// ============================================================================
 // PENDING ORDER CARDS DATA
 // ============================================================================
 

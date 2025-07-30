@@ -1,15 +1,32 @@
 import React, { useState } from 'react';
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
-import { DashboardCard } from 'types';
-import { dashboardStats } from 'data';
+import { DashboardCard, User } from 'types';
 
-const cards: DashboardCard[] = [
-  { title: 'Wallet balance', value: `₦${dashboardStats.walletBalance.toLocaleString()}`, showToggle: true, active: true, },
-  { title: 'Balance in escrow', value: `₦${(dashboardStats.walletBalance + dashboardStats.escrowBalance).toLocaleString()}`, showToggle: true, },
-  { title: 'Pending orders', value: dashboardStats.pendingOrders, },
-];
 
-const DashboardCards: React.FC = () => {
+interface DashboardCardsProps {
+  profile: User;
+}
+
+
+const DashboardCards: React.FC<DashboardCardsProps> = ({ profile }) => {
+  const cards: DashboardCard[] = [
+    {
+      title: 'Wallet balance',
+      value: `₦${parseFloat(profile.wallet_balance).toLocaleString()}`,
+      showToggle: true,
+      active: true,
+    },
+    {
+      title: 'Balance in escrow',
+      value: `₦${parseFloat(profile.escrow_balance).toLocaleString()}`,
+      showToggle: true,
+    },
+    {
+      title: 'Pending orders',
+      value: profile.pending_transactions,
+    },
+  ];
+
   const [toggles, setToggles] = useState(cards.map(() => true));
 
   const handleToggle = (idx: number) => {

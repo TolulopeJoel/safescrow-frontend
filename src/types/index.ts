@@ -10,6 +10,9 @@ export interface User {
     phone_number: string;
     created_at: string;
     updated_at: string;
+    wallet_balance: string;
+    escrow_balance: string;
+    pending_transactions: number;
 }
 
 // Order types
