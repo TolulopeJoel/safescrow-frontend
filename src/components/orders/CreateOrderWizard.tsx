@@ -121,7 +121,7 @@ const CreateOrderWizard: React.FC = () => {
                     <p className="text-center text-gray-600 mb-6">An invite link has been sent to<br /><span className="font-medium">{form.email}</span>.</p>
                     <button
                         className="bg-primary-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-primary-800 transition"
-                    // onClick={...} // Add navigation to order details if needed
+                        onClick={() => navigate(`/orders/1`)}
                     >
                         View order details
                     </button>
@@ -297,7 +297,7 @@ const CreateOrderWizard: React.FC = () => {
                                 {form.amount && !isNaN(parseFloat(form.amount)) && (
                                     <>
                                         <div className="mt-2 text-xs text-gray-500">
-                                            <div className="flex items-center justify-between bg-gray-50 rounded-lg p-2">
+                                            <div className="flex items-center justify-between bg-gray-100 rounded-lg p-2">
                                                 <div className="flex-1 text-center">
                                                     <div className="font-medium text-gray-700">You pay</div>
                                                     <div className="text-gray-600">₦{((0.002 * parseFloat(form.amount)) / 2).toFixed(2)}</div>
@@ -378,7 +378,7 @@ const CreateOrderWizard: React.FC = () => {
                                                 onChange={handleChange}
                                                 className="w-full pl-9 pr-4 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-3 text-lg font-medium focus:outline-none transition placeholder-gray-300"
                                             >
-                                                <option value="">Select a service</option>
+                                                <option value="">[---]</option>
                                                 <option value="GIG">GIG Logistics</option>
                                                 <option value="DHL">DHL</option>
                                                 <option value="FedEx">FedEx</option>

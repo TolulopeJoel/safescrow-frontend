@@ -54,9 +54,9 @@ export const mockUsers: OrderUser[] = [
 export const mockOrders: Order[] = [
   {
     id: '1',
-    orderId: 'ORD001',
+    orderId: '9060EBE1',
     status: 'pending',
-    total: 40300,
+    total: 50000,
     buyer: mockUsers[0], // Aubrey
     seller: mockUsers[1], // Debra
     item: 'iPhone 16',

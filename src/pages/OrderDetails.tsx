@@ -80,7 +80,7 @@ const OrderDetails: React.FC = () => {
                     <div className="w-full bg-white border border-dashed border-gray-300 rounded-xl shadow p-0 overflow-hidden print:shadow-none print:border print:rounded-none">
                         {/* Receipt Header */}
                         <div className="bg-primary-50 border-b border-dashed border-gray-200 px-8 py-6 flex flex justify-between">
-                            <h1 className="text-xl font-bold r-widest text-primary-700 mb-1">Order #{order.orderId} </h1>
+                            <h1 className="text-xl font-bold r-widest text-primary-700 mb-1">Escrow #{order.orderId} </h1>
                             <div><OrderStatusBadge status={order.status} /></div>
                         </div>
 
@@ -117,20 +117,20 @@ const OrderDetails: React.FC = () => {
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
                                     <span>Item/Service</span>
-                                    <span className="font-mono">₦{order.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="font-mono">₦50,000</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>Escrow Fee</span>
-                                    <span className="font-mono">₦800.00</span>
+                                    <span className="font-mono">₦100.00</span>
                                 </div>
                                 <div className="border-t border-dashed my-2"></div>
                                 <div className="flex justify-between font-semibold">
                                     <span>Total Paid</span>
-                                    <span className="font-mono text-primary-700">₦{(order.total + 800).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="font-mono text-primary-700">₦50,050</span>
                                 </div>
-                                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                                <div className="flex justify-between font-semibold">
                                     <span>Amount to Seller</span>
-                                    <span className="font-mono">₦{order.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="font-mono text-primary-700">₦49,950</span>
                                 </div>
                             </div>
                         </section>
