@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef, useCallback } from 'react';
 import { User, LoginCredentials, RegisterData } from 'types';
 import { authAPI } from 'services/api';
 
@@ -56,24 +56,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const isRefreshingRef = useRef(false);
 
-    // Handle authentication failures
-    const handleAuthFailure = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        setUser(null);
-        clearRefreshTimeout();
-    };
-
     // Clear refresh timeout
-    const clearRefreshTimeout = () => {
+    const clearRefreshTimeout = useCallback(() => {
         if (refreshTimeoutRef.current) {
             clearTimeout(refreshTimeoutRef.current);
             refreshTimeoutRef.current = null;
         }
-    };
+    }, []);
+
+    // Handle authentication failures
+    const handleAuthFailure = useCallback(() => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        setUser(null);
+        clearRefreshTimeout();
+    }, [clearRefreshTimeout]);
 
     // Refresh token function
-    const refreshToken = async (): Promise<boolean> => {
+    const refreshToken = useCallback(async (): Promise<boolean> => {
         if (isRefreshingRef.current) {
             return false;
         }
@@ -94,7 +94,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 localStorage.setItem('refresh_token', refresh_token);
             }
 
-            scheduleTokenRefresh(access_token);
             return true;
         } catch (error) {
             handleAuthFailure();
@@ -102,10 +101,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } finally {
             isRefreshingRef.current = false;
         }
-    };
+    }, [handleAuthFailure]);
 
     // Schedule token refresh based on token expiry
-    const scheduleTokenRefresh = (token: string) => {
+    const scheduleTokenRefresh = useCallback((token: string) => {
         const expiry = getTokenExpiry(token);
         if (!expiry) return;
 
@@ -118,10 +117,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 refreshToken();
             }, refreshTime);
         }
-    };
+    }, [clearRefreshTimeout, refreshToken]);
 
     // Fetch user profile with error handling
-    const fetchUserProfile = async (): Promise<User | null> => {
+    const fetchUserProfile = useCallback(async (): Promise<User | null> => {
         try {
             const response = await authAPI.getProfile();
             return response.data;
@@ -129,7 +128,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             console.error('Failed to fetch user profile:', error);
             return null;
         }
-    };
+    }, []);
 
     useEffect(() => {
         let isMounted = true;
@@ -150,6 +149,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                             const retryUserData = await fetchUserProfile();
                             if (retryUserData) {
                                 setUser(retryUserData);
+                                scheduleTokenRefresh(localStorage.getItem('access_token')!);
                             }
                         }
                     }
@@ -161,6 +161,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                             const userData = await fetchUserProfile();
                             if (userData) {
                                 setUser(userData);
+                                scheduleTokenRefresh(localStorage.getItem('access_token')!);
                             }
                         }
                     }
@@ -178,7 +179,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             isMounted = false;
             clearRefreshTimeout();
         };
-    }, []);
+    }, [refreshToken, scheduleTokenRefresh, fetchUserProfile, clearRefreshTimeout]);
 
     const login = async (credentials: LoginCredentials) => {
         setAuthLoading(true);
