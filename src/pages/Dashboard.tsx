@@ -26,7 +26,7 @@ const Dashboard: React.FC = () => {
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-semibold text-gray-800">Pending Escrows</h2>
                             {pendingOrders.length > 1 && (
-                                <a href="#" className="text-sm font-medium text-orange-500 p-2 px-4 rounded hover:bg-orange-100 active:scale-95 transition cursor-pointer select-none">View all</a>
+                                <a href="/orders" className="text-sm font-medium text-orange-500 p-2 px-4 rounded hover:bg-orange-100 active:scale-95 transition cursor-pointer select-none">View all</a>
                             )}
                         </div>
 

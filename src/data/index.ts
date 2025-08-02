@@ -2,7 +2,7 @@
 // MOCK DATA - Centralized data source for the entire application
 // ============================================================================
 
-import { Order, Transaction, Dispute, User, Notification, TimelineEvent, OrderUser } from '../types';
+import { Order, Transaction, Dispute, Notification, TimelineEvent, OrderUser } from '../types';
 
 // ============================================================================
 // USERS

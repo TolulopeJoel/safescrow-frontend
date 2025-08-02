@@ -314,7 +314,7 @@ const CreateOrderWizard: React.FC = () => {
 
                                         <div className="mt-4 p-3 bg-primary-50 border border-primary-100 rounded-lg">
                                             <div className="flex justify-between items-center">
-                                                <span className="text-sm font-semibold text-primary-800">{role == 'seller' ? "You'll receive" : "Total payment"}</span>
+                                                <span className="text-sm font-semibold text-primary-800">{role === 'seller' ? "You'll receive" : "Total payment"}</span>
                                                 <span className="text-lg font-bold text-primary-800">
                                                     ₦{parseFloat(
                                                         (

@@ -3,14 +3,12 @@ import { Topbar, SidebarNav } from 'components/layout';
 import { WalletTransactionCard, StatsOverview } from 'components/transactions';
 import { FilterTabs } from 'components/ui';
 import { IconTransfer } from '@tabler/icons-react';
-import { Transaction } from 'types';
 import { mockTransactions } from 'data';
 
 const FILTERS = ['All', 'Credit', 'Debit'];
 
 const Transactions: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('All');
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [search, setSearch] = useState('');
 
   const filteredTransactions = (selectedFilter === 'All'
@@ -66,7 +64,7 @@ const Transactions: React.FC = () => {
                   {idx === 0 && (
                     <span className="absolute -top-3 left-4 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Recent</span>
                   )}
-                  <WalletTransactionCard transaction={txn} onViewDetails={setSelectedTransaction} isLast={idx === filteredTransactions.length - 1} />
+                  <WalletTransactionCard transaction={txn} isLast={idx === filteredTransactions.length - 1} />
                 </div>
               ))
             )}

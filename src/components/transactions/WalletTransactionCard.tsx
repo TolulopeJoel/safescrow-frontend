@@ -6,7 +6,6 @@ import { Transaction } from 'types';
 
 interface WalletTransactionCardProps {
   transaction: Transaction;
-  onViewDetails: (txn: Transaction) => void;
   isLast?: boolean;
 }
 
@@ -20,7 +19,7 @@ const typeIcon = {
   transfer: IconCurrencyNaira,
 };
 
-const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transaction, onViewDetails, isLast }) => {
+const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transaction, isLast }) => {
   const Icon = typeIcon[transaction.type] || IconCurrencyNaira;
   const isCredit = transaction.direction === 'credit';
   const amountColor = isCredit ? 'text-green-600' : 'text-red-600';
