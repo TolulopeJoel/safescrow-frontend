@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { FormInput, FormTextarea, ImageDropzone, ProgressBar } from 'components/ui';
 import { CalendarIcon, TruckIcon } from 'components/icons/ExternalIcons';
+import PaystackPop from '@paystack/inline-js';
+import { escrowAPI } from 'services/api';
 
 const quickAmounts = [5060, 10000, 15213, 20000, 49780];
 
@@ -34,14 +36,17 @@ const CreateOrderWizard: React.FC = () => {
 
     const [step, setStep] = useState(1);
     const [form, setForm] = useState({
-        title: '',
-        email: '',
-        phone: '',
+        name: '',
+        price: '',
         description: '',
-        amount: '',
+        delivery_date: '',
+
+        receiver_email: '',
+        receiver_phone: '',
+
+        role: role,
+        logistic_service: '',
         images: [] as File[],
-        logisticsService: '',
-        deliveryDate: '',
     });
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -57,15 +62,15 @@ const CreateOrderWizard: React.FC = () => {
     };
 
     const handleQuickAmount = (amt: number) => {
-        setForm({ ...form, amount: amt.toString() });
-        setErrors({ ...errors, amount: '' });
+        setForm({ ...form, price: amt.toString() });
+        setErrors({ ...errors, price: '' });
     };
 
     const validateStep1 = () => {
         const newErrors: { [key: string]: string } = {};
-        if (!form.title) newErrors.title = 'Required';
-        if (!form.email) newErrors.email = 'Required';
-        if (!form.phone) newErrors.phone = 'Required';
+        if (!form.name) newErrors.name = 'Required';
+        if (!form.receiver_email) newErrors.receiver_email = 'Required';
+        if (!form.receiver_phone) newErrors.receiver_phone = 'Required';
         if (!form.description) newErrors.description = 'Required';
         if (!form.images.length && role === 'seller') newErrors.images = 'Image required';
         setErrors(newErrors);
@@ -74,7 +79,7 @@ const CreateOrderWizard: React.FC = () => {
 
     const validateStep2 = () => {
         const newErrors: { [key: string]: string } = {};
-        if (!form.amount || isNaN(Number(form.amount)) || Number(form.amount) <= 0) newErrors.amount = 'Enter a valid amount';
+        if (!form.price || isNaN(Number(form.price)) || Number(form.price) <= 0) newErrors.price = 'Enter a valid amount';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -82,7 +87,7 @@ const CreateOrderWizard: React.FC = () => {
     // Update validateDeliveryStep for custom logistics
     const validateStep3 = () => {
         const newErrors: { [key: string]: string } = {};
-        if (!form.deliveryDate) newErrors.deliveryDate = 'Delivery date required';
+        if (!form.delivery_date) newErrors.delivery_date = 'Delivery date required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -103,9 +108,26 @@ const CreateOrderWizard: React.FC = () => {
     const handleCancel = () => {
         navigate('/');
     };
-    const handleFinish = () => {
-        // Simulate order creation
-        setOrderCreated(true);
+
+    const handleFinish = async () => {
+        try {
+            const { logistic_service, ...basePayload } = form;
+            const payload = (!logistic_service || logistic_service.trim() === '') 
+                ? basePayload 
+                : { ...basePayload, logistic_service };
+    
+            console.log('Payload:', payload);
+            const response = await escrowAPI.create(payload);
+            if (response.data && response.data.access_code) {
+                const popup = new PaystackPop()
+                popup.resumeTransaction(response.data.access_code)
+            } else {
+                setOrderCreated(true);
+            }
+        } catch (err: any) {
+            console.error('Error creating order:', err);
+            setErrors({ ...errors, api: err?.response?.data?.detail || 'An error occurred while creating the order.' });
+        }
     };
 
     // Progress bar width
@@ -118,7 +140,7 @@ const CreateOrderWizard: React.FC = () => {
                 <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-10 flex flex-col items-center">
                     <span className="text-3xl mb-4">🎉</span>
                     <h2 className="text-center text-xl font-semibold mb-2">Congratulations on creating your first order!</h2>
-                    <p className="text-center text-gray-600 mb-6">An invite link has been sent to<br /><span className="font-medium">{form.email}</span>.</p>
+                    <p className="text-center text-gray-600 mb-6">An invite link has been sent to<br /><span className="font-medium">{form.receiver_email}</span>.</p>
                     <button
                         className="bg-primary-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-primary-800 transition"
                         onClick={() => navigate(`/orders/1`)}
@@ -170,33 +192,33 @@ const CreateOrderWizard: React.FC = () => {
                             <div>
                                 <FormInput
                                     label={labels.orderDetails}
-                                    name="title"
+                                    name="name"
                                     placeholder={labels.orderDetailsPlaceholder}
-                                    value={form.title}
+                                    value={form.name}
                                     onChange={handleChange}
-                                    error={errors.title}
+                                    error={errors.name}
                                     type="text"
                                 />
                             </div>
                             <div>
                                 <FormInput
                                     label={`${labels.counterpart}'s email`}
-                                    name="email"
+                                    name="receiver_email"
                                     placeholder="Enter email address"
-                                    value={form.email}
+                                    value={form.receiver_email}
                                     onChange={handleChange}
-                                    error={errors.email}
+                                    error={errors.receiver_email}
                                     type="email"
                                 />
                             </div>
                             <div>
                                 <FormInput
                                     label={`${labels.counterpart}'s phone number`}
-                                    name="phone"
+                                    name="receiver_phone"
                                     placeholder="Enter phone number"
-                                    value={form.phone}
+                                    value={form.receiver_phone}
                                     onChange={handleChange}
-                                    error={errors.phone}
+                                    error={errors.receiver_phone}
                                     type="tel"
                                 />
                             </div>
@@ -247,9 +269,9 @@ const CreateOrderWizard: React.FC = () => {
                                     <span className="absolute left-0 top-1/2 -translate-y-1/2 text-3xl font-medium pl-1">₦</span>
                                     <input
                                         type="number"
-                                        name="amount"
+                                        name="price"
                                         placeholder="0.00"
-                                        value={form.amount}
+                                        value={form.price}
                                         onChange={handleChange}
                                         className="w-full pl-8 pr-20 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-2 text-3xl font-medium focus:outline-none transition placeholder-gray-300 "
                                         style={{ letterSpacing: '1px' }}
@@ -264,7 +286,7 @@ const CreateOrderWizard: React.FC = () => {
                                         <option key="NGN" value={"NGN"}>NGN</option>
                                     </select>
                                 </div>
-                                {errors.amount && <span className="text-xs text-red-500">{errors.amount}</span>}
+                                {errors.price && <span className="text-xs text-red-500">{errors.price}</span>}
                                 <div className="mt-2 text-xs text-gray-400 font-medium">
                                     Bal: ₦{balance.toLocaleString()}
                                 </div>
@@ -288,24 +310,24 @@ const CreateOrderWizard: React.FC = () => {
                                         type="text"
                                         name="escrowFee"
                                         placeholder="0"
-                                        value={`₦ ${form.amount && !isNaN(parseFloat(form.amount)) ? (0.002 * parseFloat(form.amount)).toFixed(2) : ''}`}
+                                        value={`₦ ${form.price && !isNaN(parseFloat(form.price)) ? (0.002 * parseFloat(form.price)).toFixed(2) : ''}`}
                                         readOnly
                                         className="w-full p-4 bg-transparent border border-gray-300 rounded-xl text-md text-gray-500 focus:outline-none focus:border-primary-400 transition placeholder-gray-300 cursor-default"
                                         style={{ letterSpacing: '1px' }}
                                     />
                                 </div>
-                                {form.amount && !isNaN(parseFloat(form.amount)) && (
+                                {form.price && !isNaN(parseFloat(form.price)) && (
                                     <>
                                         <div className="mt-2 text-xs text-gray-500">
                                             <div className="flex items-center justify-between bg-gray-100 rounded-lg p-2">
                                                 <div className="flex-1 text-center">
                                                     <div className="font-medium text-gray-700">You pay</div>
-                                                    <div className="text-gray-600">₦{((0.002 * parseFloat(form.amount)) / 2).toFixed(2)}</div>
+                                                    <div className="text-gray-600">₦{((0.002 * parseFloat(form.price)) / 2).toFixed(2)}</div>
                                                 </div>
                                                 <div className="w-px h-8 bg-gray-300 mx-2"></div>
                                                 <div className="flex-1 text-center">
                                                     <div className="font-medium text-gray-700">{labels.counterpart} pays</div>
-                                                    <div className="text-gray-600">₦{((0.002 * parseFloat(form.amount)) / 2).toFixed(2)}</div>
+                                                    <div className="text-gray-600">₦{((0.002 * parseFloat(form.price)) / 2).toFixed(2)}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -318,8 +340,8 @@ const CreateOrderWizard: React.FC = () => {
                                                 <span className="text-lg font-bold text-primary-800">
                                                     ₦{parseFloat(
                                                         (
-                                                            parseFloat(form.amount) +
-                                                            (role === "seller" ? -1 : 1) * (0.002 * parseFloat(form.amount) / 2)
+                                                            parseFloat(form.price) +
+                                                            (role === "seller" ? -1 : 1) * (0.002 * parseFloat(form.price) / 2)
                                                         ).toFixed(2)
                                                     ).toLocaleString()}
 
@@ -356,14 +378,14 @@ const CreateOrderWizard: React.FC = () => {
                                         </span>
                                         <input
                                             type="date"
-                                            name="deliveryDate"
-                                            value={form.deliveryDate}
+                                            name="delivery_date"
+                                            value={form.delivery_date}
                                             onChange={handleChange}
                                             className="w-full pl-9 pr-4 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-3 text-lg font-medium focus:outline-none transition placeholder-gray-300"
                                         />
                                     </div>
                                     <span className="text-xs text-gray-400 mt-1">Expected delivery date</span>
-                                    {errors.deliveryDate && <span className="block text-xs text-red-500 mt-1">{errors.deliveryDate}</span>}
+                                    {errors.delivery_date && <span className="block text-xs text-red-500 mt-1">{errors.deliveryDate}</span>}
                                 </div>
                                 {role === 'seller' && (
                                     <div className="flex flex-col justify-center">
@@ -373,8 +395,8 @@ const CreateOrderWizard: React.FC = () => {
                                                 <TruckIcon />
                                             </span>
                                             <select
-                                                name="logisticsService"
-                                                value={form.logisticsService}
+                                                name="logistic_service"
+                                                value={form.logistic_service}
                                                 onChange={handleChange}
                                                 className="w-full pl-9 pr-4 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-3 text-lg font-medium focus:outline-none transition placeholder-gray-300"
                                             >
@@ -407,15 +429,15 @@ const CreateOrderWizard: React.FC = () => {
                             <div className="w-full flex flex-col space-y-3 mb-6">
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">{labels.orderDetails}</span>
-                                    <span className="text-gray-800">{form.title}</span>
+                                    <span className="text-gray-800">{form.name}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">{labels.counterpart}'s email</span>
-                                    <span className="text-gray-800">{form.email}</span>
+                                    <span className="text-gray-800">{form.receiver_email}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">{labels.counterpart}'s phone number</span>
-                                    <span className="text-gray-800">{form.phone}</span>
+                                    <span className="text-gray-800">{form.receiver_phone}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">{labels.description}</span>
@@ -423,17 +445,17 @@ const CreateOrderWizard: React.FC = () => {
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">Transaction amount</span>
-                                    <span className="text-gray-800">₦{Number(form.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="text-gray-800">₦{Number(form.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
                                 {role === 'seller' && (
                                     <div className="flex justify-between text-sm">
                                         <span className="font-medium text-gray-600">Logistics Service</span>
-                                        <span className="text-gray-800">{form.logisticsService || '-'}</span>
+                                        <span className="text-gray-800">{form.logistic_service || '-'}</span>
                                     </div>
                                 )}
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">Delivery Date</span>
-                                    <span className="text-gray-800">{form.deliveryDate || '-'}</span>
+                                    <span className="text-gray-800">{form.delivery_date || '-'}</span>
                                 </div>
                             </div>
                             <button

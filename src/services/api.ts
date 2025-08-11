@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { CreateOrderForm } from 'types';
 
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
+    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -109,12 +110,7 @@ export const escrowAPI = {
 
     getById: (id: string) => api.get(`/escrow/${id}`),
 
-    create: (escrowData: {
-        amount: number;
-        recipientEmail: string;
-        description: string;
-        conditions: string;
-    }) => api.post('/escrow', escrowData),
+    create: (escrowData: CreateOrderForm) => api.post('/escrow/create', escrowData),
 
     update: (id: string, updates: any) => api.put(`/escrow/${id}`, updates),
 

@@ -116,15 +116,15 @@ export interface PaginatedResponse<T> {
 // ============================================================================
 
 export interface CreateOrderForm {
-    title: string;
-    email: string;
-    phone: string;
+    name: string;
+    receiver_email: string;
+    receiver_phone: string;
     description: string;
-    amount: string;
-    feePayer: string;
-    images: File[];
-    logisticsService: string;
-    deliveryDate: string;
+    price: string;
+    role: any;
+    // images: File[];
+    logistics_service?: string;
+    delivery_date: string;
 }
 
 export interface CreateDisputeForm {
