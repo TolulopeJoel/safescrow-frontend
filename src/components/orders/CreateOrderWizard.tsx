@@ -111,16 +111,16 @@ const CreateOrderWizard: React.FC = () => {
 
     const handleFinish = async () => {
         try {
-            const { logistic_service, ...basePayload } = form;
-            const payload = (!logistic_service || logistic_service.trim() === '') 
-                ? basePayload 
-                : { ...basePayload, logistic_service };
-    
-            console.log('Payload:', payload);
-            const response = await escrowAPI.create(payload);
+            const response = await escrowAPI.create(form);
             if (response.data && response.data.access_code) {
-                const popup = new PaystackPop()
-                popup.resumeTransaction(response.data.access_code)
+                const popup = new PaystackPop();
+                popup.resumeTransaction(response.data.access_code,
+                    {
+                        onSuccess: () => {
+                            setOrderCreated(true);
+                        }
+                    }
+                );
             } else {
                 setOrderCreated(true);
             }
