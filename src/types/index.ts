@@ -122,8 +122,8 @@ export interface CreateOrderForm {
     description: string;
     price: string;
     role: any;
-    // images: File[];
-    logistics_service?: string;
+    images: File[];
+    logistic_service?: string;
     delivery_date: string;
 }
 

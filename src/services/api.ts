@@ -110,7 +110,35 @@ export const escrowAPI = {
 
     getById: (id: string) => api.get(`/escrow/${id}`),
 
-    create: (escrowData: CreateOrderForm) => api.post('/escrow/create', escrowData),
+    create: (escrowData: CreateOrderForm) => {
+        const formData = new FormData();
+    
+        // Append all the text fields
+        formData.append("name", escrowData.name);
+        formData.append("price", escrowData.price.toString());
+        formData.append("description", escrowData.description);
+        formData.append("delivery_date", escrowData.delivery_date); // format: YYYY-MM-DD
+        formData.append("receiver_email", escrowData.receiver_email);
+        formData.append("receiver_phone", escrowData.receiver_phone);
+        formData.append("role", escrowData.role);
+    
+        if (escrowData.logistic_service) {
+            formData.append("logistic_service", escrowData.logistic_service);
+        }
+    
+        // Append multiple files
+        escrowData.images.forEach((file: File) => {
+            formData.append("images", file);
+        });
+
+    
+        return api.post('/escrow/create', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
+    
 
     update: (id: string, updates: any) => api.put(`/escrow/${id}`, updates),
 
