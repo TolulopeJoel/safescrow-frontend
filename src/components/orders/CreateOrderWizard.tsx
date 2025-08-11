@@ -401,10 +401,10 @@ const CreateOrderWizard: React.FC = () => {
                                                 className="w-full pl-9 pr-4 bg-transparent border-0 border-b-2 border-gray-200 focus:border-primary-400 rounded-none py-3 text-lg font-medium focus:outline-none transition placeholder-gray-300"
                                             >
                                                 <option value="">[---]</option>
-                                                <option value="GIG">GIG Logistics</option>
-                                                <option value="DHL">DHL</option>
-                                                <option value="FedEx">FedEx</option>
-                                                <option value="UPS">UPS</option>
+                                                <option value="gig">GIG Logistics</option>
+                                                <option value="dhl">DHL</option>
+                                                <option value="okada_express">Okada Express</option>
+                                                <option value="kwik">Kwik</option>
                                             </select>
                                         </div>
                                         <span className="text-xs text-gray-400 mt-1">Choose a delivery service</span>
