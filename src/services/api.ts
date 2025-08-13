@@ -107,6 +107,7 @@ export const authAPI = {
 // Escrow API functions
 export const escrowAPI = {
     getAll: () => api.get('/escrow'),
+    getPending: () => api.get('/escrow/pending'),
 
     getById: (id: string) => api.get(`/escrow/${id}`),
 
@@ -138,7 +139,6 @@ export const escrowAPI = {
             },
         });
     },
-    
 
     update: (id: string, updates: any) => api.put(`/escrow/${id}`, updates),
 

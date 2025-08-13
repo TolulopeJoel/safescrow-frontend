@@ -127,7 +127,7 @@ const OrderDetails: React.FC = () => {
         } catch (err: any) {
             console.error('Error fetching order:', err);
             if (err?.response?.status === 404) {
-                setError('Order not found');
+                setError('Escrow not found');
             } else {
                 setError(err?.response?.data?.detail || 'Failed to load order details');
             }
@@ -183,8 +183,8 @@ const OrderDetails: React.FC = () => {
 
         if (isInitiator) {
             return {
-                name: user?.full_name || '',
-                contact: shouldShowLabel ? user?.email : '',
+                name: order?.initiator?.full_name || '',
+                contact: shouldShowLabel ? order?.initiator?.email : '',
                 showLabel: shouldShowLabel
             };
         } else {
@@ -219,7 +219,7 @@ const OrderDetails: React.FC = () => {
                 <div className="flex">
                     <SidebarNav />
                     <main className="flex-1 p-8">
-                        <ErrorState error={error || 'Order not found'} onRetry={loadOrder} />
+                        <ErrorState error={error || 'Escrow not found'} onRetry={loadOrder} />
                     </main>
                 </div>
             </div>
