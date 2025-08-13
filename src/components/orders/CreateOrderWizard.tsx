@@ -51,6 +51,7 @@ const CreateOrderWizard: React.FC = () => {
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [orderCreated, setOrderCreated] = useState(false);
+    const [publicID, setPublicID] = useState('latest');
 
     // Simulated balance
     const balance = 30000;
@@ -123,6 +124,7 @@ const CreateOrderWizard: React.FC = () => {
                 );
             } else {
                 setOrderCreated(true);
+                setPublicID(response.data.public_id);
             }
         } catch (err: any) {
             console.error('Error creating order:', err);
@@ -143,7 +145,7 @@ const CreateOrderWizard: React.FC = () => {
                     <p className="text-center text-gray-600 mb-6">An invite link has been sent to<br /><span className="font-medium">{form.receiver_email}</span>.</p>
                     <button
                         className="bg-primary-700 text-white rounded-lg px-6 py-2 font-medium hover:bg-primary-800 transition"
-                        onClick={() => navigate(`/orders/1`)}
+                        onClick={() => navigate(`/orders/${publicID}`)}
                     >
                         View order details
                     </button>
@@ -385,7 +387,7 @@ const CreateOrderWizard: React.FC = () => {
                                         />
                                     </div>
                                     <span className="text-xs text-gray-400 mt-1">Expected delivery date</span>
-                                    {errors.delivery_date && <span className="block text-xs text-red-500 mt-1">{errors.deliveryDate}</span>}
+                                    {errors.delivery_date && <span className="block text-xs text-red-500 mt-1">{errors.delivery_date}</span>}
                                 </div>
                                 {role === 'seller' && (
                                     <div className="flex flex-col justify-center">
