@@ -160,8 +160,8 @@ const Disputes: React.FC = () => {
                     >
                       <option value="">Select an order</option>
                       {mockOrders.map((order) => (
-                        <option key={order.id} value={order.orderId}>
-                          {order.orderId} - {order.buyer.name}
+                        <option key={order.public_id} value={order.public_id}>
+                          {order.public_id} - {order.receiver?.full_name || order.receiver_email} - ₦{order.item_price.toLocaleString()}
                         </option>
                       ))}
                     </select>

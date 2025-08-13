@@ -11,40 +11,10 @@ import { Order, Transaction, Dispute, Notification, TimelineEvent, OrderUser } f
 export const mockUsers: OrderUser[] = [
   {
     id: '1',
-    name: 'Aubrey',
+    full_name: 'Aubrey',
     email: 'aubrey@email.com',
     phone: '+2348012345678',
-  },
-  {
-    id: '2',
-    name: 'Debra',
-    email: 'debra@email.com',
-    phone: '+2348023456789',
-  },
-  {
-    id: '3',
-    name: 'John Doe',
-    email: 'john@email.com',
-    phone: '+2348034567890',
-  },
-  {
-    id: '4',
-    name: 'Jane Doe',
-    email: 'jane@email.com',
-    phone: '+2348045678901',
-  },
-  {
-    id: '5',
-    name: 'Ronald',
-    email: 'ronald@email.com',
-    phone: '+2348056789012',
-  },
-  {
-    id: '6',
-    name: 'Jane',
-    email: 'jane@email.com',
-    phone: '+2348067890123',
-  },
+  }
 ];
 
 // ============================================================================
@@ -53,88 +23,36 @@ export const mockUsers: OrderUser[] = [
 
 export const mockOrders: Order[] = [
   {
-    id: '1',
-    orderId: '9060EBE1',
+    public_id: '9060EBE1',
+    item_name: 'iPhone 16',
+    item_price: 50000,
+    fee_amount: 1000,
     status: 'pending',
-    total: 50000,
-    buyer: mockUsers[0], // Aubrey
-    seller: mockUsers[1], // Debra
-    item: 'iPhone 16',
-    description: 'Brand new iPhone 16, 256GB, Space Black',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    deliveryDate: '2025-08-10',
-    note: '2 years manufacturer warranty',
+    initiator_role: 'buyer',
+    receiver: mockUsers[0], // Debra
+    receiver_email: 'debra@example.com',
+    receiver_phone: '123-456-7890',
     images: ['iphone16-1.jpg', 'iphone16-2.jpg'],
+    description: 'Brand new iPhone 16, 256GB, Space Black',
+    expected_delivery_date: '2025-08-10',
+    created_at: '2024-06-01',
+    updated_at: '2024-06-02',
   },
   {
-    id: '2',
-    orderId: 'ORD002',
+    public_id: 'ORD002',
+    item_name: 'MacBook Pro',
+    item_price: 25000,
+    fee_amount: 800,
     status: 'pending',
-    total: 25000,
-    buyer: mockUsers[2], // John Doe
-    seller: mockUsers[1], // Debra
-    item: 'MacBook Pro',
-    description: 'MacBook Pro 14-inch, M2 Pro, 16GB RAM',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    deliveryDate: '2025-08-15',
-    note: 'Includes original box and accessories',
+    initiator_role: 'buyer',
+    receiver: mockUsers[0], // Debra
+    receiver_email: 'debra@example.com',
+    receiver_phone: '123-456-7890',
     images: ['macbook-1.jpg'],
-  },
-  {
-    id: '3',
-    orderId: 'ORD003',
-    status: 'accepted',
-    total: 15000,
-    buyer: mockUsers[0], // Aubrey
-    seller: mockUsers[1], // Debra
-    item: 'AirPods Pro',
-    description: 'AirPods Pro 2nd generation',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    deliveryDate: '2025-08-20',
-    note: 'Brand new sealed',
-    images: ['airpods-1.jpg'],
-  },
-  {
-    id: '4',
-    orderId: '453796',
-    status: 'pending',
-    total: 40300,
-    buyer: mockUsers[0], // Aubrey
-    seller: mockUsers[1], // Debra
-    item: 'iPhone 16',
-    description: 'Brand new iPhone 16',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    deliveryDate: '2025-08-10',
-  },
-  {
-    id: '5',
-    orderId: '453797',
-    status: 'in progress',
-    total: 40000,
-    buyer: mockUsers[1], // Debra
-    seller: mockUsers[2], // John
-    item: 'MacBook Pro',
-    description: 'MacBook Pro 14-inch',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    deliveryDate: '2025-08-15',
-  },
-  {
-    id: '6',
-    orderId: '453798',
-    status: 'pending',
-    total: 40000,
-    buyer: mockUsers[4], // Ronald
-    seller: mockUsers[5], // Jane
-    item: 'AirPods Pro',
-    description: 'AirPods Pro 2nd generation',
-    createdAt: '2024-06-01',
-    updatedAt: '2024-06-02',
-    deliveryDate: '2025-08-20',
+    description: 'MacBook Pro 14-inch, M2 Pro, 16GB RAM',
+    expected_delivery_date: '2025-08-15',
+    created_at: '2024-06-01',
+    updated_at: '2024-06-02',
   },
 ];
 
@@ -307,23 +225,3 @@ export const pendingOrders = [
     price: 300,
   },
 ];
-
-// ============================================================================
-// HELPER FUNCTIONS
-// ============================================================================
-
-export const getOrderById = (orderId: string): Order | undefined => {
-  return mockOrders.find(order => order.orderId === orderId || order.id === orderId);
-};
-
-export const getOrdersByStatus = (status: string): Order[] => {
-  return mockOrders.filter(order => order.status === status);
-};
-
-export const getTransactionsByType = (type: string): Transaction[] => {
-  return mockTransactions.filter(transaction => transaction.type === type);
-};
-
-export const getDisputesByStatus = (status: string): Dispute[] => {
-  return mockDisputes.filter(dispute => dispute.status === status);
-}; 

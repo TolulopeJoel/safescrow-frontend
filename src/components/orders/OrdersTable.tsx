@@ -20,10 +20,10 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => (
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
         {orders.map((order) => (
-          <tr key={order.id}>
-            <td className="px-6 py-4 whitespace-nowrap text-sm">{order.buyer.name}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.orderId}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{order.total.toLocaleString()}</td>
+          <tr key={order.public_id}>
+            <td className="px-6 py-4 whitespace-nowrap text-sm">{order.receiver?.full_name || order.receiver_email}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.public_id}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{order.item_price.toLocaleString()}</td>
             <td className="px-6 py-4 whitespace-nowrap"><OrderStatusBadge status={order.status} /></td>
             <td className="px-6 py-4 whitespace-nowrap">
               <button className="text-blue-600 hover:underline text-sm font-medium">View</button>

@@ -18,27 +18,31 @@ export interface User {
 // Order types
 export interface OrderUser {
     id: string;
-    name: string;
+    full_name: string;
     email: string;
     phone?: string;
 }
 
 export type OrderStatus = 'pending' | 'accepted' | 'declined' | 'completed' | 'cancelled' | 'in progress';
 export interface Order {
-    id: string;
-    orderId: string;
+    public_id: string;
+    item_name: string;
+    item_price: number;
+    fee_amount: number;
     status: OrderStatus;
-    total: number;
-    buyer: OrderUser;
-    seller: OrderUser;
-    item: string;
-    description: string;
-    createdAt: string;
-    updatedAt: string;
-    deliveryDate: string;
-    note?: string;
+
+    initiator_role: "buyer" | "seller";
+    receiver?: OrderUser;
+    receiver_email?: string;
+    receiver_phone?: string;
     images?: string[];
+
+    description: string;
+    expected_delivery_date: string;
+    created_at: string;
+    updated_at: string;
 }
+
 
 // Transaction types
 export type TransactionType = 'funding' | 'withdrawal' | 'escrow release' | 'fee' | 'bonus' | 'refund' | 'transfer';
