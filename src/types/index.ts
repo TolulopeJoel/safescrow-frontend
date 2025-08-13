@@ -33,6 +33,7 @@ export interface Order {
 
     initiator_role: "buyer" | "seller";
     receiver?: OrderUser;
+    initiator?: OrderUser;
     receiver_email?: string;
     receiver_phone?: string;
     images?: string[];
@@ -179,6 +180,7 @@ export interface DashboardCard {
 
 export interface PendingOrderCardProps {
     orderId: string;
+    itemName: string;
     initiatorName: string;
     description: string;
     price: number;

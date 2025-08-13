@@ -200,28 +200,3 @@ export const mockTimelineEvents: TimelineEvent[] = [
   { date: '', label: 'Product accepted', desc: 'Delivery has been accepted by the buyer' },
   { date: '', label: 'Release of funds', desc: 'Funds has been successfully transferred to your escrow wallet' }
 ];
-
-// ============================================================================
-// PENDING ORDER CARDS DATA
-// ============================================================================
-
-export const pendingOrders = [
-  {
-    orderId: 'ORD001',
-    initiatorName: 'John Doe',
-    description: 'This is a description',
-    price: 100,
-  },
-  {
-    orderId: 'ORD002',
-    initiatorName: 'Jane Doe',
-    description: 'This is a description',
-    price: 200,
-  },
-  {
-    orderId: 'ORD003',
-    initiatorName: 'John Doe',
-    description: 'This is a description',
-    price: 300,
-  },
-];
