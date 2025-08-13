@@ -37,13 +37,14 @@ const App: React.FC = () => {
                             {/* Public routes: login and register routes */}
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
+                            <Route path="/orders/:id" element={<Layout><OrderDetails /></Layout>} />
+
 
                             {/* Protected routes */}
                             <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                                 <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/transactions" element={<Transactions />} />
                                 <Route path="/orders" element={<Orders />} />
-                                <Route path="/orders/:id" element={<OrderDetails />} />
                                 <Route path="/escrow/new" element={<CreateOrderPage />} />
                                 <Route path="/disputes" element={<Disputes />} />
                             </Route>
