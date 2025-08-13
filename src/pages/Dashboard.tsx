@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { DashboardCards, ActionButtons, GetStartedSteps } from 'components/dashboard';
 import { PendingOrderCard } from 'components/orders';
-import { pendingOrders } from 'data';
 import { useAuth } from 'contexts/AuthContext';
+import { escrowAPI } from 'services/api';
+import { Order } from 'types';
 
 const Dashboard: React.FC = () => {
     const { user } = useAuth();
+    const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
+
+    useEffect(() => {
+        if (!user) return;
+
+        const fetchPendingOrders = async () => {
+            try {
+                const response = await escrowAPI.getPending()
+                console.log(response.data);
+                setPendingOrders(response.data);
+            } catch (err: any) {
+                console.error('Error fetching pending orders:', err);
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        fetchPendingOrders();
+    }, [user]);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -32,7 +52,7 @@ const Dashboard: React.FC = () => {
 
                         <div className="flex gap-6">
                             {pendingOrders.map((order) => (
-                                <PendingOrderCard key={order.orderId} orderId={order.orderId} initiatorName={order.initiatorName} description={order.description} price={order.price} />
+                                <PendingOrderCard key={order.public_id} orderId={order.public_id} itemName={order.item_name} initiatorName={order.initiator?.full_name || order.initiator?.email || "Somebody"} description={order.description} price={order.item_price} />
                             ))}
                         </div>
                     </div>
