@@ -1,11 +1,9 @@
 const statusStyles: Record<string, string> = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  accepted: 'bg-emerald-100 text-emerald-800',
-  declined: 'bg-red-100 text-red-800',
-  funded: 'bg-blue-100 text-blue-800',
-  completed: 'bg-green-100 text-green-800',
-  disputed: 'bg-orange-100 text-orange-800',
-  cancelled: 'bg-gray-100 text-gray-800',
+  pending: 'bg-amber-50 text-amber-700 border border-amber-200',
+  active: 'bg-teal-50 text-teal-700 border border-teal-200',
+  cancelled: 'bg-rose-50 text-rose-700 border border-rose-200',
+  completed: 'bg-lime-50 text-lime-700 border border-lime-200',
+  disputed: 'bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200',
 };
 
 
