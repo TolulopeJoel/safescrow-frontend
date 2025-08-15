@@ -108,12 +108,13 @@ export const authAPI = {
 export const escrowAPI = {
     getAll: () => api.get('/escrow'),
     getPending: () => api.get('/escrow/pending'),
+    acceptEscrow: (id: string) => api.get(`/escrow/accept/${id}`),
 
     getById: (id: string) => api.get(`/escrow/${id}`),
 
     create: (escrowData: CreateOrderForm) => {
         const formData = new FormData();
-    
+
         // Append all the text fields
         formData.append("name", escrowData.name);
         formData.append("price", escrowData.price.toString());
@@ -122,17 +123,17 @@ export const escrowAPI = {
         formData.append("receiver_email", escrowData.receiver_email);
         formData.append("receiver_phone", escrowData.receiver_phone);
         formData.append("role", escrowData.role);
-    
+
         if (escrowData.logistic_service) {
             formData.append("logistic_service", escrowData.logistic_service);
         }
-    
+
         // Append multiple files
         escrowData.images.forEach((file: File) => {
             formData.append("images", file);
         });
 
-    
+
         return api.post('/escrow/create', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',

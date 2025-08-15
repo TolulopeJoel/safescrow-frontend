@@ -8,6 +8,7 @@ import { Order } from 'types';
 import { mockTimelineEvents } from 'data';
 import { useAuth } from 'contexts/AuthContext';
 import { escrowAPI } from 'services/api';
+import PaystackPop from '@paystack/inline-js';
 
 // Helper components
 const PartyInfo: React.FC<{
@@ -111,6 +112,7 @@ const OrderDetails: React.FC = () => {
     const [order, setOrder] = useState<Order | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [orderAccepted, setOrderAccpted] = useState<boolean>(false);
 
     const loadOrder = async () => {
         if (!id) {
@@ -158,6 +160,27 @@ const OrderDetails: React.FC = () => {
             hour: '2-digit',
             minute: '2-digit',
         });
+    };
+
+    const handleAccept = async () => {
+        try {
+            const response = await escrowAPI.acceptEscrow(order?.public_id || "latest");
+            if (response.data && response.data.access_code) {
+                const popup = new PaystackPop();
+                popup.resumeTransaction(response.data.access_code,
+                    {
+                        onSuccess: () => {
+                            setOrderAccpted(true);
+                        }
+                    }
+                );
+            } else {
+                setOrderAccpted(true);
+            }
+        } catch (err: any) {
+            console.error('Error creating order:', err);
+            // setErrors({ ...errors, api: err?.response?.data?.detail || 'An error occurred while creating the order.' });
+        }
     };
 
     const handleOrderAction = async (action: 'accepted' | 'declined') => {
@@ -362,7 +385,7 @@ const OrderDetails: React.FC = () => {
                                                 <>
                                                     <ActionButton
                                                         variant="accept"
-                                                        onClick={() => handleOrderAction('accepted')}
+                                                        onClick={handleAccept}
                                                         loading={isProcessing}
                                                     >
                                                         <IconCheck className="w-4 h-4" />
