@@ -7,8 +7,8 @@ import { useSidebar } from 'contexts/SidebarContext';
 
 const navItems = [
   { name: 'Overview', icon: Squares2X2Icon, path: '/dashboard' },
-  { name: 'Transactions', icon: IconTransfer, path: '/transactions' },
   { name: 'Orders', icon: DocumentTextIcon, path: '/orders' },
+  { name: 'Transactions', icon: IconTransfer, path: '/transactions' },
   { name: 'Dispute resolution', icon: IconGavel, path: '/disputes' },
   { name: 'Referrals', icon: IconGift, path: '/referrals' },
   { name: 'Profile', icon: ProfileIcon, path: '/profile' },
