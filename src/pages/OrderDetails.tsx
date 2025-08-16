@@ -112,7 +112,6 @@ const OrderDetails: React.FC = () => {
     const [order, setOrder] = useState<Order | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [orderAccepted, setOrderAccpted] = useState<boolean>(false);
 
     const loadOrder = async () => {
         if (!id) {
@@ -163,38 +162,49 @@ const OrderDetails: React.FC = () => {
     };
 
     const handleAccept = async () => {
-        try {
-            const response = await escrowAPI.acceptEscrow(order?.public_id || "latest");
-            if (response.data && response.data.access_code) {
-                const popup = new PaystackPop();
-                popup.resumeTransaction(response.data.access_code,
-                    {
-                        onSuccess: () => {
-                            setOrderAccpted(true);
-                        }
-                    }
-                );
-            } else {
-                setOrderAccpted(true);
-            }
-        } catch (err: any) {
-            console.error('Error creating order:', err);
-            // setErrors({ ...errors, api: err?.response?.data?.detail || 'An error occurred while creating the order.' });
-        }
-    };
-
-    const handleOrderAction = async (action: 'accepted' | 'declined') => {
-        if (!isAuthenticated) {
+        if (!order || !isAuthenticated) {
             navigate('/login');
             return;
         }
 
         setIsProcessing(true);
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setOrder((prev) => prev ? { ...prev, status: action } : null);
-        } catch (error) {
-            console.error(`Error ${action} order:`, error);
+            const response = await escrowAPI.accept(order.public_id);
+
+            if (response.data && response.data.access_code) {
+                const popup = new PaystackPop();
+                popup.resumeTransaction(response.data.access_code, {
+                    onSuccess: () => {
+                        setOrder(prev => prev ? { ...prev, status: 'active' } : null);
+                    },
+                    onCancel: () => {
+                        console.log('Payment cancelled');
+                    }
+                });
+            } else {
+                setOrder(prev => prev ? { ...prev, status: 'active' } : null);
+            }
+        } catch (err: any) {
+            console.error('Error accepting order:', err);
+            setError(err?.response?.data?.detail || 'An error occurred while accepting the order.');
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const handleDecline = async () => {
+        if (!order || !isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
+        setIsProcessing(true);
+        try {
+            await escrowAPI.decline(order.public_id);
+            setOrder(prev => prev ? { ...prev, status: 'cancelled' } : null);
+        } catch (err: any) {
+            console.error('Error declining order:', err);
+            setError(err?.response?.data?.detail || 'An error occurred while declining the order.');
         } finally {
             setIsProcessing(false);
         }
@@ -277,7 +287,6 @@ const OrderDetails: React.FC = () => {
                                 <div className="bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-2xl overflow-hidden">
                                     {/* Hero section with order amount */}
                                     <div className="relative bg-gradient-to-r from-primary-600 to-primary-700 p-8 text-white">
-                                        {/* <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width={60} height={60}viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div> */}
                                         <div className="relative">
                                             <div className="flex items-center justify-between mb-6">
                                                 <div>
@@ -393,7 +402,7 @@ const OrderDetails: React.FC = () => {
                                                     </ActionButton>
                                                     <ActionButton
                                                         variant="decline"
-                                                        onClick={() => handleOrderAction('declined')}
+                                                        onClick={handleDecline}
                                                         loading={isProcessing}
                                                     >
                                                         <IconX className="w-4 h-4" />

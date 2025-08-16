@@ -108,9 +108,10 @@ export const authAPI = {
 export const escrowAPI = {
     getAll: () => api.get('/escrow'),
     getPending: () => api.get('/escrow/pending'),
-    acceptEscrow: (id: string) => api.get(`/escrow/accept/${id}`),
-
     getById: (id: string) => api.get(`/escrow/${id}`),
+
+    accept: (id: string) => api.get(`/escrow/${id}/accept`),
+    decline: (id: string) => api.get(`/escrow/${id}/cancel`),
 
     create: (escrowData: CreateOrderForm) => {
         const formData = new FormData();
@@ -142,10 +143,7 @@ export const escrowAPI = {
     },
 
     update: (id: string, updates: any) => api.put(`/escrow/${id}`, updates),
-
     release: (id: string) => api.post(`/escrow/${id}/release`),
-
-    cancel: (id: string) => api.post(`/escrow/${id}/cancel`),
 };
 
 // User API functions

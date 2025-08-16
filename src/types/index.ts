@@ -23,7 +23,7 @@ export interface OrderUser {
     phone?: string;
 }
 
-export type OrderStatus = 'pending' | 'accepted' | 'declined' | 'completed' | 'cancelled' | 'in progress';
+export type OrderStatus = 'pending' | 'active' | 'cancelled' | 'completed' | 'disputed';
 export interface Order {
     public_id: string;
     item_name: string;
@@ -184,7 +184,9 @@ export interface PendingOrderCardProps {
     initiatorName: string;
     description: string;
     price: number;
+    onStatusChange?: (orderId: string, status: "active" | "cancelled") => void;
 }
+
 
 // ============================================================================
 // SERVICE INTERFACES

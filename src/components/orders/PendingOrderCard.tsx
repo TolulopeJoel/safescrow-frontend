@@ -1,10 +1,59 @@
 import { useNavigate } from 'react-router-dom';
 import { PendingOrderCardProps } from 'types';
+import { useState } from 'react';
+import { escrowAPI } from 'services/api';
+import PaystackPop from '@paystack/inline-js';
 
-const PendingOrderCard: React.FC<PendingOrderCardProps> = ({ itemName, initiatorName, description, price, orderId }) => {
+const PendingOrderCard: React.FC<PendingOrderCardProps> = ({
+    itemName,
+    initiatorName,
+    description,
+    price,
+    orderId,
+    onStatusChange // optional prop to notify parent
+}) => {
     const navigate = useNavigate();
+    const [isProcessing, setIsProcessing] = useState<'accept' | 'decline' | null>(null);
+
     const handleCardClick = () => {
         navigate(`/orders/${orderId}`);
+    };
+
+    const handleAccept = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            setIsProcessing('accept');
+            const response = await escrowAPI.accept(orderId);
+
+            if (response.data && response.data.access_code) {
+                const popup = new PaystackPop();
+                popup.resumeTransaction(response.data.access_code, {
+                    onSuccess: () => {
+                        onStatusChange?.(orderId, 'active');
+                    },
+                    onCancel: () => {
+                        console.log('Payment cancelled');
+                    }
+                });
+            } else {
+                onStatusChange?.(orderId, 'active');
+            }
+        } catch (err: any) {
+            console.error('Error accepting order:', err);
+        } finally {
+            setIsProcessing(null);
+        }
+    };
+
+    const handleDecline = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            setIsProcessing('decline');
+            await escrowAPI.decline(orderId);
+            onStatusChange?.(orderId, 'cancelled');
+        } finally {
+            setIsProcessing(null);
+        }
     };
 
     return (
@@ -26,16 +75,18 @@ const PendingOrderCard: React.FC<PendingOrderCardProps> = ({ itemName, initiator
 
             <div className="flex justify-between items-center mt-auto pt-4">
                 <button
-                    className="text-sm font-medium text-gray-700 p-2 px-4 rounded hover:bg-primary-100 active:scale-95 transition cursor-pointer select-none"
-                    onClick={(e) => e.stopPropagation()} // Prevents card click when button is clicked
+                    className="text-sm font-medium text-gray-700 p-2 px-4 rounded hover:bg-primary-100 active:scale-95 transition cursor-pointer select-none disabled:opacity-50"
+                    onClick={handleAccept}
+                    disabled={isProcessing === 'accept'}
                 >
-                    Accept
+                    {isProcessing === 'accept' ? 'Accepting...' : 'Accept'}
                 </button>
                 <button
-                    className="text-sm font-medium text-red-500 p-2 px-4 rounded hover:bg-red-200 active:scale-95 transition cursor-pointer select-none"
-                    onClick={(e) => e.stopPropagation()} // Prevents card click when button is clicked
+                    className="text-sm font-medium text-red-500 p-2 px-4 rounded hover:bg-red-200 active:scale-95 transition cursor-pointer select-none disabled:opacity-50"
+                    onClick={handleDecline}
+                    disabled={isProcessing === 'decline'}
                 >
-                    Decline
+                    {isProcessing === 'decline' ? 'Declining...' : 'Decline'}
                 </button>
             </div>
         </div>
