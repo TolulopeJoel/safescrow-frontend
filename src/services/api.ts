@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateOrderForm } from 'types';
+import { CreateDisputeForm, CreateOrderForm } from 'types';
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -112,6 +112,25 @@ export const escrowAPI = {
 
     accept: (id: string) => api.get(`/escrow/${id}/accept`),
     decline: (id: string) => api.get(`/escrow/${id}/cancel`),
+
+    dispute: (id: string, disputeData: CreateDisputeForm) => {
+        const formData = new FormData();
+
+        // Append all the text fields
+        formData.append("reason", disputeData.reason);
+
+        // Append multiple files
+        disputeData.images.forEach((file: File) => {
+            formData.append("images", file);
+        });
+
+
+        return api.post(`/escrow/${id}/dispute`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
 
     create: (escrowData: CreateOrderForm) => {
         const formData = new FormData();

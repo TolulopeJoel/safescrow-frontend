@@ -133,9 +133,7 @@ export interface CreateOrderForm {
 }
 
 export interface CreateDisputeForm {
-    orderId: string;
     reason: string;
-    description?: string;
     images: File[];
 }
 
