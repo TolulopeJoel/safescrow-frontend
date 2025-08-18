@@ -2,59 +2,7 @@
 // MOCK DATA - Centralized data source for the entire application
 // ============================================================================
 
-import { Order, Transaction, Dispute, Notification, TimelineEvent, OrderUser } from '../types';
-
-// ============================================================================
-// USERS
-// ============================================================================
-
-export const mockUsers: OrderUser[] = [
-  {
-    id: '1',
-    full_name: 'Aubrey',
-    email: 'aubrey@email.com',
-    phone: '+2348012345678',
-  }
-];
-
-// ============================================================================
-// ORDERS
-// ============================================================================
-
-export const mockOrders: Order[] = [
-  {
-    public_id: '9060EBE1',
-    item_name: 'iPhone 16',
-    item_price: 50000,
-    fee_amount: 1000,
-    status: 'pending',
-    initiator_role: 'buyer',
-    receiver: mockUsers[0], // Debra
-    receiver_email: 'debra@example.com',
-    receiver_phone: '123-456-7890',
-    images: ['iphone16-1.jpg', 'iphone16-2.jpg'],
-    description: 'Brand new iPhone 16, 256GB, Space Black',
-    expected_delivery_date: '2025-08-10',
-    created_at: '2024-06-01',
-    updated_at: '2024-06-02',
-  },
-  {
-    public_id: 'ORD002',
-    item_name: 'MacBook Pro',
-    item_price: 25000,
-    fee_amount: 800,
-    status: 'pending',
-    initiator_role: 'buyer',
-    receiver: mockUsers[0], // Debra
-    receiver_email: 'debra@example.com',
-    receiver_phone: '123-456-7890',
-    images: ['macbook-1.jpg'],
-    description: 'MacBook Pro 14-inch, M2 Pro, 16GB RAM',
-    expected_delivery_date: '2025-08-15',
-    created_at: '2024-06-01',
-    updated_at: '2024-06-02',
-  },
-];
+import { Transaction, Dispute, Notification, TimelineEvent } from '../types';
 
 // ============================================================================
 // TRANSACTIONS
