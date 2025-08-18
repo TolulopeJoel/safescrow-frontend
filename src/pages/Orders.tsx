@@ -1,14 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { OrderSummaryCards, OrdersTable, OrderOverviewChart } from 'components/orders';
 import { FilterTabs } from 'components/ui';
 import { DocumentTextIcon } from '@heroicons/react/24/solid';
-import { mockOrders } from 'data'
+import { escrowAPI } from 'services/api';
+import { Order } from 'types';
 
+
+interface OrdersData {
+  active: Order[];
+  cancelled: Order[];
+  completed: Order[];
+  pending: Order[];
+}
 
 const Orders: React.FC = () => {
-  const ORDER_FILTERS = ['All', `Active (${10})`, `Pending (${5})`, `Completed (${30})`];
-  const [selectedFilter, setSelectedFilter] = React.useState('All');
+  const ORDER_FILTERS = ['All', 'Pending', 'Active', 'Completed', 'Cancelled'];
+  const [selectedFilter, setSelectedFilter] = useState<string>('All');
+  const [ordersData, setOrdersData] = useState<OrdersData>({
+    active: [],
+    cancelled: [],
+    completed: [],
+    pending: []
+  });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch orders data on component mount
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await escrowAPI.getAll();
+        setOrdersData(response.data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError('Failed to fetch orders. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const filteredOrders = selectedFilter === 'All'
+    ? [...ordersData.pending, ...ordersData.active, ...ordersData.completed, ...ordersData.cancelled]
+    : ordersData[selectedFilter.toLowerCase() as keyof OrdersData] || [];
+
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Topbar />
+        <div className="flex">
+          <SidebarNav />
+          <main className="flex-1 p-4 sm:p-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading orders...</p>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Topbar />
+        <div className="flex">
+          <SidebarNav />
+          <main className="flex-1 p-4 sm:p-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <p className="text-red-600 mb-4">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -43,11 +128,16 @@ const Orders: React.FC = () => {
               <button className="border px-3 py-1 rounded text-sm">=</button>
             </div>
           </div>
-          <OrdersTable orders={mockOrders} />
+          <OrdersTable orders={filteredOrders} />
+          {filteredOrders.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              <p>No {selectedFilter.toLocaleLowerCase()} orders found.</p>
+            </div>
+          )}
         </main>
       </div>
     </div>
   );
 };
 
-export default Orders; 
+export default Orders;
