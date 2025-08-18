@@ -1,13 +1,12 @@
 import React from 'react';
 
-const cards = [
-  { title: 'Total orders', value: 21 },
-  { title: 'Active orders', value: 2 },
-  { title: 'Pending orders', value: 3 },
-  { title: 'Completed orders', value: 16 },
-];
+interface SummaryCard {
+  title: string;
+  value: number;
+}
 
-const OrderSummaryCards: React.FC = () => (
+
+const OrderSummaryCards: React.FC<{ cards: SummaryCard[] }> = ({ cards }) => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8">
     {cards.map((card, idx) => (
       <div key={idx} className="bg-white rounded-xl shadow-2xs p-6 flex flex-col items-center">
@@ -18,4 +17,4 @@ const OrderSummaryCards: React.FC = () => (
   </div>
 );
 
-export default OrderSummaryCards; 
+export default OrderSummaryCards;

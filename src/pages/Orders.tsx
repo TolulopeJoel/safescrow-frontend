@@ -49,6 +49,14 @@ const Orders: React.FC = () => {
     ? [...ordersData.pending, ...ordersData.active, ...ordersData.completed, ...ordersData.cancelled]
     : ordersData[selectedFilter.toLowerCase() as keyof OrdersData] || [];
 
+  const summaryCards = [
+    // { title: 'Total orders', value: ordersData.active.length + ordersData.pending.length + ordersData.completed.length + ordersData.cancelled.length },
+    { title: 'Active orders', value: ordersData.active.length },
+    { title: 'Pending orders', value: ordersData.pending.length },
+    { title: 'Completed orders', value: ordersData.completed.length },
+    { title: 'Cancelled orders', value: ordersData.cancelled.length },
+  ];
+
 
   // Loading state
   if (loading) {
@@ -105,7 +113,7 @@ const Orders: React.FC = () => {
             <DocumentTextIcon className="w-7 h-7 text-primary-600" />
             <h1 className="text-2xl font-semibold">Orders</h1>
           </div>
-          <OrderSummaryCards />
+          <OrderSummaryCards cards={summaryCards} />
           {/* Chart placeholder */}
           <div className="bg-white rounded-lg p-1 shadow-sm mb-8">
             <div className="flex items-center justify-between mb-4">
