@@ -17,6 +17,7 @@ interface OrdersData {
 const Orders: React.FC = () => {
   const ORDER_FILTERS = ['All', 'Pending', 'Active', 'Completed', 'Cancelled'];
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
+  const [monthlyStats, setMonthlyStats] = useState<{ month: string; value: number; }[]>([{ month: "jan", value: 0 }]);
   const [ordersData, setOrdersData] = useState<OrdersData>({
     active: [],
     cancelled: [],
@@ -42,7 +43,22 @@ const Orders: React.FC = () => {
       }
     };
 
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await escrowAPI.getMonthlyStats();
+        setMonthlyStats(response.data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError('Failed to fetch orders. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
     fetchOrders();
+    fetchStats();
   }, []);
 
   const filteredOrders = selectedFilter === 'All'
@@ -120,7 +136,7 @@ const Orders: React.FC = () => {
               <span className="font-medium text-lg p-4">Order overview</span>
             </div>
             <div className="flex items-center justify-center">
-              <OrderOverviewChart />
+              <OrderOverviewChart data={monthlyStats} />
             </div>
           </div>
           {/* Tabs and search */}

@@ -106,9 +106,12 @@ export const authAPI = {
 
 // Escrow API functions
 export const escrowAPI = {
-    getAll: () => api.get('/escrow'),
+    getAll: () => api.get('/escrow/all'),
     getPending: () => api.get('/escrow/pending'),
     getById: (id: string) => api.get(`/escrow/${id}`),
+
+    getAvailableForDispute: () => api.get('/escrow/available-dispute'),
+    getMonthlyStats: () => api.get('/escrow/monthly-stats'),
 
     accept: (id: string) => api.get(`/escrow/${id}/accept`),
     decline: (id: string) => api.get(`/escrow/${id}/cancel`),
