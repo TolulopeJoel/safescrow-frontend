@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { IconGavel } from '@tabler/icons-react';
 import { ImageDropzone, FilterTabs, FormTextarea } from 'components/ui';
-import { mockDisputes, mockOrders } from 'data';
+import { mockDisputes } from 'data';
+import { escrowAPI } from 'services/api';
+import { Order } from 'types';
 
 const Disputes: React.FC = () => {
   const [disputes, setDisputes] = useState(mockDisputes);
@@ -14,6 +16,9 @@ const Disputes: React.FC = () => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const DISPUTE_FILTERS = ['All', 'Open', 'Resolved'];
   const [selectedFilter, setSelectedFilter] = useState('All');
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const openModal = () => {
     setForm({ orderId: '', reason: '' });
@@ -37,7 +42,7 @@ const Disputes: React.FC = () => {
     let valid = true;
     const newErrors: { orderId?: string; reason?: string; images?: string } = {};
     if (!form.orderId) {
-      newErrors.orderId = 'Order is required';
+      newErrors.orderId = 'Escrow is required';
       valid = false;
     }
     if (!form.reason) {
@@ -73,6 +78,25 @@ const Disputes: React.FC = () => {
   const filteredDisputes = selectedFilter === 'All'
     ? disputes
     : disputes.filter(d => d.status.toLowerCase() === selectedFilter.toLowerCase());
+
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await escrowAPI.getAvailableForDispute();
+        setOrders(response.data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError('Failed to fetch orders. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -116,7 +140,7 @@ const Disputes: React.FC = () => {
                     </span>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className="font-semibold text-base text-gray-900">Order #{dispute.orderId}</span>
+                        <span className="font-semibold text-base text-gray-900">Escrow #{dispute.orderId}</span>
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${dispute.status === 'open' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>{dispute.status}</span>
                       </div>
                       <div className="text-gray-700 text-sm mb-1 truncate max-w-xs">{dispute.reason}</div>
@@ -151,7 +175,7 @@ const Disputes: React.FC = () => {
                 </h2>
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Order</label>
+                    <label className="block text-sm font-medium mb-1">Escrow</label>
                     <select
                       name="orderId"
                       value={form.orderId}
@@ -159,7 +183,7 @@ const Disputes: React.FC = () => {
                       className={`w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200 ${errors.orderId ? 'border-red-400' : 'border-gray-300'}`}
                     >
                       <option value="">Select an order</option>
-                      {mockOrders.map((order) => (
+                      {orders.map((order) => (
                         <option key={order.public_id} value={order.public_id}>
                           {order.public_id} - {order.receiver?.full_name || order.receiver_email} - ₦{order.item_price.toLocaleString()}
                         </option>
@@ -167,28 +191,28 @@ const Disputes: React.FC = () => {
                     </select>
                     {errors.orderId && <span className="text-xs text-red-500">{errors.orderId}</span>}
                   </div>
-                    <FormTextarea
-                      label="Reason"
-                      name="reason"
-                      value={form.reason}
-                      onChange={handleChange}
-                      error={errors.reason}
-                      rows={2}
-                      placeholder="Describe the issue"
-                    />
-                    <ImageDropzone
-                      label="Upload images to support your claim"
-                      images={images}
-                      imagePreviews={imagePreviews}
-                      onChange={(files, previews) => {
-                        setImages(files);
-                        setImagePreviews(previews);
-                        setErrors((prev) => ({ ...prev, images: '' }));
-                      }}
-                      error={errors.images}
-                      maxImages={5}
-                      isRequired
-                    />
+                  <FormTextarea
+                    label="Reason"
+                    name="reason"
+                    value={form.reason}
+                    onChange={handleChange}
+                    error={errors.reason}
+                    rows={2}
+                    placeholder="Describe the issue"
+                  />
+                  <ImageDropzone
+                    label="Upload images to support your claim"
+                    images={images}
+                    imagePreviews={imagePreviews}
+                    onChange={(files, previews) => {
+                      setImages(files);
+                      setImagePreviews(previews);
+                      setErrors((prev) => ({ ...prev, images: '' }));
+                    }}
+                    error={errors.images}
+                    maxImages={5}
+                    isRequired
+                  />
                   <div className="flex justify-end space-x-3 mt-2">
                     <button
                       type="button"
