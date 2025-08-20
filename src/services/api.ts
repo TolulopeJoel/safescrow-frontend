@@ -168,6 +168,10 @@ export const escrowAPI = {
     release: (id: string) => api.post(`/escrow/${id}/release`),
 };
 
+export const trnxAPI = {
+    allTransactions: () => api.get('/trnx')
+}
+
 // User API functions
 export const userAPI = {
     getEscrows: () => api.get('/user/escrows'),
