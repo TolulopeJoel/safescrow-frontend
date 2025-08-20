@@ -35,7 +35,7 @@ const Dashboard: React.FC = () => {
                 <SidebarNav />
                 <main className="flex-1 p-4 sm:p-8">
                     <div className="flex items-center justify-between mb-6">
-                        <h1 className="text-2xl font-semibold">Welcome, {user && user.full_name.split(' ')[0]}</h1>
+                        <h1 className="text-2xl font-semibold">Welcome, <span className='capitalize'>{user && user.full_name.split(' ')[0]}</span></h1>
                         <div className="flex items-center">
                             <ActionButtons />
                         </div>

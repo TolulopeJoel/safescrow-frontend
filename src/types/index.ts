@@ -27,8 +27,8 @@ export type OrderStatus = 'pending' | 'active' | 'cancelled' | 'completed' | 'di
 export interface Order {
     public_id: string;
     item_name: string;
-    item_price: number;
-    fee_amount: number;
+    item_price: string;
+    fee_amount: string;
     status: OrderStatus;
 
     initiator_role: "buyer" | "seller";
@@ -186,7 +186,7 @@ export interface PendingOrderCardProps {
     itemName: string;
     initiatorName: string;
     description: string;
-    price: number;
+    price: string;
     onStatusChange?: (orderId: string, status: "active" | "cancelled") => void;
 }
 

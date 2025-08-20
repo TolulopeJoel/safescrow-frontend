@@ -9,6 +9,7 @@ import { mockTimelineEvents } from 'data';
 import { useAuth } from 'contexts/AuthContext';
 import { escrowAPI } from 'services/api';
 import PaystackPop from '@paystack/inline-js';
+import { formatDate, formatDateTime } from 'utils';
 
 // Helper components
 const PartyInfo: React.FC<{
@@ -142,24 +143,6 @@ const OrderDetails: React.FC = () => {
         loadOrder();
     }, [id]);
 
-    // Helper functions
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    };
-
-    const formatDateTime = (dateString: string) => {
-        return new Date(dateString).toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    };
 
     const handleAccept = async () => {
         if (!order || !isAuthenticated) {
@@ -298,7 +281,7 @@ const OrderDetails: React.FC = () => {
 
                                             <div className="text-center py-6">
                                                 <div className="text-4xl sm:text-5xl font-bold mb-2 tracking-tight">
-                                                    ₦{Number(order?.item_price || 0).toLocaleString(undefined, {
+                                                    ₦{parseFloat(order?.item_price || "0.00").toLocaleString(undefined, {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
                                                     })}
@@ -341,7 +324,7 @@ const OrderDetails: React.FC = () => {
                                                     <span className="font-medium text-slate-700">Item/Service</span>
                                                 </div>
                                                 <span className="font-semibold text-slate-800 text-lg">
-                                                    ₦{Number(order?.item_price || 0).toLocaleString(undefined, {
+                                                    ₦{parseFloat(order?.item_price || "0.00").toLocaleString(undefined, {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
                                                     })}
@@ -354,7 +337,7 @@ const OrderDetails: React.FC = () => {
                                                     <span className="font-medium text-slate-700">Escrow Fee</span>
                                                 </div>
                                                 <span className="font-semibold text-slate-800 text-lg">
-                                                    ₦{Number(order?.fee_amount || 0).toLocaleString(undefined, {
+                                                    ₦{parseFloat(order?.fee_amount || "0.00").toLocaleString(undefined, {
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
                                                     })}
@@ -366,7 +349,7 @@ const OrderDetails: React.FC = () => {
                                             <div className="flex items-center justify-between p-6 bg-gradient-to-r from-primary-50 to-primary-100 rounded-lg">
                                                 <span className="font-semibold text-slate-800">Total Paid</span>
                                                 <span className="font-bold text-primary-700 text-xl">
-                                                    ₦{(Number(order?.item_price || 0) + Number(order?.fee_amount || 0))
+                                                    ₦{(parseFloat(order?.item_price || "0.00") + parseFloat(order?.fee_amount || "0.00"))
                                                         .toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2
@@ -377,7 +360,7 @@ const OrderDetails: React.FC = () => {
                                             <div className="flex items-center justify-between p-6 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg">
                                                 <span className="font-semibold text-slate-800">Amount to Seller</span>
                                                 <span className="font-bold text-emerald-700 text-xl">
-                                                    ₦{(Number(order?.item_price || 0) - Number(order?.fee_amount || 0))
+                                                    ₦{(parseFloat(order?.item_price || "0.00") - parseFloat(order?.fee_amount || "0.00"))
                                                         .toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2

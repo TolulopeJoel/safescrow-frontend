@@ -12,7 +12,7 @@ const DashboardCards: React.FC<DashboardCardsProps> = ({ profile }) => {
   const cards: DashboardCard[] = [
     {
       title: 'Wallet balance',
-      value: `₦${Number(profile.wallet_balance).toLocaleString('en-US', {
+      value: `₦${parseFloat(profile.wallet_balance).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
@@ -21,7 +21,7 @@ const DashboardCards: React.FC<DashboardCardsProps> = ({ profile }) => {
     },
     {
       title: 'Balance in escrow',
-      value: `₦${Number(profile.escrow_balance).toLocaleString('en-US', {
+      value: `₦${parseFloat(profile.escrow_balance).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,

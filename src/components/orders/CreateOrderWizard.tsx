@@ -80,7 +80,7 @@ const CreateOrderWizard: React.FC = () => {
 
     const validateStep2 = () => {
         const newErrors: { [key: string]: string } = {};
-        if (!form.price || isNaN(Number(form.price)) || Number(form.price) <= 0) newErrors.price = 'Enter a valid amount';
+        if (!form.price || isNaN(parseFloat(form.price)) || parseFloat(form.price) <= 0) newErrors.price = 'Enter a valid amount';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -447,7 +447,7 @@ const CreateOrderWizard: React.FC = () => {
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="font-medium text-gray-600">Transaction amount</span>
-                                    <span className="text-gray-800">₦{Number(form.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    <span className="text-gray-800">₦{parseFloat(form.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                                 </div>
                                 {role === 'seller' && (
                                     <div className="flex justify-between text-sm">

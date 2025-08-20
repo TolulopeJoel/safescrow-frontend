@@ -26,7 +26,7 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">{order.public_id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{order.receiver?.full_name || order.receiver_email}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">{order.item_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{Number(order.item_price).toLocaleString("en-us", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">₦{parseFloat(order.item_price).toLocaleString("en-us", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td className="px-6 py-4 whitespace-nowrap"><OrderStatusBadge status={order.status} /></td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button

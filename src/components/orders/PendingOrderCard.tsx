@@ -69,7 +69,7 @@ const PendingOrderCard: React.FC<PendingOrderCardProps> = ({
                     <h3 className="font-semibold text-base text-gray-800 mb-1">{itemName}</h3>
                     <p className="text-sm text-gray-500 mb-1">From {initiatorName}</p>
                     <p className="text-sm text-gray-400 mb-1 line-clamp-2">{description}</p>
-                    <p className="text-base font-semibold text-gray-800 mt-2">₦{Number(price || 0).toLocaleString()}</p>
+                    <p className="text-base font-semibold text-gray-800 mt-2">₦{parseFloat(price || "0.00").toLocaleString()}</p>
                 </div>
             </div>
 
