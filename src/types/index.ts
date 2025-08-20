@@ -46,21 +46,26 @@ export interface Order {
 
 
 // Transaction types
-export type TransactionType = 'funding' | 'withdrawal' | 'escrow release' | 'fee' | 'bonus' | 'refund' | 'transfer';
+export type TransactionType = 'escrow payment' | 'escrow fee' | 'escrow release' | 'dispute fee' | 'refund' | 'payout' | 'withdrawal' | 'deposit';
+
 export type TransactionDirection = 'credit' | 'debit';
-export type TransactionStatus = 'pending' | 'completed' | 'failed' | 'cancelled';
+export type TransactionStatus = 'pending' | 'completed' | 'failed' | 'cancelled' | 'processing';
 
 export interface Transaction {
     id: string;
-    type: TransactionType;
-    amount: number;
-    direction: TransactionDirection;
+    amount: string;
+    created_at: string;
+    updated_at: string;
     description: string;
-    date: string;
+    user_id: string | null;
+    escrow_id: string | null;
     status: TransactionStatus;
-    counterpart?: string;
-    orderId?: string;
+    processed_at?: string | null;
+    direction: TransactionDirection;
+    transaction_type: TransactionType;
+    payment_metadata?: Record<string, any> | null;
 }
+
 
 // Dispute types
 export type DisputeStatus = 'open' | 'resolved' | 'closed' | 'under review';
