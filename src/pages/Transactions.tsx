@@ -1,28 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Topbar, SidebarNav } from 'components/layout';
 import { WalletTransactionCard, StatsOverview } from 'components/transactions';
 import { FilterTabs } from 'components/ui';
 import { IconTransfer } from '@tabler/icons-react';
-import { mockTransactions } from 'data';
+import { Transaction } from 'types';
+import { trnxAPI } from 'services/api';
 
 const FILTERS = ['All', 'Credit', 'Debit'];
 
 const Transactions: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('All');
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState<string>('');
+  const [allTrnx, setAllTrnx] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    const fetchTrnxs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await trnxAPI.allTransactions();
+        setAllTrnx(response.data);
+      } catch (err: any) {
+        console.error('Error fetching order:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTrnxs();
+  }, []);
 
   const filteredTransactions = (selectedFilter === 'All'
-    ? mockTransactions
-    : mockTransactions.filter((txn) =>
+    ? allTrnx
+    : allTrnx.filter((txn) =>
       selectedFilter === 'Credit'
         ? txn.direction === 'credit'
         : txn.direction === 'debit'
     )
   ).filter(
     (txn) =>
-      txn.description.toLowerCase().includes(search.toLowerCase()) ||
+      txn.description?.toLowerCase().includes(search.toLowerCase()) ||
       txn.id.toLowerCase().includes(search.toLowerCase()) ||
-      txn.date.includes(search)
+      txn.created_at.includes(search)
   );
 
   return (
@@ -35,7 +56,7 @@ const Transactions: React.FC = () => {
             <IconTransfer className="w-7 h-7 text-primary-600" />
             <h1 className="text-2xl font-semibold">Wallet Transactions</h1>
           </div>
-          <StatsOverview transactions={mockTransactions} />
+          <StatsOverview transactions={allTrnx} />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
             <FilterTabs
               filters={FILTERS}

@@ -3,6 +3,7 @@ import TransactionStatusBadge from './TransactionStatusBadge';
 import { IconArrowDownLeft, IconArrowUpRight, IconCurrencyNaira } from '@tabler/icons-react';
 import { BanknotesIcon } from '@heroicons/react/24/outline';
 import { Transaction } from 'types';
+import { formatDateTime } from 'utils';
 
 interface WalletTransactionCardProps {
   transaction: Transaction;
@@ -10,17 +11,20 @@ interface WalletTransactionCardProps {
 }
 
 const typeIcon = {
-  funding: IconArrowDownLeft,
+  'escrow fee': IconArrowUpRight,
+  'escrow payment': IconArrowUpRight,
+  'dispute fee': IconArrowUpRight,
   withdrawal: IconArrowUpRight,
-  'escrow release': BanknotesIcon,
-  fee: IconArrowUpRight,
-  bonus: IconArrowDownLeft,
+
+  payout: IconArrowDownLeft,
   refund: IconArrowDownLeft,
-  transfer: IconCurrencyNaira,
+  deposit: IconArrowDownLeft,
+
+  'escrow release': BanknotesIcon,
 };
 
 const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transaction, isLast }) => {
-  const Icon = typeIcon[transaction.type] || IconCurrencyNaira;
+  const Icon = typeIcon[transaction.transaction_type] || IconCurrencyNaira;
   const isCredit = transaction.direction === 'credit';
   const amountColor = isCredit ? 'text-green-600' : 'text-red-600';
   const sign = isCredit ? '+' : '-';
@@ -36,18 +40,21 @@ const WalletTransactionCard: React.FC<WalletTransactionCardProps> = ({ transacti
       {/* Main content */}
       <div className="min-w-0">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1 sm:mb-2 gap-1 sm:gap-2">
-          <span className="font-semibold text-base sm:text-lg capitalize text-gray-900 block">{transaction.type}</span>
+          <span className="font-semibold text-base sm:text-lg capitalize text-gray-900 block">{transaction.transaction_type}</span>
         </div>
         <div className="text-gray-700 text-sm sm:text-base mb-1 sm:mb-2">{transaction.description}</div>
         <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs">
-          <span className="text-gray-500">{transaction.date}</span>
-          <span className="text-gray-400 font-mono">{transaction.id}</span>
+          <span className="text-gray-500">{formatDateTime(transaction.created_at, false)}</span>
+          <span className="text-gray-400 font-mono">{transaction.id.slice(9, 18).toLocaleUpperCase()}</span>
         </div>
       </div>
       {/* Amount and Status Badge */}
       <div className="flex flex-col items-center justify-center gap-1 min-w-[80px] sm:min-w-[120px]">
-        <span className={`font-bold text-base sm:text-lg ${amountColor}`}>{sign}₦{transaction.amount.toLocaleString()}</span>
-        <TransactionStatusBadge status={transaction.status} className="px-4 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-base font-semibold capitalize shadow-sm mt-[0.15rem] sm:mt-[0.25rem]" />
+        <span className={`font-bold text-base sm:text-lg ${amountColor}`}>{sign}₦{parseFloat(transaction.amount).toLocaleString("en-us", {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2
+        })}</span>
+        <TransactionStatusBadge status={transaction.status} className="px-4 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-base font-semibold shadow-sm mt-[0.15rem] sm:mt-[0.25rem]" />
       </div>
     </div>
   );

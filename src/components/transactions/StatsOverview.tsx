@@ -9,11 +9,11 @@ interface StatsOverviewProps {
 const StatsOverview: React.FC<StatsOverviewProps> = ({ transactions }) => {
   const now = new Date();
   const thisMonth = transactions.filter(txn => {
-    const txnDate = new Date(txn.date);
+    const txnDate = new Date(txn.created_at);
     return txnDate.getMonth() === now.getMonth() && txnDate.getFullYear() === now.getFullYear();
   });
-  const totalCredited = thisMonth.filter(txn => txn.direction === 'credit').reduce((sum, txn) => sum + txn.amount, 0);
-  const totalDebited = thisMonth.filter(txn => txn.direction === 'debit').reduce((sum, txn) => sum + txn.amount, 0);
+  const totalCredited = thisMonth.filter(txn => txn.direction === 'credit').reduce((sum, txn) => sum + parseFloat(txn.amount), 0);
+  const totalDebited = thisMonth.filter(txn => txn.direction === 'debit').reduce((sum, txn) => sum + parseFloat(txn.amount), 0);
   const count = thisMonth.length;
 
   return (
